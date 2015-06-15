@@ -44,6 +44,9 @@
             <h2>A Data Journey</h2>
         </section>
         <section id='data-view'>
+            <div>
+                <select ng-options='name for (name, value) in energy' ng-model='energySelector' ng-change='drawData()'></select>
+            </div>
             <div id='graph'></div>
             <nav id='stories'>
                 <ul class='story-list'>
