@@ -1,0 +1,35 @@
+{
+  "name": "your-management-style",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "devDependencies": {
+    "autoprefixer-core": "*",
+    "del": "*",
+    "gulp": "^3.8.8",
+    "gulp-autoprefixer": "*",
+    "gulp-cache": "*",
+    "gulp-chmod": "^1.2.0",
+    "gulp-concat": "*",
+    "gulp-gm": "0.0.7",
+    "gulp-imagemin": "*",
+    "gulp-load-plugins": "*",
+    "gulp-minify-css": "^0.3.5",
+    "gulp-postcss": "*",
+    "gulp-rename": "*",
+    "gulp-replace": "^0.4.0",
+    "gulp-size": "^0.4.0",
+    "gulp-uglify": "*",
+    "gulp-util": "^2.2.18",
+    "gulp-watch": "^0.6.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://janbaykara@bitbucket.org/janbaykara/your-management-style.git"
+  },
+  "author": "Jan Baykara",
+  "license": "ISC"
+}
