@@ -27,10 +27,13 @@ body {
 }
 #graph {
     height: 600px;
+    padding: 0px 10px;
+    max-width: 1240px;
+    margin: 20px auto 0;
 }
 @media screen and (max-height: 480px) {
     #graph {
-        height: 380px;
+        height: 320px;
     }
 }
 
@@ -38,6 +41,14 @@ body {
 .graph-title .energy-selector {
 
 }
-.graph-title .active {
+.graph-title {
+    margin: 0;
+    color: #49C8FF;
+}
+.graph-title span {
     color: #2CFEF1;
+    opacity: 0.5;
+}
+.graph-title .active {
+    opacity: 1;
 }

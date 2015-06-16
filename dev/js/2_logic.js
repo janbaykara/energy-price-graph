@@ -1,6 +1,7 @@
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope) {
         // Selectors
+        $scope.stories = data.stories
         $scope.energy = data.energy
         $scope.energySelector = 'electricity'
         $scope.selectedEnergy = function(name,value) {
@@ -16,4 +17,9 @@ angular.module('main', ['ngRetina'])
             drawData($scope.energy[$scope.energySelector])
         }
         $scope.drawData()
+
+        // Stories
+        $scope.animationPhase = function() {
+            return true;
+        }
     })

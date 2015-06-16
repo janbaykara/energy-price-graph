@@ -75,7 +75,7 @@ var data = {
             "year": 2014
         },
         "text": {
-            "type": "supply",
+            "type": "output",
             "headline": "Opec decides not to cut production",
             "description": "Opec decides not to cut production despite low in China and Europe"
         }

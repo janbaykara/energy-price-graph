@@ -1,6 +1,6 @@
 function drawData(dataset) {
     // ------------
-    // Plot lines
+    // Clear
     d3.select("#data")
        .selectAll("*").remove()
 
@@ -10,11 +10,10 @@ function drawData(dataset) {
         green: '#C1D540'
     }
 
-    var lines = [
-        { path: '.average["average_small"]', color: colors.pink },
-        //
-        { path: '.average["average_large"]', color: colors.green }
-    ]
+
+    //////////
+    // Scatter
+    //////////
 
     var scatters = [
         { path: '.raw.group_small.["very small"]', color: colors.pink },
@@ -32,7 +31,6 @@ function drawData(dataset) {
         .attr("class","scatter")
 
     _.each(scatters, function(thisScatter) {
-        // SCATTER
         plots
             // Circle
             .append("g")
@@ -54,12 +52,23 @@ function drawData(dataset) {
             })
     })
 
+
+
+    //////////
+    // Lines
+    //////////
+
+    var lines = [
+        { path: '.average["average_small"]', color: colors.pink },
+        //
+        { path: '.average["average_large"]', color: colors.green }
+    ]
+
     var lineG = svg.select('#data')
         .append("g")
         .attr("class","lineGroup")
 
     _.each(lines, function(thisLine) {
-        // LINES
         var line = d3.svg.line()
             .x(function(d){ return scale.x(QYtoDate(d)) + pointSize + "%" })
             .y(function(d){ return scale.y(_.get(d,thisLine.path)) })

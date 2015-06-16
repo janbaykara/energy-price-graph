@@ -39,28 +39,30 @@
 <body>
 
     <main>
-        <section id='title-page' full-screen>
+        <!-- <section id='title-page' full-screen>
             <h1>Enterprise Energy Prices</h1>
             <h2>A Data Journey</h2>
-        </section>
+        </section> -->
         <section id='data-view'>
-            <h2 class='graph-title'>
-                Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
-                <span class='clickable energy-selector'
-                    ng-repeat='(name, value) in energy'
-                    ng-class='{ "active": name === energySelector }'
-                    ng-click='selectedEnergy(name,value)'
-                >{{name}}</span>
-            </h2>
+            <header>
+                <h2 class='graph-title'>
+                    Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
+                    <span class='clickable energy-selector'
+                        ng-repeat='(name, value) in energy'
+                        ng-class='{ "active": name === energySelector }'
+                        ng-click='selectedEnergy(name,value)'
+                    >{{name}}</span>
+                </h2>
+            </header>
             <div id='graph'></div>
             <nav id='stories'>
                 <ul class='story-list'>
-                    <li ng-repeat='story in stories track by $index'>
-                        <article class='story-list__article' ng-if='animationPhase(story.Year,story.Quarter)'>
+                    <li ng-repeat='story in stories' ng-if='animationPhase(story.Year,story.Quarter)'>
+                        <article class='story-list__article'>
                             <time class='story-list__timestamp'></time>
-                            <img class='story-list__icon' ng-src='event-{{story.type}}' />
-                            <h4 class='story-list__headline'>{{story.headline}}</h4>
-                            <p class='story-list__description'>{{story.description}}</p>
+                            <img class='story-list__icon' ng-src='build/img/event-{{story.text.type}}.png' />
+                            <h4 class='story-list__headline'>{{story.text.headline}}</h4>
+                            <p class='story-list__description'>{{story.text.description}}</p>
                         </article>
                     </li>
                 </ul>
