@@ -12,7 +12,7 @@ angular.module('main', ['ngRetina'])
         var scale, axis
 
         function QYtoDate(d) {
-            return new Date(d.year,(d.quarter*3)-3)
+            return new Date(d.date.year,(d.date.quarter*3)-3)
         }
 
         function dateToQY(d) {
@@ -42,7 +42,7 @@ angular.module('main', ['ngRetina'])
                     .domain([
                         0,
                         d3.max(data.energy.electricity, function(d) {
-                            return d['very small'];
+                            return d.raw.group_small['very small']
                         })
                     ])
                     .range([100-py, py])
@@ -137,50 +137,33 @@ angular.module('main', ['ngRetina'])
                .selectAll("*").remove()
 
             // Group by lineset
+            var colors = {
+                pink: '#E9168C',
+                green: '#C1D540'
+            }
+
             var lines = [
-                // ['average', 'black'],
-                ['average_small','#E9168C'],
-                ['average_large','#C1D540']
+                { path: '.average["average_small"]', color: colors.pink },
+                //
+                { path: '.average["average_large"]', color: colors.green }
             ]
-            _.each(lines, function(line_set) {
 
-                var plots = svg.select('#data')
-                    .append("g")
-                    .attr("class","scatter")
-                    .attr("id","line-"+line_set[0])
+            var scatters = [
+                { path: '.raw.group_small.["very small"]', color: colors.pink },
+                { path: '.raw.group_small.["small"]', color: colors.pink },
+                { path: '.raw.group_small.["small/medium"]', color: colors.pink },
+                //
+                { path: '.raw.group_large["medium"]', color: colors.green },
+                { path: '.raw.group_large["large"]', color: colors.green },
+                { path: '.raw.group_large["very large"]', color: colors.green },
+                { path: '.raw.group_large["extra large"]', color: colors.green }
+            ]
 
-                // LINES
-                var line = d3.svg.line()
-                    .x(function(d){ return scale.x(QYtoDate(d)) + pointSize + "%" })
-                    .y(function(d){ return scale.y(d[line_set[0]]) })
-                    .interpolate("linear");
+            var plots = svg.select('#data')
+                .append("g")
+                .attr("class","scatter")
 
-                plots
-                    .append("g")
-                    .attr("class","lines")
-                    .selectAll("line")
-                    .data(dataset)
-                    .enter()
-                    .append("line")          // attach a line
-                // [dataset[i-1 === -1 ? 0 : i-1]
-                    .attr("x1", function(d, i) {
-                        return scale.x(QYtoDate(dataset[i-1 === -1 ? 0 : i-1])) + pointSize + "%"
-                    })     // x1 position of the first end of the line
-                    .attr("y1", function(d, i) {
-                        return scale.y(dataset[i-1 === -1 ? 0 : i-1][line_set[0]]) + "%"
-                    })      // y1 position of the first end of the line
-                // d
-                    .attr("x2", function(d, i) { // Time
-                        return scale.x(QYtoDate(d)) + pointSize + "%"
-                    })     // x2 position of the second end of the line
-                    .attr("y2", function(d, i) { // Money
-                        return scale.y(d[line_set[0]]) + "%"
-                    })    // y2 position of the second end of the line
-                    //
-                    .attr("stroke",line_set[1])
-                    .style("stroke-width", 2)
-                    .style("fill", "none")
-
+            _.each(scatters, function(thisScatter) {
                 // SCATTER
                 plots
                     // Circle
@@ -190,14 +173,59 @@ angular.module('main', ['ngRetina'])
                     .data(dataset)
                     .enter()
                     .append("circle")
-                    .attr("fill",line_set[1])
+                    .attr("fill",thisScatter.color)
                     .attr("r", pointSize)
                     .attr("cx", function(d, i) { // Time
                         return scale.x(QYtoDate(d)) + pointSize + "%"
                     })
                     .attr("cy", function(d, i) { // Money
-                        return scale.y(d[line_set[0]]) + "%"
+                        return scale.y(_.get(d,thisScatter.path)) + "%"
                     })
+                    .attr("visibility", function(d, i) {
+                        return (_.get(d,thisScatter.path) == null ? 'hidden' : 'visible')
+                    })
+            })
+
+            var lineG = svg.select('#data')
+                .append("g")
+                .attr("class","lineGroup")
+
+            _.each(lines, function(thisLine) {
+                // LINES
+                var line = d3.svg.line()
+                    .x(function(d){ return scale.x(QYtoDate(d)) + pointSize + "%" })
+                    .y(function(d){ return scale.y(_.get(d,thisLine.path)) })
+                    .interpolate("linear");
+
+                function dPrev(d,i) {
+                    return d[i-1 === -1 ? 0 : i-1]
+                }
+
+                lineG
+                    .append("g")
+                    .attr("class","line")
+                    .selectAll("line")
+                    .data(dataset)
+                    .enter()
+                    .append("line")          // attach a line
+                // [dataset[i-1 === -1 ? 0 : i-1]
+                    .attr("x1", function(d, i) {
+                        return scale.x(QYtoDate(dPrev(dataset,i))) + pointSize + "%"
+                    })     // x1 position of the first end of the line
+                    .attr("y1", function(d, i) {
+                        return scale.y(_.get(dPrev(dataset,i),thisLine.path)) + "%"
+                    })      // y1 position of the first end of the line
+                // d
+                    .attr("x2", function(d, i) { // Time
+                        return scale.x(QYtoDate(d)) + pointSize + "%"
+                    })     // x2 position of the second end of the line
+                    .attr("y2", function(d, i) { // Money
+                        return scale.y(_.get(d,thisLine.path)) + "%"
+                    })    // y2 position of the second end of the line
+                    //
+                    .attr("stroke",thisLine.color)
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
             })
         }
     })
