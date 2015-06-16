@@ -10,7 +10,7 @@ angular.module('main', ['ngRetina'])
         var pointSize = 2
         var scale, axis
 
-        function datumToDate(d) {
+        function QYtoMY(d) {
             return new Date(d.year,(d.quarter*3)-3)
         }
 
@@ -40,10 +40,10 @@ angular.module('main', ['ngRetina'])
               , x: d3.time.scale()
                     .domain([
                         d3.min(data.energy.electricity, function(d) {
-                            return datumToDate(d)
+                            return QYtoMY(d)
                         }),
                         d3.max(data.energy.electricity, function(d) {
-                            return datumToDate(d)
+                            return QYtoMY(d)
                         })
                     ])
                     .range([pad, w-pad])
@@ -88,6 +88,7 @@ angular.module('main', ['ngRetina'])
 
         $scope.drawData = function() {
             var dataset = $scope.energySelector
+
             // ------------
             // Plot lines
             d3.select("#data")
@@ -95,30 +96,40 @@ angular.module('main', ['ngRetina'])
 
             // Group by lineset
             var lines = [
-                ['average','black'],
-                ['average_small','green'],
-                ['average_large','red']
+                // ['average', 'black'],
+                ['average_small','#E9168C'],
+                ['average_large','#C1D540']
             ]
             _.each(lines, function(line_set) {
+
+                var plots = svg.select('#data')
+                    .append("g")
+                    .attr("class","scatter")
+                    .attr("id","line-"+line_set[0])
+
                 // LINES
                 var line = d3.svg.line()
-                    .x(function(d){ return scale.x(datumToDate(d)) + pointSize })
+                    .x(function(d){ return scale.x(QYtoMY(d)) + pointSize })
                     .y(function(d){ return scale.y(d[line_set[0]]) })
                     .interpolate("linear");
 
-                svg.select('#data')
-                    .append("path")
-                    .attr("d", function(d) { return line(dataset)})
-                    .attr("transform", "translate(0,0)")
-                    .style("stroke-width", 1)
-                    .style("fill", "none");
-
-                // DOTS
-                svg.select('#data')
+                plots
                     .append("g")
-                    .attr("class","line")
-                    .attr("id","line-"+line_set[0])
-                    // Plot
+                    .attr("class","lines")
+                    .selectAll("path")
+                    .data(dataset)
+                    .enter()
+                    .append("path")
+                    .attr("d", function(d,i) { return line([dataset[i-1 === -1 ? 0 : i-1],d]) })
+                    .style("stroke-width", 2)
+                    .style("fill", "none")
+                    .attr("stroke",line_set[1])
+
+                // SCATTER
+                plots
+                    // Circle
+                    .append("g")
+                    .attr("class","plots")
                     .selectAll("circle")
                     .data(dataset)
                     .enter()
@@ -126,7 +137,7 @@ angular.module('main', ['ngRetina'])
                     .attr("fill",line_set[1])
                     .attr("r", pointSize)
                     .attr("cx", function(d, i) { // Time
-                        return scale.x(datumToDate(d)) + pointSize;
+                        return scale.x(QYtoMY(d)) + pointSize;
                     })
                     .attr("cy", function(d, i) { // Money
                         return scale.y(d[line_set[0]])

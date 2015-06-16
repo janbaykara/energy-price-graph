@@ -1,12 +1,36 @@
+/*
+    darkblue
+    #092C38
+
+    lightblue
+    #5D8C9B
+
+    cyan
+    #2CFEF1
+
+    Blue
+    #2AB8E8
+
+    Pink
+    #E9168C
+
+    Green
+    #C1D540
+*/
+body {
+    background: #092C38;
+}
+
 .axis path,
 .axis line {
     fill: none;
     stroke: black;
     shape-rendering: crispEdges;
-    stroke: red;
+    stroke: none;
 }
 
 .axis text {
     font-family: sans-serif;
     font-size: 10px;
+    fill: #5D8C9B;
 }
