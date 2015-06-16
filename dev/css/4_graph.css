@@ -21,10 +21,37 @@ svg:not(:root) {
     Green
     #C1D540
 */
+
+/* ----
+    GRAPH
+*/
 body {
     background: #092C38;
 }
+#graph {
+    height: 600px;
+}
+@media screen and (max-height: 480px) {
+    #graph {
+        height: 380px;
+    }
+}
 
+/* ----
+    GRIDS
+*/
+#grids svg {
+    overflow: hidden !important;
+}
+#grids line {
+    stroke: rgba(255,255,255,0.1);
+    stroke-width: 1;
+}
+
+
+/* ----
+    AXES
+*/
 .axis path,
 .axis line {
     fill: none;
@@ -32,19 +59,13 @@ body {
     shape-rendering: crispEdges;
     stroke: none;
 }
-
 .axis text {
     font-family: sans-serif;
     font-size: 10px;
     fill: #5D8C9B;
 }
 
-#graph {
-    height: 600px;
-}
 
-@media screen and (max-height: 480px) {
-    #graph {
-        height: 380px;
-    }
-}
+/* ----
+    PLOTS
+*/

@@ -22,8 +22,8 @@ angular.module('main', ['ngRetina'])
         }
 
         function dateToY(d) {
-            var year = d.getFullYear()
-            return year
+            var year = d.getFullYear()+""
+            return "'"+year.substring(2,4)
         }
 
         $scope.drawChart = function() {
@@ -78,12 +78,8 @@ angular.module('main', ['ngRetina'])
                 .enter()
                 //
                 .append("text")
-                .text(function(d) {
-                    return '£' + d.toFixed(2)
-                })
-                .attr("y", function(d, i) {
-                    return scale.y(d) + "%"
-                })
+                .text(function(d) { return '£' + d.toFixed(2) })
+                .attr("y", function(d, i) { return scale.y(d) + "%" })
 
 
             axes.append("svg")
@@ -96,12 +92,35 @@ angular.module('main', ['ngRetina'])
                 .enter()
                 //
                 .append("text")
-                .text(function(d) {
-                    return dateToY(d)
-                })
-                .attr("x", function(d, i) {
-                    return scale.x(d) + "%"
-                })
+                .text(function(d) { return dateToY(d) })
+                .attr("x", function(d, i) {  return scale.x(d) + "%" })
+
+            // ------------
+            // Grids
+            var grids = svg.append("g")
+                .attr('id','grids')
+
+            grids.append("svg")
+                .selectAll("line")
+                .data(scale.y.ticks()) //dateToQY - 30
+                .enter()
+                //
+                .append("line")
+                .attr("y1", function(d, i) { return scale.y(d) + "%" })
+                .attr("y2", function(d, i) { return scale.y(d) + "%" })
+                .attr("x1", function(d, i) { return 100-px + "%" })
+                .attr("x2", function(d, i) { return px + "%" })
+
+            grids.append("svg")
+                .selectAll("line")
+                .data(scale.x.ticks(20)) //dateToQY - 30
+                .enter()
+                //
+                .append("line")
+                .attr("x1", function(d, i) { return scale.x(d) + "%" })
+                .attr("x2", function(d, i) { return scale.x(d) + "%" })
+                .attr("y1", function(d, i) { return 100-py + "%" })
+                .attr("y2", function(d, i) { return py + "%" })
 
             svg.append("g")
                 .attr('id','data')
