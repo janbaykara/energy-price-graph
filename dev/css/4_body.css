@@ -1,0 +1,43 @@
+/*
+    darkblue
+    #092C38
+
+    lightblue
+    #5D8C9B
+
+    cyan
+    #2CFEF1
+
+    Blue
+    #2AB8E8
+
+    Pink
+    #E9168C
+
+    Green
+    #C1D540
+*/
+
+
+/* ----
+    GRAPH
+*/
+body {
+    background: #092C38;
+}
+#graph {
+    height: 600px;
+}
+@media screen and (max-height: 480px) {
+    #graph {
+        height: 380px;
+    }
+}
+
+/* UI */
+.graph-title .energy-selector {
+
+}
+.graph-title .active {
+    color: #2CFEF1;
+}

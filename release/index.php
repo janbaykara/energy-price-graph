@@ -44,9 +44,14 @@
             <h2>A Data Journey</h2>
         </section>
         <section id='data-view'>
-            <div>
-                <select ng-options='name for (name, value) in energy' ng-model='energySelector' ng-change='drawData()'></select>
-            </div>
+            <h2 class='graph-title'>
+                Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
+                <span class='clickable energy-selector'
+                    ng-repeat='(name, value) in energy'
+                    ng-class='{ "active": name === energySelector }'
+                    ng-click='selectedEnergy(name,value)'
+                >{{name}}</span>
+            </h2>
             <div id='graph'></div>
             <nav id='stories'>
                 <ul class='story-list'>

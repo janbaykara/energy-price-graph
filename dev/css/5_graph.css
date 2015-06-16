@@ -23,21 +23,6 @@ svg:not(:root) {
 */
 
 /* ----
-    GRAPH
-*/
-body {
-    background: #092C38;
-}
-#graph {
-    height: 600px;
-}
-@media screen and (max-height: 480px) {
-    #graph {
-        height: 380px;
-    }
-}
-
-/* ----
     GRIDS
 */
 #grids svg {
