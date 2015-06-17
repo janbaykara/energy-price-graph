@@ -57,17 +57,29 @@ svg:not(:root) {
     stroke-width: 2;
     fill: none;
 }
-.average_small circle {
+.gas .average_small circle {
+    fill: #B55AFF;
+}
+.gas .average_small line {
+    stroke: #B55AFF;
+}
+.gas .average_large circle {
     fill: #E9168C;
 }
-.average_small line {
+.gas .average_large line {
     stroke: #E9168C;
 }
 
-.average_large circle {
+.electricity .average_small circle {
+    fill: #00FAE6;
+}
+.electricity .average_small line {
+    stroke: #00FAE6;
+}
+.electricity .average_large circle {
     fill: #C1D540;
 }
-.average_large line {
+.electricity .average_large line {
     stroke: #C1D540;
 }
 

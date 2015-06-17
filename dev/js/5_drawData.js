@@ -1,15 +1,13 @@
-function drawData(dataset) {
+function drawData(dataset,energyType) {
     // ------------
     // Clear
-    d3.select("#data")
-       .selectAll("*").remove()
+    // d3.select("#data")
+    //    .selectAll("*").remove()
 
     // Group by lineset
-    var colors = {
-        pink: '#E9168C',
-        green: '#C1D540'
-    }
-
+    var energy = svg.select('#data')
+        .append("g")
+        .attr("class",energyType)
 
     //////////
     // Scatter
@@ -26,7 +24,7 @@ function drawData(dataset) {
         { path: '.raw.group_large["extra large"]', class: 'average_large' }
     ]
 
-    var plots = svg.select('#data')
+    var plots = energy
         .append("g")
         .attr("class","scatter")
 
@@ -63,7 +61,7 @@ function drawData(dataset) {
         { path: '.average["average_large"]', class: 'average_large' }
     ]
 
-    var lineG = svg.select('#data')
+    var lineG = energy
         .append("g")
         .attr("class","lineGroup")
 
