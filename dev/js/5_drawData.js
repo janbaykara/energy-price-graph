@@ -1,4 +1,8 @@
-function drawData(dataset,energyType) {
+function reveal(i) {
+    return "{{ "+i+" > atIndex() }}"
+}
+
+function drawData(dataset,energyType,then) {
     // ------------
     // Clear
     // d3.select("#data")
@@ -42,10 +46,14 @@ function drawData(dataset,energyType) {
                 return scale.x(QYtoDate(d)) + pointSize + "%"
             })
             .attr("cy", function(d, i) { // Money
-                return scale.y(_.get(d,thisScatter.path)) + "%"
+                var cy = scale.y(_.get(d,thisScatter.path))
+                return (isNaN(cy) ? 0 : cy)  + "%"
             })
             .attr("visibility", function(d, i) {
                 return (_.get(d,thisScatter.path) == null ? 'hidden' : 'visible')
+            })
+            .attr("ng-attr-unrevealed", function(d, i) { // Money
+                return reveal(i)
             })
     })
 
@@ -96,5 +104,11 @@ function drawData(dataset,energyType) {
             .attr("y2", function(d, i) { // Money
                 return scale.y(_.get(d,thisLine.path)) + "%"
             })    // y2 position of the second end of the line
+               // x2 position of the second end of the line
+            .attr("ng-attr-unrevealed", function(d, i) { // Money
+                return reveal(i)
+            })
     })
+
+    if(typeof then === 'function') then()
 }
