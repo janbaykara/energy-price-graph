@@ -33,7 +33,6 @@ svg:not(:root) {
     stroke-width: 1;
 }
 
-
 /* ----
     AXES
 */
@@ -54,6 +53,24 @@ svg:not(:root) {
 /* ----
     PLOTS
 */
+.line line {
+    stroke-width: 2;
+    fill: none;
+}
+.average_small circle {
+    fill: #E9168C;
+}
+.average_small line {
+    stroke: #E9168C;
+}
+
+.average_large circle {
+    fill: #C1D540;
+}
+.average_large line {
+    stroke: #C1D540;
+}
+
 @media screen and (max-width: 700px) {
     svg .scatter {
         opacity: 0.5;

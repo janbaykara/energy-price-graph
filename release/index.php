@@ -47,12 +47,24 @@
             <header>
                 <h2 class='graph-title'>
                     Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
-                    <span class='clickable energy-selector'
-                        ng-repeat='(name, value) in energy'
-                        ng-class='{ "active": name === energySelector }'
-                        ng-click='selectedEnergy(name,value)'
-                    >{{name}}</span>
+                    <span class='energies'>
+                        <span class='clickable energy-selector'
+                            ng-repeat-start='(name, value) in energy'
+                            ng-class='{ "active": name === energySelector }'
+                            ng-click='selectedEnergy(name,value)'
+                        ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
+                    </span>
                 </h2>
+                <div class='graph-key'>
+                    <div class='inline-block graph-key__item average_small'>
+                        <span>Cost to <em>Small</em> Businesses</span>
+                        <svg class='line' width='50px' height='20px'><line x1='0' x2='100%' y1='10px' y2='10px' /></svg>
+                    </div>
+                    <div class='inline-block graph-key__item average_large'>
+                        <span>Cost to <em>Large</em> Businesses</span>
+                        <svg class='line' width='50px' height='20px'><line x1='0' x2='100%' y1='10px' y2='10px' /></svg>
+                    </div>
+                </div>
             </header>
             <div id='graph'></div>
             <nav id='stories'>

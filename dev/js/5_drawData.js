@@ -16,14 +16,14 @@ function drawData(dataset) {
     //////////
 
     var scatters = [
-        { path: '.raw.group_small.["very small"]', color: colors.pink },
-        { path: '.raw.group_small.["small"]', color: colors.pink },
-        { path: '.raw.group_small.["small/medium"]', color: colors.pink },
+        { path: '.raw.group_small.["very small"]', class: 'average_small' },
+        { path: '.raw.group_small.["small"]', class: 'average_small' },
+        { path: '.raw.group_small.["small/medium"]', class: 'average_small' },
         //
-        { path: '.raw.group_large["medium"]', color: colors.green },
-        { path: '.raw.group_large["large"]', color: colors.green },
-        { path: '.raw.group_large["very large"]', color: colors.green },
-        { path: '.raw.group_large["extra large"]', color: colors.green }
+        { path: '.raw.group_large["medium"]', class: 'average_large' },
+        { path: '.raw.group_large["large"]', class: 'average_large' },
+        { path: '.raw.group_large["very large"]', class: 'average_large' },
+        { path: '.raw.group_large["extra large"]', class: 'average_large' }
     ]
 
     var plots = svg.select('#data')
@@ -34,12 +34,11 @@ function drawData(dataset) {
         plots
             // Circle
             .append("g")
-            .attr("class","plots")
+            .attr("class","plots "+thisScatter.class)
             .selectAll("circle")
             .data(dataset)
             .enter()
             .append("circle")
-            .attr("fill",thisScatter.color)
             .attr("r", pointSize)
             .attr("cx", function(d, i) { // Time
                 return scale.x(QYtoDate(d)) + pointSize + "%"
@@ -59,9 +58,9 @@ function drawData(dataset) {
     //////////
 
     var lines = [
-        { path: '.average["average_small"]', color: colors.pink },
+        { path: '.average["average_small"]', class: 'average_small' },
         //
-        { path: '.average["average_large"]', color: colors.green }
+        { path: '.average["average_large"]', class: 'average_large' }
     ]
 
     var lineG = svg.select('#data')
@@ -80,7 +79,7 @@ function drawData(dataset) {
 
         lineG
             .append("g")
-            .attr("class","line")
+            .attr("class","line "+thisLine.class)
             .selectAll("line")
             .data(dataset)
             .enter()
@@ -99,9 +98,5 @@ function drawData(dataset) {
             .attr("y2", function(d, i) { // Money
                 return scale.y(_.get(d,thisLine.path)) + "%"
             })    // y2 position of the second end of the line
-            //
-            .attr("stroke",thisLine.color)
-            .style("stroke-width", 2)
-            .style("fill", "none")
     })
 }
