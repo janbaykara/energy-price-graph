@@ -48,7 +48,7 @@
                 <h2 class='graph-title'>
                     Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
                     <span class='energies'>
-                        <span class='active energy-selector'
+                        <span class='active energy-selector {{name}}'
                             ng-repeat-start='(name, value) in energy'
                         ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
                     </span>

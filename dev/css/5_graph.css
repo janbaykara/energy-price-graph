@@ -57,6 +57,9 @@ svg:not(:root) {
     stroke-width: 2;
     fill: none;
 }
+.gas {
+    color: #E9168C;
+}
 .gas .average_small circle {
     fill: #B55AFF;
 }
@@ -70,11 +73,14 @@ svg:not(:root) {
     stroke: #E9168C;
 }
 
+.electricity {
+    color: #C1D540;
+}
 .electricity .average_small circle {
-    fill: #00FAE6;
+    fill: #00FA87;
 }
 .electricity .average_small line {
-    stroke: #00FAE6;
+    stroke: #00FA87;
 }
 .electricity .average_large circle {
     fill: #C1D540;
