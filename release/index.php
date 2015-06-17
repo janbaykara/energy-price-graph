@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </header>
-            <div id='graph'></div>
+            <div id='graph' graph-chart data='data'></div>
             <nav id='stories'>
                 <ul class='story-list'>
                     <li ng-repeat='story in stories' ng-if='animationPhase(story.Year,story.Quarter)'>
