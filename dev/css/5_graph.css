@@ -89,12 +89,19 @@ svg:not(:root) {
     stroke: #C1D540;
 }
 
+svg .scatter {
+    opacity: 0.5;
+}
 @media screen and (max-width: 700px) {
-    svg .scatter {
-        opacity: 0.5;
-    }
     .axis text {
         font-size: 10px;
         fill: #B0B0B0;
     }
+}
+
+.baddata {
+    visibility: hidden !important;
+}
+.highlighted {
+    border: 2px solid red !important;
 }

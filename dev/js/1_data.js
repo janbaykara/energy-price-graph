@@ -2,7 +2,7 @@ var data = {
     "stories": [{
         "date": {
             "quarter": 4,
-            "year": 2012
+            "year": 2004
         },
         "text": {
             "type": "conflict",
@@ -12,7 +12,7 @@ var data = {
     }, {
         "date": {
             "quarter": 1,
-            "year": 2013
+            "year": 2006
         },
         "text": {
             "type": "conflict",
@@ -22,7 +22,7 @@ var data = {
     }, {
         "date": {
             "quarter": 3,
-            "year": 2013
+            "year": 2007
         },
         "text": {
             "type": "nature",
@@ -32,7 +32,7 @@ var data = {
     }, {
         "date": {
             "quarter": 4,
-            "year": 2013
+            "year": 2009
         },
         "text": {
             "type": "politics",
@@ -42,7 +42,7 @@ var data = {
     }, {
         "date": {
             "quarter": 1,
-            "year": 2014
+            "year": 2010
         },
         "text": {
             "type": "finance",
@@ -52,7 +52,7 @@ var data = {
     }, {
         "date": {
             "quarter": 2,
-            "year": 2014
+            "year": 2011
         },
         "text": {
             "type": "nature",
@@ -62,7 +62,7 @@ var data = {
     }, {
         "date": {
             "quarter": 3,
-            "year": 2014
+            "year": 2013
         },
         "text": {
             "type": "politics",

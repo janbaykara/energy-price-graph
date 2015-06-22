@@ -1,4 +1,5 @@
-function QYtoDate(d) {
+function QYtoDate(D) {
+    var d = D || data.energy.electricity[data.energy.electricity.length-1]
     return new Date(d.date.year,(d.date.quarter*3)-3)
 }
 
@@ -13,14 +14,23 @@ function dateToY(d) {
     return "'"+year.substring(2,4)
 }
 
+function dPrev(d,i) {
+    return d[i-1 === -1 ? 0 : i-1]
+}
+
+function visibility(i,index) {
+    return index < i ? 'hidden' : 'visibility'
+}
+
 angular.module('main').
-   directive('graphChart', function ($parse) {
+   directive('graphChart', function ($compile) {
      return {
         replace: false,
         scope: {
-            data: '='
+            data: '=',
+            index: '='
         },
-        link: function ($scope, element, attrs) {
+        link: function (scope, element, attrs) {
             var py = 5
             var px = 5
             var w = "100%"
@@ -131,120 +141,141 @@ angular.module('main').
                                     svg.append("g")
                                         .attr('id','data')
 
+            // Set up data
+            var scatters = [
+                { path: '.raw.group_small.["very small"]',      class: 'average_small' },
+                { path: '.raw.group_small.["small"]',           class: 'average_small' },
+                { path: '.raw.group_small.["small/medium"]',    class: 'average_small' },
+                //
+                { path: '.raw.group_large["medium"]',           class: 'average_large' },
+                { path: '.raw.group_large["large"]',            class: 'average_large' },
+                { path: '.raw.group_large["very large"]',       class: 'average_large' },
+                { path: '.raw.group_large["extra large"]',      class: 'average_large' }
+            ]
+
+            var lines = [
+                { path: '.average["average_small"]', class: 'average_small' },
+                //
+                { path: '.average["average_large"]', class: 'average_large' }
+            ]
+
             _.each(data.energy, function(energy,energyName) {
-                drawData(energy,energyName)
+                var energy = svg.select('#data')
+                    .append("g")
+                    .attr("class","energy "+energyName)
+
+                var plots = energy
+                    .append("g")
+                    .attr("class","scatter")
+
+                var lineG = energy
+                    .append("g")
+                    .attr("class","lineGroup")
+
+                _.each(scatters, function(thisScatter) {
+                    plots
+                        // Circle
+                        .append("g")
+                        .attr("class","plots "+thisScatter.class)
+                        .attr("path",thisScatter.path)
+                })
+
+                _.each(lines, function(thisLine) {
+                    lineG
+                        .append("g")
+                        .attr("class","line "+thisLine.class)
+                        .attr("path",thisLine.path)
+                })
+
             })
+
+            scope.$watch("index", orchestrateData, true);
+
+            function orchestrateData() {
+                _.each(data.energy, function(energy,energyName) {
+                    drawData(energy,energyName)
+                })
+            }
 
             // Draw data
             function drawData(dataset,energyType,then) {
-                                    // ------------
-                                    // Clear
-                                    // d3.select("#data")
-                                    //    .selectAll("*").remove()
+                //////////
+                // Plots
+                //////////
 
-                                    // Group by lineset
-                                    var energy = svg.select('#data')
-                                        .append("g")
-                                        .attr("class",energyType)
+                var energyPlotGroup = svg.select("#data")
+                    .select("."+energyType)
+                    .select(".scatter")
 
-                                    //////////
-                                    // Scatter
-                                    //////////
+                _.each(scatters, function(thisScatter) {
+                    var energyPlot = energyPlotGroup.select("."+thisScatter.class+'[path=\''+thisScatter.path+'\']')
 
-                                    var scatters = [
-                                        { path: '.raw.group_small.["very small"]', class: 'average_small' },
-                                        { path: '.raw.group_small.["small"]', class: 'average_small' },
-                                        { path: '.raw.group_small.["small/medium"]', class: 'average_small' },
-                                        //
-                                        { path: '.raw.group_large["medium"]', class: 'average_large' },
-                                        { path: '.raw.group_large["large"]', class: 'average_large' },
-                                        { path: '.raw.group_large["very large"]', class: 'average_large' },
-                                        { path: '.raw.group_large["extra large"]', class: 'average_large' }
-                                    ]
+                    energyPlot
+                        .selectAll("circle")
+                        .data(dataset)
+                        .enter()
+                        .append("circle")
+                        .call(function(){
+                            $compile(this[0].parentNode)(scope);
+                        });
 
-                                    var plots = energy
-                                        .append("g")
-                                        .attr("class","scatter")
+                    energyPlot
+                        .selectAll("circle")
+                        .attr("r", pointSize)
+                        .attr("cx", function(d, i) { // Time
+                            return scale.x(QYtoDate(d)) + pointSize + "%"
+                        })
+                        .attr("cy", function(d, i) { // Money
+                            var cy = scale.y(_.get(d,thisScatter.path))
+                            return (isNaN(cy) ? 0 : cy)  + "%"
+                        })
+                        .attr("visibility", function(d, i) {
+                            return visibility(i,scope.index)
+                        })
+                        .attr("class", function(d, i) {
+                            return (_.get(d,thisScatter.path) == null ? 'baddata' : '')
+                        })
+                })
 
-                                    _.each(scatters, function(thisScatter) {
-                                        plots
-                                            // Circle
-                                            .append("g")
-                                            .attr("class","plots "+thisScatter.class)
-                                            .selectAll("circle")
-                                            .data(dataset)
-                                            .enter()
-                                            .append("circle")
-                                            .attr("r", pointSize)
-                                            .attr("cx", function(d, i) { // Time
-                                                return scale.x(QYtoDate(d)) + pointSize + "%"
-                                            })
-                                            .attr("cy", function(d, i) { // Money
-                                                var cy = scale.y(_.get(d,thisScatter.path))
-                                                return (isNaN(cy) ? 0 : cy)  + "%"
-                                            })
-                                            .attr("visibility", function(d, i) {
-                                                return (_.get(d,thisScatter.path) == null ? 'hidden' : 'visible')
-                                            })
-                                            .attr("ng-attr-unrevealed", function(d, i) { // Money
-                                                return reveal(i)
-                                            })
-                                    })
+                //////////
+                // Lines
+                //////////
 
+                var energyLineGroup = svg.select("#data")
+                    .select("."+energyType)
+                    .select(".lineGroup")
 
+                _.each(lines, function(thisLine) {
+                    var energyLine = energyLineGroup.select("."+thisLine.class+'[path=\''+thisLine.path+'\']')
 
-                                    //////////
-                                    // Lines
-                                    //////////
+                    energyLine
+                        .selectAll("line")
+                        .data(dataset)
+                        .enter()
+                        .append("line")
+                        .call(function(){
+                            $compile(this[0].parentNode)(scope);
+                        });
 
-                                    var lines = [
-                                        { path: '.average["average_small"]', class: 'average_small' },
-                                        //
-                                        { path: '.average["average_large"]', class: 'average_large' }
-                                    ]
-
-                                    var lineG = energy
-                                        .append("g")
-                                        .attr("class","lineGroup")
-
-                                    _.each(lines, function(thisLine) {
-                                        var line = d3.svg.line()
-                                            .x(function(d){ return scale.x(QYtoDate(d)) + pointSize + "%" })
-                                            .y(function(d){ return scale.y(_.get(d,thisLine.path)) })
-                                            .interpolate("linear");
-
-                                        function dPrev(d,i) {
-                                            return d[i-1 === -1 ? 0 : i-1]
-                                        }
-
-                                        lineG
-                                            .append("g")
-                                            .attr("class","line "+thisLine.class)
-                                            .selectAll("line")
-                                            .data(dataset)
-                                            .enter()
-                                            .append("line")          // attach a line
-                                        // [dataset[i-1 === -1 ? 0 : i-1]
-                                            .attr("x1", function(d, i) {
-                                                return scale.x(QYtoDate(dPrev(dataset,i))) + pointSize + "%"
-                                            })     // x1 position of the first end of the line
-                                            .attr("y1", function(d, i) {
-                                                return scale.y(_.get(dPrev(dataset,i),thisLine.path)) + "%"
-                                            })      // y1 position of the first end of the line
-                                        // d
-                                            .attr("x2", function(d, i) { // Time
-                                                return scale.x(QYtoDate(d)) + pointSize + "%"
-                                            })     // x2 position of the second end of the line
-                                            .attr("y2", function(d, i) { // Money
-                                                return scale.y(_.get(d,thisLine.path)) + "%"
-                                            })    // y2 position of the second end of the line
-                                               // x2 position of the second end of the line
-                                            .attr("ng-attr-unrevealed", function(d, i) { // Money
-                                                return reveal(i)
-                                            })
-                                        })
-                                }
-
+                    energyLine
+                        .selectAll("line")
+                        .attr("x1", function(d, i) {
+                            return scale.x(QYtoDate(dPrev(dataset,i))) + pointSize + "%"
+                        })
+                        .attr("y1", function(d, i) {
+                            return scale.y(_.get(dPrev(dataset,i),thisLine.path)) + "%"
+                        })
+                        .attr("x2", function(d, i) { // Time
+                            return scale.x(QYtoDate(d)) + pointSize + "%"
+                        })
+                        .attr("y2", function(d, i) { // Money
+                            return scale.y(_.get(d,thisLine.path)) + "%"
+                        })
+                        .attr("visibility", function(d, i) {
+                            return visibility(i,scope.index)
+                        })
+                })
+            }
          }
       };
    });

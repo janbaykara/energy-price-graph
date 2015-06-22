@@ -24,6 +24,7 @@
 */
 body {
     background: #092C38;
+    height: 20000px;
 }
 #graph {
     height: 600px;
@@ -36,26 +37,27 @@ body {
         height: 320px;
     }
 }
+#data-view {
+    position: fixed;
+    width: 100%;
+}
 
 /* UI */
-.graph-title .energy-selector {
-
-}
 .graph-title {
     margin: 0;
     color: #49C8FF;
+    line-height: 0.95em;
+    text-align: center;
+    margin: 20px 0 0;
+    font-size: 2.5em;
 }
 .graph-title .energy-selector img {
     opacity: 0.2;
     margin-right: 3px;
+    width: 21px;
 }
 .graph-title .active {
     opacity: 1;
-}
-.graph-title {
-    text-align: center;
-    margin: 25px 0 15px;
-    font-size: 2.5em;
 }
 .graph-title .energy-selector {
     display: inline-block;
@@ -71,16 +73,23 @@ body {
     display: block;
 }
 .graph-key {
-    font-size: 1.2em;
     color: #5D8C9B;
     text-transform: lowercase;
     font-variant: small-caps;
     text-align: center;
     letter-spacing: 20px;
-    margin: 20px 10px;
+    margin: 10px 10px;
 }
 .graph-key__item {
     letter-spacing: normal;
+}
+@media screen and (min-width: 640px) {
+    .graph-key {
+        margin: 20px 10px;
+    }
+    .graph-key__item span:before {
+        content: "Cost to ";
+    }
 }
 .graph-key em {
     text-transform: uppercase;

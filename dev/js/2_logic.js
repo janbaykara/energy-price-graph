@@ -5,19 +5,21 @@ angular.module('main', ['ngRetina'])
         $scope.stories = data.stories
         $scope.energy = data.energy
 
-        // Stories
-        $scope.animationPhase = function() {
-            return true;
-        }
+        // Scroll ranges
+            $scope.dates = {
+                min: QYtoDate(data.energy.electricity[0]),
+                max: QYtoDate(data.energy.electricity[data.energy.electricity.length-1])
+            }
 
-        $scope.index = 1
+            $scope.ticks = data.energy.electricity.length
+
+            $scope.scroll = {
+                min: 0,
+                max: 20000 - $(window).height()
+            }
+
         $scope.atIndex = function() {
-            console.log($scope.index)
-            return $scope.index
+            var perc = ($scope.scrollDistance / ($scope.scroll.max))
+            return Math.round($scope.ticks * perc)
         }
-
-        $interval(function() {
-            $scope.index++
-            console.log($scope.index)
-        },600)
     })

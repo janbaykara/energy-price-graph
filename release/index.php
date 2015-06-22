@@ -36,7 +36,7 @@
     <meta itemprop='description' content="<?=$description?>" />
 </head>
 
-<body>
+<body scroll>
 
     <main>
         <!-- <section id='title-page' full-screen>
@@ -55,27 +55,27 @@
                 </h2>
                 <div class='graph-key'>
                     <div class='inline-block graph-key__item'>
-                        <span>Cost to <em>Small</em> Businesses</span>
-                        <svg class='line' width='50px' height='20px'>
-                            <g class='electricity'><g class='average_small'><line x1='0' x2='100%' y1='10px' y2='10px' /></g></g>
-                            <g class='gas'><g class='average_small'><line x1='0' x2='100%' y1='20px' y2='20px' /></g></g>
+                        <span><em>Small</em> Businesses</span>
+                        <svg class='line' width='50px' height='15px'>
+                            <g class='electricity'><g class='average_small'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
+                            <g class='gas'><g class='average_small'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
                         </svg>
                     </div>
                     <div class='inline-block graph-key__item'>
-                        <span>Cost to <em>Large</em> Businesses</span>
-                        <svg class='line' width='50px' height='20px'>
-                            <g class='electricity'><g class='average_large'><line x1='0' x2='100%' y1='10px' y2='10px' /></g></g>
-                            <g class='gas'><g class='average_large'><line x1='0' x2='100%' y1='20px' y2='20px' /></g></g>
+                        <span><em>Large</em> Businesses</span>
+                        <svg class='line' width='50px' height='15px'>
+                            <g class='electricity'><g class='average_large'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
+                            <g class='gas'><g class='average_large'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
                         </svg>
                     </div>
                 </div>
             </header>
-            <div id='graph' graph-chart data='data'></div>
-            <nav id='stories'>
-                <ul class='story-list'>
-                    <li ng-repeat='story in stories' ng-if='animationPhase(story.Year,story.Quarter)'>
+            <div id='graph' graph-chart data='data' index='atIndex()'></div>
+            <nav id='stories' date-list-iterator index='atIndex()'>
+                <ul class='story-list' date-list-iteration-group>
+                    <li ng-repeat='story in stories' date-list-iteration-item>
                         <article class='story-list__article'>
-                            <time class='story-list__timestamp'></time>
+                            <time class='story-list__timestamp'>{{story.date}}</time>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.text.type}}.png' />
                             <h4 class='story-list__headline'>{{story.text.headline}}</h4>
                             <p class='story-list__description'>{{story.text.description}}</p>
