@@ -31,8 +31,7 @@ angular.module('main').
             index: '='
         },
         link: function (scope, element, attrs) {
-            var py = 5
-            var px = 5
+            var margins = { top: 2.5, right: 2.5, bottom: 5, left: 5 }
             var w = "100%"
             var h = "100%"
             var pointSize = 2
@@ -62,7 +61,7 @@ angular.module('main').
                             0,
                             d3.max(data.energy.electricity, function(d) { return d.raw.group_small['very small'] })
                         ])
-                        .range([100-py, py])
+                        .range([100-margins.bottom, margins.top])
                         .nice()
 
                     // Q1-4,year
@@ -71,7 +70,7 @@ angular.module('main').
                             d3.min(data.energy.electricity, function(d) { return QYtoDate(d) }),
                             d3.max(data.energy.electricity, function(d) { return QYtoDate(d) })
                         ])
-                        .range([px, 100-px])
+                        .range([margins.left, 100-margins.right])
                         .nice()
                 }
 
@@ -121,8 +120,8 @@ angular.module('main').
                     .append("line")
                     .attr("y1", function(d, i) { return scale.y(d) + "%" })
                     .attr("y2", function(d, i) { return scale.y(d) + "%" })
-                    .attr("x1", function(d, i) { return 100-px + "%" })
-                    .attr("x2", function(d, i) { return px + "%" })
+                    .attr("x1", function(d, i) { return margins.left + "%" })
+                    .attr("x2", function(d, i) { return 100-margins.right + "%" })
 
                 grids.append("svg")
                     .selectAll("line")
@@ -132,8 +131,8 @@ angular.module('main').
                     .append("line")
                     .attr("x1", function(d, i) { return scale.x(d) + "%" })
                     .attr("x2", function(d, i) { return scale.x(d) + "%" })
-                    .attr("y1", function(d, i) { return 100-py + "%" })
-                    .attr("y2", function(d, i) { return py + "%" })
+                    .attr("y1", function(d, i) { return margins.top + "%" })
+                    .attr("y2", function(d, i) { return 100-margins.bottom + "%" })
 
                 svg.append("g")
                     .attr('id','data')
@@ -216,8 +215,8 @@ angular.module('main').
                         .selectAll("line")
                         .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
                         .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
-                        .attr("y1", function(d, i) { return 100-py + "%" })
-                        .attr("y2", function(d, i) { return py + "%" })
+                        .attr("y1", function(d, i) { return margins.top + "%" })
+                        .attr("y2", function(d, i) { return 100-margins.bottom + "%" })
                         .attr("visibility", function(d, i) {
                             return QYtoDate(d) <= indexDate ? 'visible' : 'hidden'
                         })
