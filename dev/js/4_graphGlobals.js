@@ -1,6 +1,5 @@
-function QYtoDate(D) {
-    var d = D || data.energy.electricity[data.energy.electricity.length-1]
-    return new Date(d.date.year,(d.date.quarter*3)-3)
+function QYtoDate(d) {
+    return new Date(d.year,(d.quarter*3)-3)
 }
 
 function dateToQY(d) {
@@ -14,8 +13,8 @@ function dateToY(d) {
     return "'"+year.substring(2,4)
 }
 
-function dPrev(d,i) {
-    return d[i-1 === -1 ? 0 : i-1]
+function dPrev(data,i) {
+    return data[i-1 === -1 ? 0 : i-1]
 }
 
 function visibility(i,index) {
@@ -28,6 +27,7 @@ angular.module('main').
         replace: false,
         scope: {
             data: '=graphChart',
+            go: '=',
             index: '='
         },
         link: function (scope, element, attrs) {
@@ -38,9 +38,11 @@ angular.module('main').
             var lineOffset = 0
             var scale, axis, axes, grids, scatters, lines, stories, svg
 
-            buildChart()
-
-            scope.$watch("index", drawData, true);
+            scope.$watch("go", function() {
+                if(scope.go) {
+                    buildChart();
+                }
+            }, true);
 
             function buildChart() {
                 // Make chart
@@ -60,7 +62,7 @@ angular.module('main').
                     y: d3.scale.linear()
                         .domain([
                             0,
-                            d3.max(data.energy.electricity, function(d) { return d.raw.group_small['very small'] })
+                            d3.max(scope.data.energy.electricity, function(d) { return parseFloat(d['verysmall']) })
                         ])
                         .range([100-margin.bottom, margin.top])
                         .nice()
@@ -68,8 +70,8 @@ angular.module('main').
                     // Q1-4,year
                   , x: d3.time.scale()
                         .domain([
-                            d3.min(data.energy.electricity, function(d) { return QYtoDate(d) }),
-                            d3.max(data.energy.electricity, function(d) { return QYtoDate(d) })
+                            d3.min(scope.data.energy.electricity, function(d) { return QYtoDate(d) }),
+                            d3.max(scope.data.energy.electricity, function(d) { return QYtoDate(d) })
                         ])
                         .range([margin.left, 100-margin.right])
                         .nice()
@@ -137,20 +139,19 @@ angular.module('main').
 
                 // Set up data
                 scatters = [
-                    { path: '.raw.group_small.["very small"]',      class: 'average_small', display:"V. small" },
-                    { path: '.raw.group_small.["small"]',           class: 'average_small', display:"Small" },
-                    { path: '.raw.group_small.["small/medium"]',    class: 'average_small', display:"Small/med" },
+                    { path: 'verysmall',       class: 'average_small', display:"V. small" },
+                    { path: 'small',           class: 'average_small', display:"Small" },
+                    { path: 'smallmedium',     class: 'average_small', display:"Small/med" },
                     //
-                    { path: '.raw.group_large["medium"]',           class: 'average_large', display:"Medium" },
-                    { path: '.raw.group_large["large"]',            class: 'average_large', display:"Large" },
-                    { path: '.raw.group_large["very large"]',       class: 'average_large', display:"V. large" },
-                    { path: '.raw.group_large["extra large"]',      class: 'average_large', display:"Extra large" }
+                    { path: 'medium',          class: 'average_large', display:"Medium" },
+                    { path: 'large',           class: 'average_large', display:"Large" },
+                    { path: 'verylarge',       class: 'average_large', display:"V. large" },
+                    { path: 'extralarge',      class: 'average_large', display:"Extra large" }
                 ]
 
                 lines = [
-                    { path: '.average["average_small"]', class: 'average_small', display:"Avg. small firm" },
-                    //
-                    { path: '.average["average_large"]', class: 'average_large', display:"Avg. large firm" }
+                    { path: 'average_small',   class: 'average_small', display:"Avg. small firm" },
+                    { path: 'average_large',   class: 'average_large', display:"Avg. large firm" }
                 ]
 
                 // Story groups
@@ -165,7 +166,7 @@ angular.module('main').
                     .attr('id','data')
 
                 // Group structure for data points
-                _.each(data.energy, function(energy,energyName) {
+                _.each(scope.data.energy, function(energy,energyName) {
                     var energy = svg.select('#data')
                         .append("g")
                         .attr("class","energy "+energyName)
@@ -193,10 +194,13 @@ angular.module('main').
                             .attr("path",thisLine.path)
                     })
                 })
+
+                scope.$watch("index", drawData, true);
+                drawData();
             }
 
             function drawData() {
-                var indexObj = data.energy.electricity[scope.index];
+                var indexObj = scope.data.energy.electricity[scope.index];
                 var indexDate = QYtoDate(indexObj);
 
                 //////////
@@ -204,9 +208,9 @@ angular.module('main').
                 //////////
                 currentAnnotation
                     .selectAll(".currentDate")
-                    .data(data.energy.electricity.filter(function(d) {
-                        return d.date.year === indexObj.date.year
-                            && d.date.quarter === indexObj.date.quarter;
+                    .data(scope.data.energy.electricity.filter(function(d) {
+                        return d.year === indexObj.year
+                            && d.quarter === indexObj.quarter;
                     }))
                     .enter()
                     .append("text")
@@ -221,7 +225,7 @@ angular.module('main').
                     .attr("y", margin.top+5+"%")
                     .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .text(function(d) {
-                        return d.date.year + " Q" + d.date.quarter
+                        return d.year + " Q" + d.quarter
                     })
 
                 //////////
@@ -229,9 +233,9 @@ angular.module('main').
                 //////////
                 currentAnnotation
                     .selectAll(".currentTick")
-                    .data(data.energy.electricity.filter(function(d) {
-                        return d.date.year === indexObj.date.year
-                            && d.date.quarter === indexObj.date.quarter;
+                    .data(scope.data.energy.electricity.filter(function(d) {
+                        return d.year === indexObj.year
+                            && d.quarter === indexObj.quarter;
                     }))
                     .enter()
                     .append("line")
@@ -248,17 +252,17 @@ angular.module('main').
                     .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
 
                 /// DATA
-                _.each(data.energy, function(dataset,energyType) {
+                _.each(scope.data.energy, function(dataset,energyType) {
                     //////////
                     // Stories
                     //////////
 
                     stories
                         .selectAll("g")
-                        .data(data.stories)
+                        .data(scope.data.stories)
                         .enter()
                         .append("g")
-                        .attr("class", function(d) { return "event-bar "+d.text.type })
+                        .attr("class", function(d) { return "event-bar "+d.type })
                         .append("line")
                         .call(function(){
                             $compile(this[0].parentNode)(scope);
@@ -304,14 +308,14 @@ angular.module('main').
                                 return scale.x(QYtoDate(d))  + "%"
                             })
                             .attr("cy", function(d, i) { // Money
-                                var cy = scale.y(_.get(d,thisScatter.path))
-                                return (isNaN(cy) ? 0 : cy)  + "%"
+                                var cy = scale.y(d[thisScatter.path]) || 0
+                                return cy + "%"
                             })
                             .attr("visibility", function(d, i) {
                                 return visibility(i,scope.index)
                             })
                             .attr("class", function(d, i) {
-                                return (_.get(d,thisScatter.path) == null ? 'baddata' : '')
+                                return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : '')
                             })
                     })
 
@@ -342,13 +346,13 @@ angular.module('main').
                                 return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
                             })
                             .attr("y1", function(d, i) {
-                                return scale.y(_.get(dPrev(dataset,i),thisLine.path)) + "%"
+                                return scale.y(dPrev(dataset,i)[thisLine.path]) + "%"
                             })
                             .attr("x2", function(d, i) { // Time
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y2", function(d, i) { // Money
-                                return scale.y(_.get(d,thisLine.path)) + "%"
+                                return scale.y(d[thisLine.path]) + "%"
                             })
                             .attr("visibility", function(d, i) {
                                 return visibility(i,scope.index)
@@ -360,8 +364,8 @@ angular.module('main').
                         var label = energyLine
                             .selectAll(".label")
                             .data(dataset.filter(function(d) {
-                                return d.date.year === indexObj.date.year
-                                    && d.date.quarter === indexObj.date.quarter;
+                                return d.year === indexObj.year
+                                    && d.quarter === indexObj.quarter;
                             }))
                             .enter()
                             .append("g")
@@ -388,7 +392,7 @@ angular.module('main').
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
-                                return scale.y(_.get(d,thisLine.path)) + "%"
+                                return scale.y(parseFloat(d[thisLine.path])) + "%"
                             })
                             .attr("rx","3")
                             .attr("ry","3")
@@ -403,11 +407,11 @@ angular.module('main').
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
-                                return scale.y(_.get(d,thisLine.path)) + "%"
+                                return scale.y(parseFloat(d[thisLine.path])) + "%"
                             })
                             .attr("transform","translate(0,5)")
                             .text(function(d) {
-                                return "£"+_.get(d,thisLine.path).toFixed(3)
+                                return "£"+parseFloat(d[thisLine.path]).toFixed(3)
                             })
 
                         energyLine
@@ -418,7 +422,7 @@ angular.module('main').
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
-                                return scale.y(_.get(d,thisLine.path)) + "%"
+                                return scale.y(parseFloat(d[thisLine.path])) + "%"
                             })
                             .text(function(d) {
                                 return thisLine.display+" business "+energyType+" costs"

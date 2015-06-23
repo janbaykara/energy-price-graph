@@ -27,6 +27,7 @@
 }
 
 .story-list li {
+    cursor: pointer;
     display: inline-block;
     width: 33%;
     white-space: normal !important;

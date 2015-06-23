@@ -70,15 +70,15 @@
                     </div>
                 </div>
             </header>
-            <div id='graph' graph-chart='data' index='atIndex()'></div>
-            <nav id='stories' date-list-iterator='stories' index='atIndex()'>
+            <div id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></div>
+            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
                 <ul class='story-list' date-list-iteration-group>
-                    <li ng-repeat='story in stories' date-list-iteration-item>
+                    <li ng-repeat='story in data.stories track by $index' date-list-iteration-item ng-click='setIndex(story)'>
                         <article class='story-list__article'>
-                            <img class='story-list__icon' ng-src='build/img/event-{{story.text.type}}.png' />
-                            <time class='story-list__timestamp'>{{story.date.year}} Q{{story.date.quarter}}</time>
-                            <h4 class='story-list__headline'>{{story.text.headline}}</h4>
-                            <p class='story-list__description'>{{story.text.description}}</p>
+                            <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
+                            <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>
+                            <h4 class='story-list__headline'>{{story.headline}}</h4>
+                            <p class='story-list__description'>{{story.description}}</p>
                         </article>
                     </li>
                 </ul>

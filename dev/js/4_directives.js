@@ -26,15 +26,16 @@ angular.module('main')
         return {
             scope: {
                 index: '=',
-                list: '=dateListIterator'
+                range: '=',
+                list: '=dateListIterator',
+                go: '='
             },
             link:function(scope, element, attrs) {
                 function indexFromGlobalIndex() {
-                    var indexDate = QYtoDate(data.energy.electricity[scope.index])
+                    var indexDate = QYtoDate(scope.range[scope.index])
                     var nearestPastStory = _.findLastIndex(scope.list, function(story) {
                         return QYtoDate(story) <= indexDate
                     })
-                    // console.log(nearestPastStory)
                     return nearestPastStory
                 }
 
@@ -49,7 +50,12 @@ angular.module('main')
                     $("[date-list-iteration-item]:nth-child("+storyIndex+")").addClass("highlighted")
                 }
 
-                scope.$watch("index", updateShift, true);
+                scope.$watch("go", function() {
+                    if(scope.go) {
+                        $(window).scrollTop(1);
+                        scope.$watch("index", updateShift, true);
+                    }
+                }, true);
             }
         }
     })
