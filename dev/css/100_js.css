@@ -1,0 +1,21 @@
+.graph-title {
+    transition: 0.2s all ease;
+}
+
+@media screen and (max-height: 680px) {
+    .reduced .graph-title {
+        font-size: 1.1em;
+        margin: 10px auto;
+    }
+    .reduced .graph-title img {
+        width: 0.5em !important;
+    }
+    .reduced .graph-key {
+        margin: 10px auto;
+        font-size: 12px;
+    }
+    .reduced .graph-key svg {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}

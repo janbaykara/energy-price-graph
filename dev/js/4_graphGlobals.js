@@ -157,6 +157,9 @@ angular.module('main').
                         .append("g")
                         .attr("class","stories")
 
+                currentAnnotation = svg.append("g")
+                    .attr('id','currentAnnotation')
+
                 svg.append("g")
                     .attr('id','data')
 
@@ -198,7 +201,7 @@ angular.module('main').
                 //////////
                 // Date
                 //////////
-                svg
+                currentAnnotation
                     .selectAll(".currentDate")
                     .data(data.energy.electricity.filter(function(d) {
                         return d.date.year === indexObj.date.year
@@ -211,7 +214,7 @@ angular.module('main').
                         $compile(this[0].parentNode)(scope);
                     })
 
-                svg
+                currentAnnotation
                     .selectAll(".currentDate")
                     .attr("text-anchor","middle")
                     .attr("y", margin.top+5+"%")
@@ -220,6 +223,30 @@ angular.module('main').
                         return d.date.year + " Q" + d.date.quarter
                     })
 
+                //////////
+                // Tick line
+                //////////
+                currentAnnotation
+                    .selectAll(".currentTick")
+                    .data(data.energy.electricity.filter(function(d) {
+                        return d.date.year === indexObj.date.year
+                            && d.date.quarter === indexObj.date.quarter;
+                    }))
+                    .enter()
+                    .append("line")
+                    .attr("class","currentTick")
+                    .call(function(){
+                        $compile(this[0].parentNode)(scope);
+                    })
+
+                currentAnnotation
+                    .selectAll(".currentTick")
+                    .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
+                    .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
+                    .attr("y1", function(d, i) { return margin.top+6+"%" })
+                    .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+
+                /// DATA
                 _.each(data.energy, function(dataset,energyType) {
                     //////////
                     // Stories

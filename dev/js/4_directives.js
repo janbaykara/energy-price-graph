@@ -33,7 +33,7 @@ angular.module('main')
                     var indexDate = QYtoDate(data.energy.electricity[scope.index])
                     var nearestPastStory = _.findLastIndex(scope.list, function(story) {
                         return QYtoDate(story) <= indexDate
-                    }) + 1
+                    })
                     // console.log(nearestPastStory)
                     return nearestPastStory
                 }
@@ -41,11 +41,12 @@ angular.module('main')
                 function updateShift() {
                     var $group = $(element).find("[date-list-iteration-group]")
                     var $item = $(element).find("[date-list-iteration-item]")
-                    var value = indexFromGlobalIndex() * $item.width()
+                    var value = indexFromGlobalIndex() * $item.outerWidth()
                     $group.css("width", "100%")
                     $group.css("margin-left", -value)
                     $(".highlighted").removeClass('highlighted')
-                    $("[date-list-iteration-item]:nth-child("+indexFromGlobalIndex()+")").addClass("highlighted")
+                    var storyIndex = indexFromGlobalIndex() + 1
+                    $("[date-list-iteration-item]:nth-child("+storyIndex+")").addClass("highlighted")
                 }
 
                 scope.$watch("index", updateShift, true);

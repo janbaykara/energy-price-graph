@@ -129,3 +129,10 @@ line.highlighted {
     font-weight: bold;
     font-size: 20px;
 }
+
+.currentTick {
+    stroke: #49C8FF;
+    stroke-width: 2;
+    stroke-dasharray: 2,2;
+    opacity: 0.5;
+}

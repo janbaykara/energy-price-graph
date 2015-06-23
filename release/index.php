@@ -44,7 +44,7 @@
             <h2>A Data Journey</h2>
         </section> -->
         <section id='data-view'>
-            <header>
+            <header ng-class='{reduced: scrollDistance > 50}'>
                 <h2 class='graph-title'>
                     Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
                     <span class='energies'>
@@ -75,9 +75,8 @@
                 <ul class='story-list' date-list-iteration-group>
                     <li ng-repeat='story in stories' date-list-iteration-item>
                         <article class='story-list__article'>
-                            <time class='story-list__timestamp'>{{story.date.year}} Q{{story.date.quarter}}</time>
-                            <br>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.text.type}}.png' />
+                            <time class='story-list__timestamp'>{{story.date.year}} Q{{story.date.quarter}}</time>
                             <h4 class='story-list__headline'>{{story.text.headline}}</h4>
                             <p class='story-list__description'>{{story.text.description}}</p>
                         </article>
