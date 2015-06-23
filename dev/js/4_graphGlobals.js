@@ -35,6 +35,7 @@ angular.module('main').
             var w = "100%"
             var h = "100%"
             var pointSize = 2
+            var lineOffset = 0
             var scale, axis, axes, grids, scatters, lines, stories, svg
 
             buildChart()
@@ -218,7 +219,7 @@ angular.module('main').
                     .selectAll(".currentDate")
                     .attr("text-anchor","middle")
                     .attr("y", margin.top+5+"%")
-                    .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
+                    .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .text(function(d) {
                         return d.date.year + " Q" + d.date.quarter
                     })
@@ -241,8 +242,8 @@ angular.module('main').
 
                 currentAnnotation
                     .selectAll(".currentTick")
-                    .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
-                    .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
+                    .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                    .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .attr("y1", function(d, i) { return margin.top+6+"%" })
                     .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
 
@@ -257,9 +258,7 @@ angular.module('main').
                         .data(data.stories)
                         .enter()
                         .append("g")
-                        .attr("class", function(d) {
-                            return "event-bar "+d.text.type
-                        })
+                        .attr("class", function(d) { return "event-bar "+d.text.type })
                         .append("line")
                         .call(function(){
                             $compile(this[0].parentNode)(scope);
@@ -267,12 +266,15 @@ angular.module('main').
 
                     stories
                         .selectAll("line")
-                        .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
-                        .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + pointSize + "%" })
+                        .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                        .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                         .attr("y1", function(d, i) { return margin.top + "%" })
                         .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
                         .attr("visibility", function(d, i) {
                             return QYtoDate(d) <= indexDate ? 'visible' : 'hidden'
+                        })
+                        .attr("class", function(d, i) {
+                            return QYtoDate(d).valueOf() == indexDate.valueOf() ? 'highlighted' : 'na'
                         })
 
                     //////////
@@ -299,7 +301,7 @@ angular.module('main').
                             .selectAll("circle")
                             .attr("r", pointSize)
                             .attr("cx", function(d, i) { // Time
-                                return scale.x(QYtoDate(d)) + pointSize + "%"
+                                return scale.x(QYtoDate(d))  + "%"
                             })
                             .attr("cy", function(d, i) { // Money
                                 var cy = scale.y(_.get(d,thisScatter.path))
@@ -337,13 +339,13 @@ angular.module('main').
                         energyLine
                             .selectAll("line")
                             .attr("x1", function(d, i) {
-                                return scale.x(QYtoDate(dPrev(dataset,i))) + pointSize + "%"
+                                return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
                             })
                             .attr("y1", function(d, i) {
                                 return scale.y(_.get(dPrev(dataset,i),thisLine.path)) + "%"
                             })
                             .attr("x2", function(d, i) { // Time
-                                return scale.x(QYtoDate(d)) + pointSize + "%"
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y2", function(d, i) { // Money
                                 return scale.y(_.get(d,thisLine.path)) + "%"
@@ -383,7 +385,7 @@ angular.module('main').
                             .append("rect")
                             .attr("class","box")
                             .attr("x", function(d, i) {
-                                return scale.x(QYtoDate(d)) + pointSize + "%"
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
                                 return scale.y(_.get(d,thisLine.path)) + "%"
@@ -398,7 +400,7 @@ angular.module('main').
                             .attr("class","price")
                             .attr("text-anchor", "middle")
                             .attr("x", function(d, i) {
-                                return scale.x(QYtoDate(d)) + pointSize + "%"
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
                                 return scale.y(_.get(d,thisLine.path)) + "%"
@@ -413,7 +415,7 @@ angular.module('main').
                             .append("text")
                             .attr("class","annotation")
                             .attr("x", function(d, i) {
-                                return scale.x(QYtoDate(d)) + pointSize + "%"
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
                                 return scale.y(_.get(d,thisLine.path)) + "%"
