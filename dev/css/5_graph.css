@@ -57,37 +57,31 @@ svg:not(:root) {
     stroke-width: 2;
     fill: none;
 }
-.gas {
-    color: #E9168C;
-}
-.gas .average_small circle {
-    fill: #B55AFF;
-}
-.gas .average_small line {
-    stroke: #B55AFF;
-}
-.gas .average_large circle {
-    fill: #E9168C;
-}
-.gas .average_large line {
-    stroke: #E9168C;
-}
 
-.electricity {
-    color: #C1D540;
-}
-.electricity .average_small circle {
-    fill: #00FA87;
-}
-.electricity .average_small line {
-    stroke: #00FA87;
-}
-.electricity .average_large circle {
-    fill: #C1D540;
-}
-.electricity .average_large line {
-    stroke: #C1D540;
-}
+.gas { color: #E9168C; }
+
+.gas .average_small circle { fill: #B55AFF; }
+.gas .average_small rect { fill: #B55AFF; }
+.gas .average_small .annotation { fill: #B55AFF; }
+.gas .average_small line { stroke: #B55AFF; }
+
+.gas .average_large circle { fill: #E9168C; }
+.gas .average_large rect { fill: #E9168C; }
+.gas .average_large .annotation { fill: #E9168C; }
+.gas .average_large line { stroke: #E9168C; }
+
+.electricity { color: #C1D540; }
+
+.electricity .average_small circle { fill: #00FA87; }
+.electricity .average_small rect { fill: #00FA87; }
+.electricity .average_small .annotation { fill: #00FA87; }
+.electricity .average_small line { stroke: #00FA87; }
+
+.electricity .average_large circle { fill: #C1D540; }
+.electricity .average_large rect { fill: #C1D540; }
+.electricity .average_large .annotation { fill: #C1D540; }
+.electricity .average_large line { stroke: #C1D540; }
+
 
 svg .scatter {
     opacity: 0.5;
@@ -115,6 +109,23 @@ svg .scatter {
 .event-bar.politics line { stroke: #8F3CFC; }
 .event-bar.finance line { stroke: #0088E6; }
 .event-bar.output line { stroke: #8C7667; }
+
 line.highlighted {
     opacity: 1;
+}
+
+.label text {
+    fill: black;
+    font-size: 14px;
+}
+.label rect {
+    width: 51px;
+    height: 19px;
+    border-radius: 3px;
+}
+
+.currentDate {
+    fill: white;
+    font-weight: bold;
+    font-size: 20px;
 }
