@@ -1,6 +1,6 @@
 #stories {
     position: relative;
-    margin-top: 40px;
+    margin-top: 25px;
     overflow: hidden;
 }
 
@@ -12,11 +12,11 @@
     /*position: absolute;*/
     transition: 0.5s all ease;
 }
-.story-list:before {
+.story-list li:before {
     content: "";
     border-top: 3px solid #2AB8E8;
     position: absolute;
-    top: 25px;
+    top: 47px;
     left: 0;
     display: block;
     width: 100%;
@@ -24,22 +24,29 @@
 }
 
 .story-list li {
-    position: relative;
-    z-index: 50;
     display: inline-block;
-    width: 20%;
+    width: 33%;
     white-space: normal !important;
     vertical-align: top;
-    margin: 0 5%;
+    padding: 0 5%;
+    position: relative;
 }
 
 .story-list__article {
     overflow: hidden;
     text-align: center;
+    position: relative;
+    z-index: 50;
 }
 
 .story-list__article * {
     color: white;
+}
+
+.story-list__timestamp {
+    margin-bottom: -10px;
+    display: block;
+    opacity: 0.5;
 }
 
 .story-list__icon {
@@ -71,4 +78,22 @@
         margin-right: 10px;
         margin-top: 16px;
     }
+}
+
+[date-list-iteration-item] {
+    opacity: 0.3;
+}
+.highlighted {
+    border: none !important;
+    opacity: 1;
+}
+.highlighted .story-list__icon {
+    height: auto;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+}
+@keyframes pulsate {
+    0% {-webkit-transform: scale(0.9, 0.9); opacity: 0.9;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.1, 1.1); opacity: 0.9;}
 }

@@ -25,15 +25,16 @@ angular.module('main')
     .directive("dateListIterator", function($window) {
         return {
             scope: {
-                index: '='
+                index: '=',
+                list: '=dateListIterator'
             },
             link:function(scope, element, attrs) {
                 function indexFromGlobalIndex() {
                     var indexDate = QYtoDate(data.energy.electricity[scope.index])
-                    var nearestPastStory = _.findLastIndex(data.stories, function(story) {
-                        return QYtoDate(story) < indexDate
-                    }) + 2
-                    console.log(nearestPastStory)
+                    var nearestPastStory = _.findLastIndex(scope.list, function(story) {
+                        return QYtoDate(story) <= indexDate
+                    }) + 1
+                    // console.log(nearestPastStory)
                     return nearestPastStory
                 }
 

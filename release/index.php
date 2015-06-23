@@ -70,12 +70,13 @@
                     </div>
                 </div>
             </header>
-            <div id='graph' graph-chart data='data' index='atIndex()'></div>
-            <nav id='stories' date-list-iterator index='atIndex()'>
+            <div id='graph' graph-chart='data' index='atIndex()'></div>
+            <nav id='stories' date-list-iterator='stories' index='atIndex()'>
                 <ul class='story-list' date-list-iteration-group>
                     <li ng-repeat='story in stories' date-list-iteration-item>
                         <article class='story-list__article'>
-                            <time class='story-list__timestamp'>{{story.date}}</time>
+                            <time class='story-list__timestamp'>{{story.date.year}} Q{{story.date.quarter}}</time>
+                            <br>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.text.type}}.png' />
                             <h4 class='story-list__headline'>{{story.text.headline}}</h4>
                             <p class='story-list__description'>{{story.text.description}}</p>

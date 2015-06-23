@@ -105,3 +105,16 @@ svg .scatter {
 .highlighted {
     border: 2px solid red !important;
 }
+
+.event-bar line {
+    stroke-width: 2.5%;
+    opacity: 0.2;
+}
+.event-bar.conflict line { stroke: #D94141; }
+.event-bar.nature line { stroke: #5FC86E; }
+.event-bar.politics line { stroke: #8F3CFC; }
+.event-bar.finance line { stroke: #0088E6; }
+.event-bar.output line { stroke: #8C7667; }
+line.highlighted {
+    opacity: 1;
+}
