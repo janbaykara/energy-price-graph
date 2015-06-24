@@ -4,10 +4,12 @@ angular.module('main')
             angular.element($window).bind("scroll", calcScrolled)
 
             element.addClass('scrolled-true')
+            scope.hasScrolled = false
 
             function calcScrolled() {
                 scope.scrollDistance = this.pageYOffset
                  if (this.pageYOffset >= attrs.scroll) {
+                     scope.hasScrolled = true
                      scope.scrolled = true
                      element.addClass('scrolled-true')
                      element.removeClass('scrolled-false')

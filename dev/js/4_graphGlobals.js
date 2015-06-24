@@ -1,5 +1,23 @@
+var rowsN
+var reached = 1
+
+var scatters = [
+    { path: 'verysmall',       class: 'average_small', display:"V. small" },
+    { path: 'small',           class: 'average_small', display:"Small" },
+    { path: 'smallmedium',     class: 'average_small', display:"Small/med" },
+    //
+    { path: 'medium',          class: 'average_large', display:"Medium" },
+    { path: 'large',           class: 'average_large', display:"Large" },
+    { path: 'verylarge',       class: 'average_large', display:"V. large" },
+    { path: 'extralarge',      class: 'average_large', display:"Extra large" }
+]
+var lines = [
+    { path: 'average_small',   class: 'average_small', display:"Avg. small firm" },
+    { path: 'average_large',   class: 'average_large', display:"Avg. large firm" }
+]
+
 function QYtoDate(d) {
-    return new Date(d.year,(d.quarter*3)-3)
+    return typeof d !== 'undefined' ? new Date(d.year,(d.quarter*3)-3) : new Date()
 }
 
 function dateToQY(d) {
@@ -18,7 +36,21 @@ function dPrev(data,i) {
 }
 
 function visibility(i,index) {
-    return index < i ? 'hidden' : 'visibility'
+    hidden = index < i
+    return hidden ? 'hidden' : 'visibility'
+}
+
+function reach(index) {
+    reached = reached < index+1 ? index+1 : reached
+}
+
+function redraw() {
+    var totalrowsN = rowsN + ((scatters.length + lines.length) * 3)
+    var check = reached-1 < totalrowsN
+    if(reached >= rowsN && reached <= totalrowsN) {
+        reached++
+    }
+    return check
 }
 
 angular.module('main').
@@ -31,12 +63,13 @@ angular.module('main').
             index: '='
         },
         link: function (scope, element, attrs) {
+            var scale, axis, axes, grids, stories, svg, lineOffset, years, quarterWidth
             var margin = { top: 2.5, right: 2.5, bottom: 5, left: 5 }
             var w = "100%"
             var h = "100%"
             var pointSize = 2
-            var lineOffset = 0
-            var scale, axis, axes, grids, scatters, lines, stories, svg
+            var canvasW = 100 - margin.left - margin.right
+            // Set up data
 
             scope.$watch("go", function() {
                 if(scope.go) {
@@ -45,6 +78,13 @@ angular.module('main').
             }, true);
 
             function buildChart() {
+                rowsN = scope.data.energy.electricity.length
+                yars = _.uniq(_.map(scope.data.energy.electricity,'year'));
+                quarters = ( yars.length * 4 ) - 1
+                quarterWidth = ( canvasW / quarters )
+                lineOffset = quarterWidth / 2
+                console.log(yars)
+
                 // Make chart
                 // ------------
                 // Canvas
@@ -137,23 +177,6 @@ angular.module('main').
                     .attr("y1", function(d, i) { return margin.top + "%" })
                     .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
 
-                // Set up data
-                scatters = [
-                    { path: 'verysmall',       class: 'average_small', display:"V. small" },
-                    { path: 'small',           class: 'average_small', display:"Small" },
-                    { path: 'smallmedium',     class: 'average_small', display:"Small/med" },
-                    //
-                    { path: 'medium',          class: 'average_large', display:"Medium" },
-                    { path: 'large',           class: 'average_large', display:"Large" },
-                    { path: 'verylarge',       class: 'average_large', display:"V. large" },
-                    { path: 'extralarge',      class: 'average_large', display:"Extra large" }
-                ]
-
-                lines = [
-                    { path: 'average_small',   class: 'average_small', display:"Avg. small firm" },
-                    { path: 'average_large',   class: 'average_large', display:"Avg. large firm" }
-                ]
-
                 // Story groups
                 stories = svg
                         .append("g")
@@ -209,7 +232,9 @@ angular.module('main').
                 currentAnnotation
                     .selectAll(".currentDate")
                     .data(scope.data.energy.electricity.filter(function(d) {
-                        return d.year === indexObj.year
+                        return typeof indexObj !== 'undefined'
+                            && typeof d !== 'undefined'
+                            && d.year === indexObj.year
                             && d.quarter === indexObj.quarter;
                     }))
                     .enter()
@@ -264,6 +289,9 @@ angular.module('main').
                         .append("g")
                         .attr("class", function(d) { return "event-bar "+d.type })
                         .append("line")
+                        .on("click", function(d,i){
+                            setIndex(scope.data.energy.electricity,d)
+                        })
                         .call(function(){
                             $compile(this[0].parentNode)(scope);
                         });
@@ -274,10 +302,15 @@ angular.module('main').
                         .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                         .attr("y1", function(d, i) { return margin.top + "%" })
                         .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+                        .attr("stroke-width", function(d, i) {
+                            return quarterWidth + "%"
+                        })
                         .attr("visibility", function(d, i) {
-                            return QYtoDate(d) <= indexDate ? 'visible' : 'hidden'
+                            var isValidYear = _.any(yars,function(x) { return x === d.year })
+                            return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
                         })
                         .attr("class", function(d, i) {
+                            // console.log(QYtoDate(d).valueOf(),indexDate.valueOf())
                             return QYtoDate(d).valueOf() == indexDate.valueOf() ? 'highlighted' : 'na'
                         })
 
@@ -290,33 +323,36 @@ angular.module('main').
                         .select(".scatter")
 
                     _.each(scatters, function(thisScatter) {
+                        reach(scope.index)
                         var energyPlot = energyPlotGroup.select("."+thisScatter.class+'[path=\''+thisScatter.path+'\']')
 
-                        energyPlot
-                            .selectAll("circle")
-                            .data(dataset)
-                            .enter()
-                            .append("circle")
-                            .call(function(){
-                                $compile(this[0].parentNode)(scope);
-                            });
+                        if(redraw()) {
+                            energyPlot
+                                .selectAll("circle")
+                                .data(dataset)
+                                .enter()
+                                .append("circle")
+                                .call(function(){
+                                    $compile(this[0].parentNode)(scope);
+                                });
 
-                        energyPlot
-                            .selectAll("circle")
-                            .attr("r", pointSize)
-                            .attr("cx", function(d, i) { // Time
-                                return scale.x(QYtoDate(d))  + "%"
-                            })
-                            .attr("cy", function(d, i) { // Money
-                                var cy = scale.y(d[thisScatter.path]) || 0
-                                return cy + "%"
-                            })
-                            .attr("visibility", function(d, i) {
-                                return visibility(i,scope.index)
-                            })
-                            .attr("class", function(d, i) {
-                                return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : '')
-                            })
+                            energyPlot
+                                .selectAll("circle")
+                                .attr("r", pointSize)
+                                .attr("cx", function(d, i) { // Time
+                                    return scale.x(QYtoDate(d)) + lineOffset + "%"
+                                })
+                                .attr("cy", function(d, i) { // Money
+                                    var cy = scale.y(d[thisScatter.path]) || 0
+                                    return cy + "%"
+                                })
+                                .attr("visibility", function(d, i) {
+                                    return visibility(i,scope.index)
+                                })
+                                .attr("class", function(d, i) {
+                                    return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : '')
+                                })
+                        }
                     })
 
                     var energyLineGroup = svg.select("#data")
@@ -326,37 +362,40 @@ angular.module('main').
                     var labelElements = svg.select(".labels")
 
                     _.each(lines, function(thisLine) {
+                        reach(scope.index)
                         var energyLine = energyLineGroup.select("."+thisLine.class+'[path=\''+thisLine.path+'\']')
 
                         //////////
                         // Lines
                         //////////
-                        energyLine
-                            .selectAll("line")
-                            .data(dataset)
-                            .enter()
-                            .append("line")
-                            .call(function(){
-                                $compile(this[0].parentNode)(scope);
-                            });
+                        if(redraw()) {
+                            energyLine
+                                .selectAll("line")
+                                .data(dataset)
+                                .enter()
+                                .append("line")
+                                .call(function(){
+                                    $compile(this[0].parentNode)(scope);
+                                });
 
-                        energyLine
-                            .selectAll("line")
-                            .attr("x1", function(d, i) {
-                                return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
-                            })
-                            .attr("y1", function(d, i) {
-                                return scale.y(dPrev(dataset,i)[thisLine.path]) + "%"
-                            })
-                            .attr("x2", function(d, i) { // Time
-                                return scale.x(QYtoDate(d)) + lineOffset + "%"
-                            })
-                            .attr("y2", function(d, i) { // Money
-                                return scale.y(d[thisLine.path]) + "%"
-                            })
-                            .attr("visibility", function(d, i) {
-                                return visibility(i,scope.index)
-                            })
+                            energyLine
+                                .selectAll("line")
+                                .attr("x1", function(d, i) {
+                                    return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
+                                })
+                                .attr("y1", function(d, i) {
+                                    return scale.y(dPrev(dataset,i)[thisLine.path]) + "%"
+                                })
+                                .attr("x2", function(d, i) { // Time
+                                    return scale.x(QYtoDate(d)) + lineOffset + "%"
+                                })
+                                .attr("y2", function(d, i) { // Money
+                                    return scale.y(d[thisLine.path]) + "%"
+                                })
+                                .attr("visibility", function(d, i) {
+                                    return visibility(i,scope.index)
+                                })
+                        }
 
                         //////////
                         // Labels
@@ -378,7 +417,7 @@ angular.module('main').
                             })
                             .call(function(){
                                 $compile(this[0].parentNode)(scope);
-                            })
+                            });
 
                         energyLine
                             .selectAll(".label *")

@@ -36,7 +36,7 @@
     <meta itemprop='description' content="<?=$description?>" />
 </head>
 
-<body scroll>
+<body scroll=2000>
 
     <main>
         <!-- <section id='title-page' full-screen>
@@ -49,7 +49,7 @@
                     Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
                     <span class='energies'>
                         <span class='active energy-selector {{name}}'
-                            ng-repeat-start='(name, value) in energy'
+                            ng-repeat-start='(name, value) in data.energy'
                         ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
                     </span>
                 </h2>
@@ -71,7 +71,7 @@
                 </div>
             </header>
             <div id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></div>
-            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
+            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go' ng-show='scrollDistance > 50'>
                 <ul class='story-list' date-list-iteration-group>
                     <li ng-repeat='story in data.stories track by $index' date-list-iteration-item ng-click='setIndex(story)'>
                         <article class='story-list__article'>
@@ -83,6 +83,10 @@
                     </li>
                 </ul>
             </nav>
+            <div id='instructions' class='aln-h-m' ng-show='scrollDistance <= 50 && !hasScrolled'>
+                Scroll down
+                <img src='http://yzalis.com/img/scroll-down.png' />
+            </div>
         </section>
     </main>
 

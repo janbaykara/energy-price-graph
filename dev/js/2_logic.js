@@ -89,6 +89,8 @@ angular.module('main', ['ngRetina'])
             }
 
             $scope.ticks = $scope.data.energy.electricity.length
+
+            $scope.setIndex($scope.data.energy.electricity[1])
         }
 
         $scope.getStories = function() {
@@ -109,7 +111,6 @@ angular.module('main', ['ngRetina'])
 
         $scope.loadedData = function() {
             if(!$scope.go) return 0;
-
             return $scope.data;
         }
 
@@ -122,12 +123,17 @@ angular.module('main', ['ngRetina'])
 
         $scope.setIndex = function(story) {
             if(!$scope.go) return 0;
-
-            var i = _.findIndex($scope.data.energy.electricity, function(evt) {
-                return evt.quarter === story.quarter && evt.year === story.year
-            })
-
-            var perc = (i / $scope.data.energy.electricity.length)
-            $(window).scrollTop(perc * $scope.scroll.max)
+            setIndex($scope.data.energy.electricity,story)
         }
     })
+
+function setIndex(range,story) {
+    var i = _.findIndex(range, function(evt) {
+        return evt.quarter === story.quarter && evt.year === story.year
+    })
+
+    var perc = (i / range.length)
+    var max = $(document).height() - $(window).height()
+
+    $(window).scrollTop(perc * max)
+}
