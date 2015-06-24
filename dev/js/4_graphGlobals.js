@@ -124,8 +124,6 @@ angular.module('main').
 
                 axes.append("g")
                     .attr('class','axis')
-                    .attr('id','axis-y')
-                    .attr("transform", "translate(0,0)")
                     // axis points
                     .selectAll("text")
                     .data(scale.y.ticks())
@@ -138,7 +136,6 @@ angular.module('main').
 
                 axes.append("svg")
                     .attr('class','axis')
-                    .attr('id','axis-y')
                     .attr("y", "100%")
                     // axis points
                     .selectAll("text")
@@ -154,7 +151,7 @@ angular.module('main').
                 grids = svg.append("g")
                     .attr('id','grids')
 
-                grids.append("svg")
+                grids.append("g")
                     .selectAll("line")
                     .data(scale.y.ticks()) //dateToQY - 30
                     .enter()
@@ -165,7 +162,7 @@ angular.module('main').
                     .attr("x1", function(d, i) { return margin.left + "%" })
                     .attr("x2", function(d, i) { return 100-margin.right + "%" })
 
-                grids.append("svg")
+                grids.append("g")
                     .selectAll("line")
                     .data(scale.x.ticks(20)) //dateToQY - 30
                     .enter()
@@ -184,36 +181,23 @@ angular.module('main').
                 currentAnnotation = svg.append("g")
                     .attr('id','currentAnnotation')
 
-                svg.append("g")
-                    .attr('id','data')
-
                 // Group structure for data points
                 _.each(scope.data.energy, function(energy,energyName) {
-                    var energy = svg.select('#data')
+                    var energy = svg
                         .append("g")
                         .attr("class","energy "+energyName)
 
-                    var plots = energy
-                        .append("g")
-                        .attr("class","scatter")
-
-                    var lineG = energy
-                        .append("g")
-                        .attr("class","lineGroup")
-
                     _.each(scatters, function(thisScatter) {
-                        plots
+                        energy
                             // Circle
                             .append("g")
-                            .attr("class","plots "+thisScatter.class)
-                            .attr("path",thisScatter.path)
+                            .attr("class","plots "+thisScatter.class+" "+thisScatter.path)
                     })
 
                     _.each(lines, function(thisLine) {
-                        lineG
+                        energy
                             .append("g")
-                            .attr("class","line "+thisLine.class)
-                            .attr("path",thisLine.path)
+                            .attr("class","line "+thisLine.class+" "+thisLine.path)
                     })
                 })
 
@@ -282,11 +266,9 @@ angular.module('main').
                     //////////
 
                     stories
-                        .selectAll("g")
+                        .selectAll("line")
                         .data(scope.data.stories)
                         .enter()
-                        .append("g")
-                        .attr("class", function(d) { return "event-bar "+d.type })
                         .append("line")
                         .on("click", function(d,i){
                             setIndex(scope.data.energy.electricity,d)
@@ -310,20 +292,19 @@ angular.module('main').
                         })
                         .attr("class", function(d, i) {
                             // console.log(QYtoDate(d).valueOf(),indexDate.valueOf())
-                            return QYtoDate(d).valueOf() == indexDate.valueOf() ? 'highlighted' : 'na'
+                            return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? 'highlighted' : '')
                         })
 
                     //////////
                     // Plots
                     //////////
 
-                    var energyPlotGroup = svg.select("#data")
+                    var energyPlotGroup = svg
                         .select("."+energyType)
-                        .select(".scatter")
 
                     _.each(scatters, function(thisScatter) {
                         reach(scope.index)
-                        var energyPlot = energyPlotGroup.select("."+thisScatter.class+'[path=\''+thisScatter.path+'\']')
+                        var energyPlot = energyPlotGroup.select(".plots."+thisScatter.class+'.'+thisScatter.path)
 
                         if(redraw()) {
                             energyPlot
@@ -354,15 +335,14 @@ angular.module('main').
                         }
                     })
 
-                    var energyLineGroup = svg.select("#data")
+                    var energyLineGroup = svg
                         .select("."+energyType)
-                        .select(".lineGroup")
 
                     var labelElements = svg.select(".labels")
 
                     _.each(lines, function(thisLine) {
                         reach(scope.index)
-                        var energyLine = energyLineGroup.select("."+thisLine.class+'[path=\''+thisLine.path+'\']')
+                        var energyLine = energyLineGroup.select(".line."+thisLine.class+'.'+thisLine.path)
 
                         //////////
                         // Lines
