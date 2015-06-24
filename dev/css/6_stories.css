@@ -1,19 +1,26 @@
 #stories {
     position: relative;
-    margin-top: 40px;
+    margin-top: 25px;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 300px;
 }
 
 .story-list {
     list-style: none;
     white-space: nowrap;
-    overflow-x: scroll;
-    padding: 0 20px 20px;
+    padding: 0 0 20px;
+    /*padding-left: 20%;*/
+    /*position: absolute;*/
+    transition: 0.5s all ease;
+  left: 33%;
+  position: absolute;
 }
-.story-list:before {
+.story-list li:before {
     content: "";
     border-top: 3px solid #2AB8E8;
     position: absolute;
-    top: 25px;
+    top: 50px;
     left: 0;
     display: block;
     width: 100%;
@@ -21,22 +28,33 @@
 }
 
 .story-list li {
-    position: relative;
-    z-index: 50;
+    cursor: pointer;
     display: inline-block;
-    width: 20%;
+    width: 33%;
     white-space: normal !important;
     vertical-align: top;
-    margin: 0 5%;
+    padding: 0 2%;
+    position: relative;
 }
 
 .story-list__article {
     overflow: hidden;
     text-align: center;
+    position: relative;
+    z-index: 50;
+  padding-top: 25px;
 }
 
 .story-list__article * {
     color: white;
+}
+
+.story-list__timestamp {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    display: block;
+    opacity: 0.5;
 }
 
 .story-list__icon {
@@ -44,28 +62,74 @@
     height: 50px;
 }
 
-@media screen and (max-width: 540px) {
-    .story-list {
-        white-space: normal;
-        overflow: visible;
+[date-list-iteration-item] {
+    opacity: 0.3;
+}
+.highlighted {
+    border: none !important;
+    opacity: 1;
+}
+.highlighted .story-list__icon {
+    height: auto;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+}
+@keyframes pulsate {
+    0% {-webkit-transform: scale(0.9, 0.9); opacity: 1;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.1, 1.1); opacity: 1;}
+}
+
+
+@media screen and (max-width: 680px) {
+    #stories {
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding-top: 10px;
+      overflow-y: auto;
+      bottom: 0;
+      position: fixed;
+      width: 100%;
+      height: 26%;
+      margin-top: 10px;
     }
-    .story-list:before {
-        display: none;
+    .story-list {
+        left: 0;
     }
     .story-list li {
         width: 100%;
-        display: block;
-        margin: 0;
+        padding:0 10px 0 15px;
     }
-    .story-list li + li {
-        margin-top: 20px;
+    .story-list li:before {
+        display: none;
     }
     .story-list__article {
         text-align: left;
+        overflow: visible;
+        padding-top: 0;
     }
     .story-list__icon {
         float: left;
         margin-right: 10px;
-        margin-top: 16px;
+        margin-top: 3px;
     }
+    .story-list__headline {
+      margin-top: 2px;
+      margin-bottom: 5px;
+      margin-left: 60px;
+    }
+    .story-list__timestamp {
+        position: relative;
+        top: 0px;
+    }
+    .story-list__description {
+          margin-left: 60px;
+    }
+}
+
+.extlink {
+    width: 18px;
+    vertical-align: top;
+}
+.story-list__headline a:hover {
+    color: #49C8FF;
 }

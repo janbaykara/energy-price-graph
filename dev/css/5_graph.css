@@ -29,7 +29,7 @@ svg:not(:root) {
     overflow: hidden !important;
 }
 #grids line {
-    stroke: #0A313D;
+    stroke: #2A3C41;
     stroke-width: 1;
 }
 
@@ -46,7 +46,7 @@ svg:not(:root) {
 .axis text {
     font-family: sans-serif;
     font-size: 10px;
-    fill: #13576D;
+    fill: #448498;
 }
 
 
@@ -57,42 +57,77 @@ svg:not(:root) {
     stroke-width: 2;
     fill: none;
 }
-.gas {
-    color: #E9168C;
-}
-.gas .average_small circle {
-    fill: #B55AFF;
-}
-.gas .average_small line {
-    stroke: #B55AFF;
-}
-.gas .average_large circle {
-    fill: #E9168C;
-}
-.gas .average_large line {
-    stroke: #E9168C;
+
+.gas { color: #E9168C; }
+
+.gas .average_small circle { fill: #B55AFF; }
+.gas .average_small rect { fill: #B55AFF; }
+.gas .average_small .annotation { fill: #B55AFF; }
+.gas .average_small line { stroke: #B55AFF; }
+
+.gas .average_large circle { fill: #E9168C; }
+.gas .average_large rect { fill: #E9168C; }
+.gas .average_large .annotation { fill: #E9168C; }
+.gas .average_large line { stroke: #E9168C; }
+
+.electricity { color: #C1D540; }
+
+.electricity .average_small circle { fill: #00FA87; }
+.electricity .average_small rect { fill: #00FA87; }
+.electricity .average_small .annotation { fill: #00FA87; }
+.electricity .average_small line { stroke: #00FA87; }
+
+.electricity .average_large circle { fill: #C1D540; }
+.electricity .average_large rect { fill: #C1D540; }
+.electricity .average_large .annotation { fill: #C1D540; }
+.electricity .average_large line { stroke: #C1D540; }
+
+
+svg .scatter {
+    opacity: 0.5;
 }
 
-.electricity {
-    color: #C1D540;
+.baddata {
+    visibility: hidden !important;
 }
-.electricity .average_small circle {
-    fill: #00FA87;
-}
-.electricity .average_small line {
-    stroke: #00FA87;
-}
-.electricity .average_large circle {
-    fill: #C1D540;
-}
-.electricity .average_large line {
-    stroke: #C1D540;
+.highlighted {
+    border: 2px solid red !important;
 }
 
-@media screen and (max-width: 700px) {
-    svg .scatter {
-        opacity: 0.5;
-    }
+.event-bar {
+    /*stroke-width: 2.5%;*/
+    opacity: 0.2;
+    cursor: pointer;
+}
+.event-bar.conflict { stroke: #D94141; }
+.event-bar.nature { stroke: #5FC86E; }
+.event-bar.politics { stroke: #8F3CFC; }
+.event-bar.finance { stroke: #0088E6; }
+.event-bar.output { stroke: #8C7667; }
+
+line.highlighted {
+    opacity: 0.75;
+}
+
+.label text {
+    fill: black;
+    font-size: 14px;
+}
+
+.currentDate {
+    fill: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.currentTick {
+    stroke: #49C8FF;
+    stroke-width: 2;
+    stroke-dasharray: 2,2;
+    opacity: 0.5;
+}
+
+@media screen and (max-width: 680px) {
     .axis text {
         font-size: 10px;
         fill: #B0B0B0;
