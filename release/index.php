@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='<?=$asseturl?>css/app.min.css' />
     <link rel="canonical" href="<?=$url?>" />
-
+    <meta name="theme-color" content="#092C38">
     <title><?=$title?></title>
 
     <meta name="twitter:card" content="summary" />
