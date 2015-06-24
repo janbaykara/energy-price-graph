@@ -73,13 +73,13 @@
             <div id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></div>
             <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go' ng-show='scrollDistance > 50'>
                 <ul class='story-list' date-list-iteration-group>
-                    <li ng-repeat='story in data.stories track by $index' date-list-iteration-item ng-click='setIndex(story)'>
+                    <li ng-repeat='story in getStories() track by $index' date-list-iteration-item ng-click='setIndex(story)'>
                         <article class='story-list__article'>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
                             <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>
                             <h4 class='story-list__headline'>
                                 {{story.headline}}
-                                <a href='{{story.sources}}' target="_blank">
+                                <a ng-href='{{story.sources}}' target="_blank">
                                     <img ng-src='build/img/external-link.png' class='extlink' />
                                 </a>
                             </h4>

@@ -2,7 +2,6 @@ angular.module('main')
     .directive("scroll", function ($window) {
         return function(scope, element, attrs) {
             angular.element($window).bind("scroll", calcScrolled)
-
             element.addClass('scrolled-true')
             scope.hasScrolled = false
 
@@ -18,7 +17,7 @@ angular.module('main')
                      element.removeClass('scrolled-true')
                      element.addClass('scrolled-false')
                  }
-                scope.$apply()
+                scope.$digest()
             }
 
             calcScrolled()

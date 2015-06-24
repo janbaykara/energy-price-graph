@@ -96,7 +96,10 @@ angular.module('main', ['ngRetina'])
         $scope.getStories = function() {
             if(!$scope.go) return false;
 
-            return $scope.data.stories;
+            yars = _.uniq(_.map($scope.data.energy.electricity,'year'));
+            return _.filter($scope.data.stories, function(y) {
+                return _.any(yars,function(x) { return x === y.year })
+            });
         }
 
         $scope.getRange = function() {

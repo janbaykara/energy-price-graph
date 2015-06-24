@@ -292,7 +292,7 @@ angular.module('main').
                         })
                         .attr("class", function(d, i) {
                             // console.log(QYtoDate(d).valueOf(),indexDate.valueOf())
-                            return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? 'highlighted' : '')
+                            return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
                         })
 
                     //////////
