@@ -75,9 +75,9 @@
     animation-iteration-count: infinite;
 }
 @keyframes pulsate {
-    0% {-webkit-transform: scale(0.9, 0.9); opacity: 0.9;}
+    0% {-webkit-transform: scale(0.9, 0.9); opacity: 1;}
     50% {opacity: 1.0;}
-    100% {-webkit-transform: scale(1.1, 1.1); opacity: 0.9;}
+    100% {-webkit-transform: scale(1.1, 1.1); opacity: 1;}
 }
 
 
@@ -124,4 +124,12 @@
     .story-list__description {
           margin-left: 60px;
     }
+}
+
+.extlink {
+    width: 18px;
+    vertical-align: top;
+}
+.story-list__headline a:hover {
+    color: #49C8FF;
 }

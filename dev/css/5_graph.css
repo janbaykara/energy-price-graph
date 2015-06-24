@@ -113,11 +113,6 @@ line.highlighted {
     fill: black;
     font-size: 14px;
 }
-.label rect {
-    width: 51px;
-    height: 19px;
-    border-radius: 3px;
-}
 
 .currentDate {
     fill: white;

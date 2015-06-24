@@ -34,7 +34,7 @@ angular.module('main', ['ngRetina'])
 
         // Load stories
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/1H2LfFYENiV-JQsbNcrCZfcSdtNKwwodW7Uw8D6TqagQ/edit#gid=1129478908",
+            url: "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446", // Published
             query: "select A,B,C,D,E,F,G",
             callback: function loadedStoryData(err, opts, res) {
                 $scope.data.stories = sanitise(res);
@@ -45,7 +45,7 @@ angular.module('main', ['ngRetina'])
 
         // Load electricity price data
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/18ZaRqew2LHWCqTfTjvu6jWwfzJhe1Fo7BS8oJogVECY/edit#gid=0",
+            url: "https://docs.google.com/spreadsheets/d/16IfQH23bpHdzvY6-IhJ8FAd6rx_nLh-2tnOFkZlwAKA/edit#gid=0", // Published
             query: "select A,B,C,D,E,F,G,H,I,J,K,L",
             callback: function loadedElectricityData(err, opts, res) {
                 $scope.data.energy.electricity = sanitise(res)
@@ -56,7 +56,7 @@ angular.module('main', ['ngRetina'])
 
         // Load gas price data
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/1TlsgORKIbG1NqPhdGXBnDrPXO_Lev11l7DJF9IN3OQA/edit#gid=0",
+            url: "https://docs.google.com/spreadsheets/d/1FCS8w-_YndjmmB8xT-sI4j7KPaALGKZiuAv5VWbvZ2k/edit#gid=0", // Published
             query: "select A,B,C,D,E,F,G,H,I,J",
             callback: function loadedGasData(err, opts, res) {
                 $scope.data.energy.gas = sanitise(res)

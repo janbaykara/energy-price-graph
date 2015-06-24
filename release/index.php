@@ -77,7 +77,12 @@
                         <article class='story-list__article'>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
                             <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>
-                            <h4 class='story-list__headline'>{{story.headline}}</h4>
+                            <h4 class='story-list__headline'>
+                                {{story.headline}}
+                                <a href='{{story.sources}}' target="_blank">
+                                    <img ng-src='build/img/external-link.png' class='extlink' />
+                                </a>
+                            </h4>
                             <p class='story-list__description'>{{story.description}}</p>
                         </article>
                     </li>
@@ -93,7 +98,7 @@
     <!-- DEPENDENCIES -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="<?=$asseturl?>js/lib.min.js"></script>
     <script src="<?=$asseturl?>js/app.min.js"></script>
 </body>

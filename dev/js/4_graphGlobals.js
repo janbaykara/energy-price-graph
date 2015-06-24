@@ -83,7 +83,6 @@ angular.module('main').
                 quarters = ( yars.length * 4 ) - 1
                 quarterWidth = ( canvasW / quarters )
                 lineOffset = quarterWidth / 2
-                console.log(yars)
 
                 // Make chart
                 // ------------
@@ -433,6 +432,8 @@ angular.module('main').
                             .attr("y", function(d, i) {
                                 return scale.y(parseFloat(d[thisLine.path])) + "%"
                             })
+                            .attr("width", "51")
+                            .attr("height", "19")
                             .attr("rx","3")
                             .attr("ry","3")
                             .attr("transform","translate(-25,-9)")
