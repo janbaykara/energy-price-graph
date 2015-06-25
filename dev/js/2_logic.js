@@ -1,5 +1,21 @@
+function hideAddressBar()
+{
+  if(!window.location.hash)
+  {
+      if(document.height < window.outerHeight)
+      {
+          document.body.style.height = (window.outerHeight + 50) + 'px';
+      }
+
+      setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+  }
+}
+
+window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+window.addEventListener("orientationchange", hideAddressBar );
+
 angular.module('main', ['ngRetina'])
-    .controller('main', function($scope,$interval,$compile) {
+    .controller('main', function($scope,$timeout,$compile) {
         $scope.scroll = {
             min: 0,
             max: $(document).height() - $(window).height()
@@ -90,7 +106,15 @@ angular.module('main', ['ngRetina'])
 
             $scope.ticks = $scope.data.energy.electricity.length
 
-            $scope.setIndex($scope.data.energy.electricity[1])
+            if($(window).width() < 680) {
+                $scope.setIndex($scope.data.energy.electricity[43])
+            }
+            $timeout(function() {
+                $scope.setIndex($scope.data.energy.electricity[0])
+                $timeout(function() {
+                    $('body').removeClass('loading')
+                },50)
+            },10)
         }
 
         $scope.getStories = function() {
@@ -119,7 +143,6 @@ angular.module('main', ['ngRetina'])
 
         $scope.atIndex = function() {
             if(!$scope.go) return 0;
-
             var perc = ($scope.scrollDistance / ($scope.scroll.max))
             return Math.round($scope.ticks * perc)
         }

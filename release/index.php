@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='<?=$asseturl?>css/app.min.css' />
     <link rel="canonical" href="<?=$url?>" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#092C38">
     <title><?=$title?></title>
 
@@ -36,7 +38,7 @@
     <meta itemprop='description' content="<?=$description?>" />
 </head>
 
-<body scroll=2000>
+<body scroll=2000 class='loading'>
 
     <main>
         <!-- <section id='title-page' full-screen>
@@ -44,7 +46,7 @@
             <h2>A Data Journey</h2>
         </section> -->
         <section id='data-view'>
-            <header ng-class='{reduced: scrollDistance > 50}'>
+            <header>
                 <h2 class='graph-title'>
                     Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
                     <span class='energies'>
@@ -71,7 +73,7 @@
                 </div>
             </header>
             <div id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></div>
-            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go' ng-show='scrollDistance > 50'>
+            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
                 <ul class='story-list' date-list-iteration-group>
                     <li ng-repeat='story in getStories() track by $index' date-list-iteration-item ng-click='setIndex(story)'>
                         <article class='story-list__article'>
@@ -88,7 +90,7 @@
                     </li>
                 </ul>
             </nav>
-            <div id='instructions' class='aln-h-m' ng-show='scrollDistance <= 50 && !hasScrolled'>
+            <div id='instructions' class='aln-h-m'>
                 Scroll down
                 <img src='http://yzalis.com/img/scroll-down.png' />
             </div>

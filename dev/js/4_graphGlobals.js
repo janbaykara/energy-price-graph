@@ -265,35 +265,42 @@ angular.module('main').
                     // Stories
                     //////////
 
-                    stories
-                        .selectAll("line")
-                        .data(scope.data.stories)
-                        .enter()
-                        .append("line")
-                        .on("click", function(d,i){
-                            setIndex(scope.data.energy.electricity,d)
-                        })
-                        .call(function(){
-                            $compile(this[0].parentNode)(scope);
-                        });
+                    if(redraw()) {
+                        stories
+                            .selectAll("line")
+                            .data(scope.data.stories)
+                            .enter()
+                            .append("line")
+                            .on("click", function(d,i){
+                                setIndex(scope.data.energy.electricity,d)
+                            })
+                            .call(function(){
+                                $compile(this[0].parentNode)(scope);
+                            });
 
-                    stories
-                        .selectAll("line")
-                        .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                        .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                        .attr("y1", function(d, i) { return margin.top + "%" })
-                        .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
-                        .attr("stroke-width", function(d, i) {
-                            return quarterWidth + "%"
-                        })
-                        .attr("visibility", function(d, i) {
-                            var isValidYear = _.any(yars,function(x) { return x === d.year })
-                            return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
-                        })
-                        .attr("class", function(d, i) {
-                            // console.log(QYtoDate(d).valueOf(),indexDate.valueOf())
-                            return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
-                        })
+                        stories
+                            .selectAll("line")
+                            .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                            .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                            .attr("y1", function(d, i) { return margin.top + "%" })
+                            .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+                            .attr("stroke-width", function(d, i) {
+                                return quarterWidth + "%"
+                            })
+                            .attr("visibility", function(d, i) {
+                                var isValidYear = _.any(yars,function(x) { return x === d.year })
+                                return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
+                            })
+                            .attr("class", function(d, i) {
+                                return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
+                            })
+                    } else {
+                        stories
+                            .selectAll("line")
+                            .attr("class", function(d, i) {
+                                return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
+                            })
+                    }
 
                     //////////
                     // Plots

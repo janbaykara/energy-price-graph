@@ -10,6 +10,7 @@ angular.module('main')
                  if (this.pageYOffset >= attrs.scroll) {
                      scope.hasScrolled = true
                      scope.scrolled = true
+                     element.addClass('has-scrolled')
                      element.addClass('scrolled-true')
                      element.removeClass('scrolled-false')
                  } else {
@@ -17,7 +18,7 @@ angular.module('main')
                      element.removeClass('scrolled-true')
                      element.addClass('scrolled-false')
                  }
-                scope.$digest()
+                scope.$apply()
             }
 
             calcScrolled()
@@ -53,7 +54,6 @@ angular.module('main')
 
                 scope.$watch("go", function() {
                     if(scope.go) {
-                        $(window).scrollTop(1);
                         scope.$watch("index", updateShift, true);
                     }
                 }, true);
