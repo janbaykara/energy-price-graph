@@ -419,11 +419,11 @@ angular.module('main').
                             .attr("y", function(d, i) {
                                 return scale.y(parseFloat(d[thisLine.path])) + "%"
                             })
-                            .attr("width", "51")
+                            .attr("width", "55")
                             .attr("height", "19")
                             .attr("rx","3")
                             .attr("ry","3")
-                            .attr("transform","translate(-25,-9)")
+                            .attr("transform","translate(-27,-9)")
 
                         energyLine
                             .selectAll(".label")
@@ -438,7 +438,7 @@ angular.module('main').
                             })
                             .attr("transform","translate(0,5)")
                             .text(function(d) {
-                                return "£"+parseFloat(d[thisLine.path]).toFixed(3)
+                                return ( d[thisLine.path] * 100 ).toFixed(3) + "p"
                             })
 
                         var iconSize = 25
