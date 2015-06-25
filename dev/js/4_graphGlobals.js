@@ -441,22 +441,33 @@ angular.module('main').
                                 return "£"+parseFloat(d[thisLine.path]).toFixed(3)
                             })
 
+                        var iconSize = 25
+
+                        var energyW = iconSize
+                        var energyH = energyW
+                        // Energy
                         energyLine
                             .selectAll(".label")
-                            .append("text")
-                            .attr("class","annotation")
-                            .attr("x", function(d, i) {
-                                return scale.x(QYtoDate(d)) + lineOffset + "%"
-                            })
-                            .attr("y", function(d, i) {
-                                return scale.y(parseFloat(d[thisLine.path])) + "%"
-                            })
-                            .text(function(d) {
-                                return thisLine.display+" business "+energyType+" costs"
-                            })
-                            .attr("text-anchor","middle")
-                            .attr("transform","translate(0,-20)")
-                            .attr("visibility", "hidden")
+                            .append("image")
+                            .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                            .attr("y", function(d, i) { return scale.y(parseFloat(d[thisLine.path])) + "%" })
+                            .attr("transform", "translate("+( -(energyW/2) + (-energyW * 1.5) )+","+( -(energyH/2) )+")")
+                            .attr("height", energyH)
+                            .attr("width", energyW)
+                            .attr("xlink:href", "build/img/energy-"+energyType+".png")
+
+                        var sizeH = iconSize
+                        var sizeW = 60
+                        // Size
+                        energyLine
+                            .selectAll(".label")
+                            .append("image")
+                            .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                            .attr("y", function(d, i) { return scale.y(parseFloat(d[thisLine.path])) + "%" })
+                            .attr("transform", "translate("+( -(sizeW/1.4) + (sizeW) )+","+( -(sizeH/2) )+")")
+                            .attr("height", sizeH)
+                            .attr("width", sizeW)
+                            .attr("xlink:href", "build/img/business-"+thisLine.class+".png")
                     })
                 })
             }
