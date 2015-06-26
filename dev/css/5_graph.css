@@ -134,6 +134,12 @@ line.highlighted {
     opacity: 0.5;
 }
 
+.stories *,
+.axes *,
+.grids * {
+  shape-rendering: crispEdges;
+}
+
 @media screen and (max-width: 680px) {
     .axis text {
         font-size: 10px;

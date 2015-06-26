@@ -1,5 +1,13 @@
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$timeout) {
+
+        $scope.sources = {
+            stories: "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446",
+            electricity: "https://docs.google.com/spreadsheets/d/16IfQH23bpHdzvY6-IhJ8FAd6rx_nLh-2tnOFkZlwAKA/edit#gid=0",
+            gas: "https://docs.google.com/spreadsheets/d/1FCS8w-_YndjmmB8xT-sI4j7KPaALGKZiuAv5VWbvZ2k/edit#gid=0"
+        }
+        console.log($scope.sources)
+
         $scope.scroll = {
             min: 0,
             max: $(document).height() - $(window).height()
@@ -34,7 +42,7 @@ angular.module('main', ['ngRetina'])
 
         // Load stories
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446", // Published
+            url: $scope.sources.stories, // Published
             query: "select A,B,C,D,E,F,G",
             callback: function loadedStoryData(err, opts, res) {
                 $scope.data.stories = sanitise(res);
@@ -45,7 +53,7 @@ angular.module('main', ['ngRetina'])
 
         // Load electricity price data
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/16IfQH23bpHdzvY6-IhJ8FAd6rx_nLh-2tnOFkZlwAKA/edit#gid=0", // Published
+            url: $scope.sources.electricity, // Published
             query: "select A,B,C,D,E,F,G,H,I,J,K,L",
             callback: function loadedElectricityData(err, opts, res) {
                 $scope.data.energy.electricity = sanitise(res)
@@ -56,7 +64,7 @@ angular.module('main', ['ngRetina'])
 
         // Load gas price data
         sheetrock({
-            url: "https://docs.google.com/spreadsheets/d/1FCS8w-_YndjmmB8xT-sI4j7KPaALGKZiuAv5VWbvZ2k/edit#gid=0", // Published
+            url: $scope.sources.gas, // Published
             query: "select A,B,C,D,E,F,G,H,I,J",
             callback: function loadedGasData(err, opts, res) {
                 $scope.data.energy.gas = sanitise(res)

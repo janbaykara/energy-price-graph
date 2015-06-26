@@ -4,8 +4,8 @@
 <?php
     $url = "";
     $asseturl = $url."build/";
-    $description = "___DESC___";
-    $title = '___TITLE___'
+    $description = "An interactive timeline which tracks trends in electricity and gas prices for small businesses from 2004 to the present day.";
+    $title = 'Energy Price Timeline | SwitchmyBusiness.com'
 ?>
 
 <head>
