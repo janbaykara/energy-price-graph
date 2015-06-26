@@ -37,7 +37,7 @@ function dPrev(data,i) {
 
 function visibility(i,index) {
     hidden = index < i
-    return hidden ? 'hidden' : 'visibility'
+    return hidden ? 'hidden' : 'visible'
 }
 
 function reach(index) {
@@ -113,7 +113,7 @@ angular.module('main').
                             d3.max(scope.data.energy.electricity, function(d) { return QYtoDate(d) })
                         ])
                         .range([margin.left, 100-margin.right])
-                        .nice()
+                        .nice(d3.time.year)
                 }
 
 
@@ -139,7 +139,7 @@ angular.module('main').
                     .attr("y", "100%")
                     // axis points
                     .selectAll("text")
-                    .data(scale.x.ticks(20)) //dateToQY - 30
+                    .data(scale.x.ticks()) //dateToQY - 30
                     .enter()
                     //
                     .append("text")
@@ -164,7 +164,7 @@ angular.module('main').
 
                 grids.append("g")
                     .selectAll("line")
-                    .data(scale.x.ticks(20)) //dateToQY - 30
+                    .data(scale.x.ticks()) //dateToQY - 30
                     .enter()
                     //
                     .append("line")
@@ -284,21 +284,19 @@ angular.module('main').
                             .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                             .attr("y1", function(d, i) { return margin.top + "%" })
                             .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
-                            .attr("stroke-width", function(d, i) {
-                                return quarterWidth + "%"
-                            })
+                            .attr("stroke-width", quarterWidth+"%")
                             .attr("visibility", function(d, i) {
                                 var isValidYear = _.any(yars,function(x) { return x === d.year })
                                 return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
                             })
                             .attr("class", function(d, i) {
-                                return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
+                                return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
                             })
                     } else {
                         stories
                             .selectAll("line")
                             .attr("class", function(d, i) {
-                                return "event-bar "+d.type+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : '')
+                                return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
                             })
                     }
 
@@ -325,7 +323,9 @@ angular.module('main').
 
                             energyPlot
                                 .selectAll("circle")
-                                .attr("r", pointSize)
+                                .attr("r", function(d, i) {
+                                    return (QYtoDate(d).valueOf() == indexDate.valueOf() ? pointSize * 1.5 : pointSize)
+                                })
                                 .attr("cx", function(d, i) { // Time
                                     return scale.x(QYtoDate(d)) + lineOffset + "%"
                                 })
@@ -337,7 +337,13 @@ angular.module('main').
                                     return visibility(i,scope.index)
                                 })
                                 .attr("class", function(d, i) {
-                                    return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : '')
+                                    return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : null)
+                                })
+                        } else {
+                            energyPlot
+                                .selectAll("circle")
+                                .attr("r", function(d, i) {
+                                    return (QYtoDate(d).valueOf() == indexDate.valueOf() ? pointSize * 1.5 : pointSize)
                                 })
                         }
                     })

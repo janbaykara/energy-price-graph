@@ -1,5 +1,5 @@
 angular.module('main', ['ngRetina'])
-    .controller('main', function($scope,$timeout,$compile) {
+    .controller('main', function($scope,$timeout) {
         $scope.scroll = {
             min: 0,
             max: $(document).height() - $(window).height()
