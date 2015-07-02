@@ -45,35 +45,48 @@
             <h1>Enterprise Energy Prices</h1>
             <h2>A Data Journey</h2>
         </section> -->
+        <section id='instructions' class='aln-h-m'>
+            <div class='inner'>
+                <header>
+                    <h2 class='graph-title'>
+                        Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
+                        <span class='energies'>
+                            <span class='active energy-selector {{name}}'
+                                ng-repeat-start='(name, value) in data.energy'
+                            ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
+                        </span>
+                    </h2>
+                    <div class='graph-key'>
+                        <div class='inline-block graph-key__item'>
+                            <span><em>Small</em> Businesses</span>
+                            <svg class='line' width='50px' height='15px'>
+                                <g class='electricity'><g class='average_small'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
+                                <g class='gas'><g class='average_small'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
+                            </svg>
+                        </div>
+                        <div class='inline-block graph-key__item'>
+                            <span><em>Large</em> Businesses</span>
+                            <svg class='line' width='50px' height='15px'>
+                                <g class='electricity'><g class='average_large'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
+                                <g class='gas'><g class='average_large'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
+                            </svg>
+                        </div>
+                    </div>
+                </header>
+                <p>Gas and electricity prices fluctuate on a daily, and sometimes even hourly, basis. It’s a volatile market influenced by everything from global conflict to natural disasters. The size of your business could even be affecting the price paid per kilowatt-hour.</p>
+
+                <p>This interactive graph tracks the average cost of gas and electricity; highlighting the disparity between the price paid by large corporations and small businesses and the effect of world events.</p>
+
+                <p>Simply scroll to begin.</p>
+
+                <p class='instructions-minor'>This interactive graph uses data from the Department of Energy and Climate change. We’ve combined this with news stories from the past decade to help illustrate the effect that global conflict, natural disasters and politics can have on fuel prices.</p>
+
+                <img class='scrollimg' src='http://yzalis.com/img/scroll-down.png' />
+            </line>
+        </section>
         <section id='data-view'>
-            <header>
-                <h2 class='graph-title'>
-                    Price per <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> for
-                    <span class='energies'>
-                        <span class='active energy-selector {{name}}'
-                            ng-repeat-start='(name, value) in data.energy'
-                        ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
-                    </span>
-                </h2>
-                <div class='graph-key'>
-                    <div class='inline-block graph-key__item'>
-                        <span><em>Small</em> Businesses</span>
-                        <svg class='line' width='50px' height='15px'>
-                            <g class='electricity'><g class='average_small'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
-                            <g class='gas'><g class='average_small'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
-                        </svg>
-                    </div>
-                    <div class='inline-block graph-key__item'>
-                        <span><em>Large</em> Businesses</span>
-                        <svg class='line' width='50px' height='15px'>
-                            <g class='electricity'><g class='average_large'><line x1='0' x2='100%' y1='33%' y2='33%' /></g></g>
-                            <g class='gas'><g class='average_large'><line x1='0' x2='100%' y1='66%' y2='66%' /></g></g>
-                        </svg>
-                    </div>
-                </div>
-            </header>
-            <div id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></div>
-            <nav id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
+            <section id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></section>
+            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
                 <ul class='story-list' date-list-iteration-group>
                     <li ng-repeat='story in getStories() track by $index' date-list-iteration-item ng-click='setIndex(story)'>
                         <article class='story-list__article'>
@@ -89,11 +102,7 @@
                         </article>
                     </li>
                 </ul>
-            </nav>
-            <div id='instructions' class='aln-h-m'>
-                Scroll down
-                <img src='http://yzalis.com/img/scroll-down.png' />
-            </div>
+            </section>
         </section>
     </main>
 

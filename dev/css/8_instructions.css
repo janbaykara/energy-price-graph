@@ -1,0 +1,70 @@
+#instructions {
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    position: absolute !important;
+    transition: 0.5 all ease;
+    z-index: 999;
+    background: radial-gradient(at center, rgba(9, 44, 56,1), rgba(9, 44, 56,1), rgba(9, 44, 56,0));
+}
+
+#instructions p {
+    background: #092C38;
+}
+
+.scrollimg {
+    display: block;
+    width: 50px;
+    margin: 0 auto;
+}
+
+#instructions .inner {
+    width: 50%;
+    text-align: left;
+    font-size: 18px;
+    line-height: 1.2em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.instructions-minor {
+    opacity: 0.5;
+    font-size: 100% !important;
+}
+
+/* -- */
+
+@media screen and (min-width: 680px) {
+    .has-scrolled #instructions {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 850px) {
+
+    #instructions .inner {
+        padding: 0 20px;
+        width: 90%;
+    }
+}
+@media screen and (max-width: 680px) {
+    #instructions {
+        top: 0% !important;
+        background: #092C38;
+        height: 100%;
+        overflow-y: scroll;
+    }
+}
+
+
+@media screen and (max-height: 650px) {
+    #instructions {
+        top: 0% !important;
+        background: #092C38;
+        height: 100%;
+        overflow-y: scroll;
+    }
+}
