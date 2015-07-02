@@ -3,7 +3,7 @@
 }
 
 @media screen and (max-height: 680px) {
-    .has-scrolled .graph-title {
+/*    .has-scrolled .graph-title {
         font-size: 1.1em;
         margin: 10px auto 5px;
     }
@@ -17,11 +17,30 @@
     .has-scrolled .graph-key svg {
         display: inline-block;
         vertical-align: middle;
-    }
+    }*/
     #stories {
         display: none;
+        overflow: hidden;
     }
     .has-scrolled #stories {
         display: block;
+    }
+    .story-list__description {
+        max-height: 1px !important;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .story-list__headline a { display: none;}
+
+    .expanded .story-list__headline a { display: inline;}
+    .expanded #graph {
+        opacity: 0.8;
+    }
+    .expanded #stories {
+        height: 170px !important;
+        overflow-y: auto;
+    }
+    .expanded .story-list__description {
+        max-height: 250px !important;
     }
 }

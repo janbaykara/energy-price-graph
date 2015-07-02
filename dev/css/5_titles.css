@@ -46,6 +46,9 @@
     .graph-key__item span:before {
         content: "Cost to ";
     }
+    .graph-title {
+
+    }
 }
 .graph-key em {
     text-transform: uppercase;

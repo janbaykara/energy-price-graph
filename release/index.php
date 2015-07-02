@@ -41,10 +41,6 @@
 <body scroll=2000 class='loading'>
 
     <main>
-        <!-- <section id='title-page' full-screen>
-            <h1>Enterprise Energy Prices</h1>
-            <h2>A Data Journey</h2>
-        </section> -->
         <section id='instructions' class='aln-h-m'>
             <div class='inner'>
                 <header>
@@ -79,16 +75,23 @@
 
                 <p>Simply scroll to begin.</p>
 
+                <img class='scrollimg' src='http://yzalis.com/img/scroll-down.png' />
+
                 <p class='instructions-minor'>This interactive graph uses data from the Department of Energy and Climate change. We’ve combined this with news stories from the past decade to help illustrate the effect that global conflict, natural disasters and politics can have on fuel prices.</p>
 
-                <img class='scrollimg' src='http://yzalis.com/img/scroll-down.png' />
             </line>
         </section>
         <section id='data-view'>
+        <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
             <section id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></section>
-            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'>
+            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'
+                ng-click='toggleExpand()'
+            >
                 <ul class='story-list' date-list-iteration-group>
-                    <li ng-repeat='story in getStories() track by $index' date-list-iteration-item ng-click='setIndex(story)'>
+                    <li date-list-iteration-item
+                        ng-repeat='story in getStories() track by $index'
+                        ng-click='setIndex(story)'
+                    >
                         <article class='story-list__article'>
                             <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
                             <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>

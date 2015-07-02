@@ -12,7 +12,8 @@
 }
 
 #instructions p {
-    background: #092C38;
+    margin: 10px 0;
+    background: none;
 }
 
 .scrollimg {
@@ -31,8 +32,10 @@
 }
 
 .instructions-minor {
-    opacity: 0.5;
-    font-size: 100% !important;
+    opacity: 0.3;
+    font-size: 75% !important;
+    line-height: 1.15em;
+    margin-top: 15px !important;
 }
 
 /* -- */
@@ -54,8 +57,26 @@
     #instructions {
         top: 0% !important;
         background: #092C38;
-        height: 100%;
-        overflow-y: scroll;
+        /*height: 100%;*/
+        /*overflow-y: scroll;*/
+    }
+    .graph-key {
+        display: none;
+    }
+    #instructions {
+        background: rgba(9, 44, 56,0.9);
+    }
+
+    #instructions .inner {
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.1em;
+    }
+
+    .graph-title {
+        font-size: 34px;
+        margin-top: 7px;
+        margin-bottom: 10px;
     }
 }
 
@@ -64,7 +85,7 @@
     #instructions {
         top: 0% !important;
         background: #092C38;
-        height: 100%;
-        overflow-y: scroll;
+        /*height: 100%;*/
+        /*overflow-y: scroll;*/
     }
 }

@@ -35,17 +35,38 @@ abbr {
   height: 100%;
   width: 100%;
 }
+
+
 #graph {
   height: 65%;
   padding: 0 10px;
   /*position: absolute;*/
   width: 95%;
   margin: 45px auto 20px;
+  background: rgb(9, 44, 56);
 }
+#stories {
+    position: relative;
+    margin-top: 25px;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 300px;
+    transition: all 0.5s ease;
+    background: #092c38;
+}
+
 
 @media screen and (max-width: 680px) {
     #graph {
-      margin: 20px auto 10px;
-        height: 60%;
+      margin: 5% auto;
+      height: 75%;
     }
+    #stories {
+      overflow-y: auto;
+      bottom: 0;
+      position: fixed;
+      width: 100%;
+      height: 80px !important;
+      margin-top: 10px;
+  }
 }

@@ -1,6 +1,10 @@
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$timeout) {
 
+        $scope.go = false
+
+        $scope.expandValue = false
+
         $scope.sources = {
             stories: "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446",
             electricity: "https://docs.google.com/spreadsheets/d/16IfQH23bpHdzvY6-IhJ8FAd6rx_nLh-2tnOFkZlwAKA/edit#gid=0",
@@ -20,8 +24,6 @@ angular.module('main', ['ngRetina'])
                 gas: null
             }
         }
-
-        $scope.go = false
 
         function isNumber(n) {
           return !isNaN(parseFloat(n)) && isFinite(n);
@@ -143,6 +145,21 @@ angular.module('main', ['ngRetina'])
             if(!$scope.go) return 0;
             setIndex($scope.data.energy.electricity,story)
         }
+
+        $scope.toggleExpand = function() {
+            console.log("Clicked #stories")
+            $scope.expandValue = !$scope.expandValue
+        }
+
+        $scope.getExpand = function() {
+            console.log("Getting .expandValue",$scope.expandValue)
+            // $scope.$apply()
+            return $scope.expandValue
+        }
+
+        $scope.$watch('expandValue', function(x,y) {
+            $('#data-view').attr('class', x ? 'expanded' : 'discrete' )
+        })
     })
 
 function setIndex(range,story) {
