@@ -48,7 +48,7 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G",
             callback: function loadedStoryData(err, opts, res) {
                 $scope.data.stories = sanitise(res);
-                $scope.$apply()
+                // $scope.$apply()
                 $scope.onLoaded('stories')
             }
         });
@@ -59,7 +59,7 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G,H,I,J,K,L",
             callback: function loadedElectricityData(err, opts, res) {
                 $scope.data.energy.electricity = sanitise(res)
-                $scope.$apply()
+                // $scope.$apply()
                 $scope.onLoaded('elec')
             }
         });
@@ -70,7 +70,7 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G,H,I,J",
             callback: function loadedGasData(err, opts, res) {
                 $scope.data.energy.gas = sanitise(res)
-                $scope.$apply()
+                // $scope.$apply()
                 $scope.onLoaded('gas')
             }
         });
@@ -78,7 +78,7 @@ angular.module('main', ['ngRetina'])
         // Check for data loaded
         var loaded = {}
         $scope.onLoaded = function(from) {
-            if(loaded[from]) return false;
+            if(loaded[from] === true) return false;
             console.log("LOADED "+from)
 
             loaded[from] = true;
@@ -100,24 +100,26 @@ angular.module('main', ['ngRetina'])
 
             $scope.ticks = $scope.data.energy.electricity.length
 
-            if($(window).width() < 680) {
-                $scope.setIndex($scope.data.energy.electricity[43])
-            }
-            $timeout(function() {
+            yars = _.uniq(_.map($scope.data.energy.electricity,'year'));
+            $scope.useableStories = _.filter($scope.data.stories, function(y) {
+                return _.any(yars,function(x) { return x === y.year })
+            });
+
+            // if($(window).width() < 680) {
+            //     $scope.setIndex($scope.data.energy.electricity[43])
+            // }
+            // $timeout(function() {
                 $scope.setIndex($scope.data.energy.electricity[0])
-                $timeout(function() {
+                // $timeout(function() {
                     $('body').removeClass('loading')
-                },50)
-            },10)
+                // },50)
+            // },10)
         }
 
         $scope.getStories = function() {
             if(!$scope.go) return false;
 
-            yars = _.uniq(_.map($scope.data.energy.electricity,'year'));
-            return _.filter($scope.data.stories, function(y) {
-                return _.any(yars,function(x) { return x === y.year })
-            });
+            return $scope.useableStories;
         }
 
         $scope.getRange = function() {
@@ -153,7 +155,6 @@ angular.module('main', ['ngRetina'])
 
         $scope.getExpand = function() {
             console.log("Getting .expandValue",$scope.expandValue)
-            // $scope.$apply()
             return $scope.expandValue
         }
 

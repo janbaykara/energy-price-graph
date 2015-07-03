@@ -72,6 +72,14 @@
     100% {-webkit-transform: scale(1.1, 1.1); opacity: 1;}
 }
 
+@media screen and (min-width: 681px) {
+    .story-list {
+        opacity: 0;
+    }
+    .historic.story-list {
+        opacity: 1;
+    }
+}
 
 @media screen and (max-width: 680px) {
     #stories {

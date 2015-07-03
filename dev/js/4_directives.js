@@ -1,13 +1,14 @@
 angular.module('main')
     .directive("scroll", function ($window) {
         return function(scope, element, attrs) {
-            angular.element($window).bind("scroll", calcScrolled)
             element.addClass('scrolled-true')
             scope.hasScrolled = false
 
-            function calcScrolled() {
-                scope.scrollDistance = this.pageYOffset
-                 if (this.pageYOffset >= attrs.scroll) {
+            var calcScrolled = function() {
+                var pageYOffset = $window.pageYOffset
+
+                scope.scrollDistance = pageYOffset
+                 if (pageYOffset >= attrs.scroll) {
                      scope.hasScrolled = true
                      scope.scrolled = true
                      element.addClass('has-scrolled')
@@ -18,8 +19,11 @@ angular.module('main')
                      element.removeClass('scrolled-true')
                      element.addClass('scrolled-false')
                  }
-                scope.$apply()
+
+                 scope.$apply()
             }
+
+            $(window).bind("scroll", calcScrolled)
 
             calcScrolled()
         }
@@ -47,6 +51,13 @@ angular.module('main')
                     var value = indexFromGlobalIndex() * $item.outerWidth()
                     $group.css("width", "100%")
                     $group.css("margin-left", -value)
+                    if(value < 0) {
+                        $group.addClass('prehistoric')
+                        $group.removeClass('historic')
+                    } else {
+                        $group.removeClass('prehistoric')
+                        $group.addClass('historic')
+                    }
                     $(".highlighted").removeClass('highlighted')
                     var storyIndex = indexFromGlobalIndex() + 1
                     $("[date-list-iteration-item]:nth-child("+storyIndex+")").addClass("highlighted")

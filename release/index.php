@@ -75,8 +75,6 @@
 
                 <p>Simply scroll to begin.</p>
 
-                <img class='scrollimg' src='http://yzalis.com/img/scroll-down.png' />
-
                 <p class='instructions-minor'>This interactive graph uses data from the Department of Energy and Climate change. We’ve combined this with news stories from the past decade to help illustrate the effect that global conflict, natural disasters and politics can have on fuel prices.</p>
 
             </line>
