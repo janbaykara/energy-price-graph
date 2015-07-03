@@ -33,7 +33,7 @@ svg:not(:root) {
 /* ----
     PLOTS
 */
-.line line {
+.line .linePath {
     stroke-width: 2;
     fill: none;
 }
@@ -43,24 +43,24 @@ svg:not(:root) {
 .gas .average_small circle { fill: #B55AFF; }
 .gas .average_small rect { fill: #B55AFF; }
 .gas .average_small .annotation { fill: #B55AFF; }
-.gas .average_small line { stroke: #B55AFF; }
+.gas .average_small .linePath { stroke: #B55AFF; }
 
 .gas .average_large circle { fill: #E9168C; }
 .gas .average_large rect { fill: #E9168C; }
 .gas .average_large .annotation { fill: #E9168C; }
-.gas .average_large line { stroke: #E9168C; }
+.gas .average_large .linePath { stroke: #E9168C; }
 
 .electricity { color: #C1D540; }
 
 .electricity .average_small circle { fill: #00FA87; }
 .electricity .average_small rect { fill: #00FA87; }
 .electricity .average_small .annotation { fill: #00FA87; }
-.electricity .average_small line { stroke: #00FA87; }
+.electricity .average_small .linePath { stroke: #00FA87; }
 
 .electricity .average_large circle { fill: #C1D540; }
 .electricity .average_large rect { fill: #C1D540; }
 .electricity .average_large .annotation { fill: #C1D540; }
-.electricity .average_large line { stroke: #C1D540; }
+.electricity .average_large .linePath { stroke: #C1D540; }
 
 
 svg .scatter {
@@ -85,7 +85,7 @@ svg .scatter {
 .event-bar.finance { stroke: #0088E6; }
 .event-bar.output { stroke: #8C7667; }
 
-line.highlighted {
+.linePath.highlighted {
     opacity: 0.75;
 }
 
