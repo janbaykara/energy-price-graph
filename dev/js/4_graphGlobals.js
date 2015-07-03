@@ -101,7 +101,7 @@ angular.module('main').
                     y: d3.scale.linear()
                         .domain([
                             0,
-                            d3.max(scope.data.energy.electricity, function(d) { return parseFloat(d['verysmall']) })
+                            d3.max(scope.data.energy.electricity, function(d) { return d['verysmall'] })
                         ])
                         .range([100-margin.bottom, margin.top])
                         .nice()
@@ -201,6 +201,73 @@ angular.module('main').
                     })
                 })
 
+                // Labels
+                _.each(scope.data.energy, function(dataset,energyType) {
+                    _.each(lines, function(thisLine) {
+                        var energyLineGroup = svg.select("."+energyType)
+                        var energyLine = energyLineGroup.select(".line."+thisLine.class+'.'+thisLine.path)
+                        var indexObj = scope.data.energy[energyType][scope.index]
+                        var iconSize = 25
+                        var energyW = iconSize
+                        var energyH = energyW
+                        var sizeH = iconSize
+                        var sizeW = 60
+
+                    // Lines
+                    energyLine
+                        .selectAll("line")
+                        .data(dataset)
+                        .enter()
+                        .append("line")
+
+                    // LABELS
+                        energyLine
+                            .selectAll(".label")
+                            .data(dataset.filter(function(d) {
+                                return d.year === indexObj.year
+                                    && d.quarter === indexObj.quarter;
+                            }))
+                            .enter()
+                            .append("svg")
+                            .attr("class", "label")
+
+                        energyLine
+                            .selectAll(".label")
+                            .append("rect")
+                            .attr("class","box")
+                            .attr("transform","translate(-27,-9)")
+                            .attr("width", "55")
+                            .attr("height", "19")
+                            .attr("rx","3")
+                            .attr("ry","3")
+
+                        energyLine
+                            .selectAll(".label")
+                            .append("text")
+                            .attr("class","price")
+                            .attr("transform","translate(0,5)")
+                            .attr("text-anchor", "middle")
+
+                        energyLine
+                            .selectAll(".label")
+                            .append("image")
+                            .attr("class","img-energy")
+                            .attr("transform", "translate("+( -(energyW/2) + (-energyW * 1.5) )+","+( -(energyH/2) )+")")
+                            .attr("height", energyH)
+                            .attr("width", energyW)
+                            .attr("xlink:href", "build/img/energy-"+energyType+".png")
+
+                        energyLine
+                            .selectAll(".label")
+                            .append("image")
+                            .attr("class","img-size")
+                            .attr("transform", "translate("+( -(sizeW/1.4) + (sizeW) )+","+( -(sizeH/2) )+")")
+                            .attr("height", sizeH)
+                            .attr("width", sizeW)
+                            .attr("xlink:href", "build/img/business-"+thisLine.class+".png")
+                    })
+                })
+
                 scope.$watch("index", drawData, true);
                 drawData();
             }
@@ -229,6 +296,7 @@ angular.module('main').
 
                 currentAnnotation
                     .selectAll(".currentDate")
+                    // .transition()
                     .attr("text-anchor","middle")
                     .attr("y", margin.top+5+"%")
                     .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
@@ -254,10 +322,12 @@ angular.module('main').
 
                 currentAnnotation
                     .selectAll(".currentTick")
+                    // .transition()
                     .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .attr("y1", function(d, i) { return margin.top+6+"%" })
                     .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+
 
                 /// DATA
                 _.each(scope.data.energy, function(dataset,energyType) {
@@ -352,6 +422,8 @@ angular.module('main').
                         .select("."+energyType)
 
                     var labelElements = svg.select(".labels")
+                            .append("rect")
+                            .attr("class","box")
 
                     _.each(lines, function(thisLine) {
                         reach(scope.index)
@@ -364,8 +436,6 @@ angular.module('main').
                             energyLine
                                 .selectAll("line")
                                 .data(dataset)
-                                .enter()
-                                .append("line")
                                 .call(function(){
                                     $compile(this[0].parentNode)(scope);
                                 });
@@ -376,6 +446,12 @@ angular.module('main').
                                     return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
                                 })
                                 .attr("y1", function(d, i) {
+                                    return scale.y(dPrev(dataset,i)[thisLine.path]) + "%"
+                                })
+                                .attr("x2", function(d, i) {
+                                    return scale.x(QYtoDate(dPrev(dataset,i))) + lineOffset + "%"
+                                })
+                                .attr("y2", function(d, i) {
                                     return scale.y(dPrev(dataset,i)[thisLine.path]) + "%"
                                 })
                                 .attr("x2", function(d, i) { // Time
@@ -392,88 +468,31 @@ angular.module('main').
                         //////////
                         // Labels
                         //////////
-                        var label = energyLine
+                        energyLine
                             .selectAll(".label")
                             .data(dataset.filter(function(d) {
                                 return d.year === indexObj.year
                                     && d.quarter === indexObj.quarter;
                             }))
-                            .enter()
-                            .append("g")
-                            .attr("class","label")
-                            .on("mouseover", function(){
-                                d3.selectAll(".annotation").style("visibility", "visible")
-                            })
-                            .on("mouseout", function(){
-                                d3.selectAll(".annotation").style("visibility", "hidden")
-                            })
                             .call(function(){
                                 $compile(this[0].parentNode)(scope);
                             });
 
                         energyLine
-                            .selectAll(".label *")
-                            .remove();
-
-                        energyLine
                             .selectAll(".label")
-                            .append("rect")
-                            .attr("class","box")
+                            // .transition()
                             .attr("x", function(d, i) {
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })
                             .attr("y", function(d, i) {
-                                return scale.y(parseFloat(d[thisLine.path])) + "%"
+                                return scale.y(d[thisLine.path]) + "%"
                             })
-                            .attr("width", "55")
-                            .attr("height", "19")
-                            .attr("rx","3")
-                            .attr("ry","3")
-                            .attr("transform","translate(-27,-9)")
 
                         energyLine
-                            .selectAll(".label")
-                            .append("text")
-                            .attr("class","price")
-                            .attr("text-anchor", "middle")
-                            .attr("x", function(d, i) {
-                                return scale.x(QYtoDate(d)) + lineOffset + "%"
-                            })
-                            .attr("y", function(d, i) {
-                                return scale.y(parseFloat(d[thisLine.path])) + "%"
-                            })
-                            .attr("transform","translate(0,5)")
+                            .selectAll(".label .price")
                             .text(function(d) {
                                 return ( d[thisLine.path] * 100 ).toFixed(3) + "p"
                             })
-
-                        var iconSize = 25
-
-                        var energyW = iconSize
-                        var energyH = energyW
-                        // Energy
-                        energyLine
-                            .selectAll(".label")
-                            .append("image")
-                            .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                            .attr("y", function(d, i) { return scale.y(parseFloat(d[thisLine.path])) + "%" })
-                            .attr("transform", "translate("+( -(energyW/2) + (-energyW * 1.5) )+","+( -(energyH/2) )+")")
-                            .attr("height", energyH)
-                            .attr("width", energyW)
-                            .attr("xlink:href", "build/img/energy-"+energyType+".png")
-
-                        var sizeH = iconSize
-                        var sizeW = 60
-                        // Size
-                        energyLine
-                            .selectAll(".label")
-                            .append("image")
-                            .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                            .attr("y", function(d, i) { return scale.y(parseFloat(d[thisLine.path])) + "%" })
-                            .attr("transform", "translate("+( -(sizeW/1.4) + (sizeW) )+","+( -(sizeH/2) )+")")
-                            .attr("height", sizeH)
-                            .attr("width", sizeW)
-                            .attr("xlink:href", "build/img/business-"+thisLine.class+".png")
                     })
                 })
             }

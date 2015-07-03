@@ -149,7 +149,6 @@ angular.module('main', ['ngRetina'])
         }
 
         $scope.toggleExpand = function() {
-            console.log("Clicked #stories")
             $scope.expandValue = !$scope.expandValue
         }
 
