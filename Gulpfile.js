@@ -1,7 +1,7 @@
 // Dependencies
 var gulp = require('gulp')
-  , gulpLoadPlugins = require('gulp-load-plugins')
-  , plugins = gulpLoadPlugins()
+  , plugins = require('gulp-load-plugins')()
+  , sourcemaps = require('gulp-sourcemaps')
 
 // Paths
 var dirs = {
@@ -55,12 +55,14 @@ var dirs = {
   // Project JS
   gulp.task('js', function() {
     gulp.src(dirs.dev.js)
-    .pipe(plugins.concat('app.js'))
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(plugins.uglify({mangle: false}))
-    .pipe(plugins.rename({suffix: '.min'}))
-    .pipe(plugins.size({showFiles: true}))
+    .pipe(plugins.size({title: "JS files"}))
+    .pipe(sourcemaps.init())
+        .pipe(plugins.concat('app.js'))
+        .pipe(plugins.uglify({mangle: false}))
+        .pipe(plugins.rename({suffix: '.min'}))
+    .pipe(sourcemaps.write('../maps'))
     .pipe(plugins.chmod(777))
+    .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(dirs.prod.scripts));
   });
 
