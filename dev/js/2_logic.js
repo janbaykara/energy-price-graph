@@ -1,10 +1,15 @@
+var leewayTop = 0
+var spatialRange = {
+    min: 0 + leewayTop,
+    max: $(document).height() - $(window).height() - leewayTop
+}
+
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$interval) {
         $scope.showNavGuide = $scope.hideNavGuide = false
-
         $scope.go = false
-
         $scope.expandValue = false
+        $scope.index = 0
 
         $scope.sources = {
             stories:      "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446",
@@ -13,11 +18,6 @@ angular.module('main', ['ngRetina'])
         }
         console.log($scope.sources)
 
-        $scope.scroll = {
-            min: 0,
-            max: $(document).height() - $(window).height()
-        }
-
         $scope.data = {
             stories: null,
             energy: {
@@ -25,6 +25,8 @@ angular.module('main', ['ngRetina'])
                 gas: null
             }
         }
+
+        $scope.spatialRange = spatialRange
 
         function isNumber(n) {
           return !isNaN(parseFloat(n)) && isFinite(n);
@@ -107,7 +109,7 @@ angular.module('main', ['ngRetina'])
                     && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
 
-            $scope.setIndex($scope.data.energy.electricity[0])
+            $scope.goToTick($scope.data.energy.electricity[0])
             $('body').removeClass('loading')
         }
 
@@ -122,7 +124,7 @@ angular.module('main', ['ngRetina'])
                 ///
                 var nowTick = $scope.data.energy.electricity[anim]
                 if(anim < $scope.ticks) {
-                    $scope.setIndex(nowTick)
+                    $scope.goToTick(nowTick)
 
                     var hasStory = _.any($scope.useableStories,function(someStory) {
                         return "Q"+nowTick.quarter+"Y"+nowTick.year === "Q"+someStory.quarter+"Y"+someStory.year
@@ -134,7 +136,7 @@ angular.module('main', ['ngRetina'])
                     anim++
                     animInterval = $interval(animateProgress, duration)
                 } else {
-                    $scope.setIndex($scope.lastColumn)
+                    $scope.goToTick($scope.lastColumn)
                     $scope.showNavGuide = true
                     $interval.cancel(animInterval)
                 }
@@ -166,17 +168,16 @@ angular.module('main', ['ngRetina'])
             return $scope.data;
         }
 
-        $scope.atIndex = function() {
+        $scope.getIndex = function() {
             if(!$scope.go) return 0;
-            var perc = ($scope.scrollDistance / ($scope.scroll.max))
-            return Math.round($scope.ticks * perc)
+            $scope.index = ConvertScrollToIndex($scope.ticks, $scope.spatialRange, $scope.scrollDistance)
+            return $scope.index
         }
 
-        $scope.setIndex = function(story) {
+        $scope.goToTick = function(story) {
             if(!$scope.go) return 0;
-            setIndex($scope.data.energy.electricity,story)
+            $scope.index = goToTick($scope.data.energy.electricity, story)
         }
-
         $scope.toggleExpand = function() {
             $scope.expandValue = !$scope.expandValue
         }
@@ -185,19 +186,25 @@ angular.module('main', ['ngRetina'])
             console.log("Getting .expandValue",$scope.expandValue)
             return $scope.expandValue
         }
-
-        $scope.$watch('expandValue', function(x,y) {
-            $('#data-view').attr('class', x ? 'expanded' : 'discrete' )
-        })
     })
 
-function setIndex(range,story) {
-    var i = _.findIndex(range, function(evt) {
+function goToTick(indexRange, story) {
+    var i = _.findIndex(indexRange, function(evt) {
         return evt.quarter === story.quarter && evt.year === story.year
     })
+    var scrollYPosn = ConvertIndexToScroll(indexRange.length, spatialRange, i)
+    $(window).scrollTop(scrollYPosn)
+    return scrollYPosn
+}
 
-    var perc = (i / range.length)
-    var max = $(document).height() - $(window).height()
+function ConvertIndexToScroll(indexLength, spatialRange, index) {
+    var indexPerc = index / indexLength
+    var calculated = spatialRange.min + ( indexPerc * (spatialRange.max - spatialRange.min) )
+    return calculated
+}
 
-    $(window).scrollTop(perc * max)
+function ConvertScrollToIndex(indexLength, spatialRange, scrollYPosn) {
+    var spatialPerc = ( Math.max(scrollYPosn - spatialRange.min, 0) ) / spatialRange.max
+    var calculated = Math.round(indexLength * spatialPerc)
+    return calculated
 }

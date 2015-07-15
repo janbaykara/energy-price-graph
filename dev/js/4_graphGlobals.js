@@ -353,7 +353,7 @@ angular.module('main').
                             .data(scope.data.stories)
                             .enter()
                             .append("line")
-                            .on("click", function(d,i){ setIndex(scope.data.energy.electricity,d) })
+                            .on("click", function(d,i){ goToTick(scope.data.energy.electricity,d) })
                             .call(function(){ $compile(this[0].parentNode)(scope); })
 
                         stories

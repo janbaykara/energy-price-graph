@@ -71,5 +71,3 @@ angular.module('main')
             }
         }
     })
-
-    // <div date-list-iterator index="atIndex()" list="stories" >

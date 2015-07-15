@@ -92,8 +92,8 @@
 
         <section id='data-view'>
         <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
-            <section id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></section>
-            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='atIndex()' go='go'
+            <section id='graph' graph-chart='loadedData()' index='getIndex()' go='go'></section>
+            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='getIndex()' go='go'
                 ng-click='toggleExpand()'
             >
                 <ul class='story-list' date-list-iteration-group>
