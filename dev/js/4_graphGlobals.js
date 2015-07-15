@@ -367,20 +367,17 @@ angular.module('main').
                                 var isValidYear = _.any(yars,function(x) { return x === d.year })
                                 return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
                             })
-                            // .attr("class", function(d, i) { return "event-bar "+d.type })
-                            .transition()
-                            .duration(transitionDuration)
-                            .attr("class", function(d, i) {
-                                return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
-                            })
-                            .delay()
-                    } else {
-                        stories
-                            .selectAll("line")
-                            .attr("class", function(d, i) {
-                                return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
-                            })
                     }
+
+                    stories
+                        .selectAll("line")
+                        .attr("class", function(d, i) { return "event-bar "+d.type })
+                        .transition()
+                        .duration(transitionDuration/2)
+                        .attr("class", function(d, i) {
+                            return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
+                        })
+                        .delay(transitionDuration/2)
 
                     //////////
                     // Plots
