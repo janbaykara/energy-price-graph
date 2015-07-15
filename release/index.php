@@ -87,7 +87,7 @@
             <p>
                 Navigate through the stories that influenced energy prices, by clicking the coloured event bars.
             </p>
-            <button ng-click='hideNavGuide = true'>Got it</button>
+            <button class='clickable center block btn big-button' ng-click='hideNavGuide = true'>Got it</button>
         </section>
 
         <section id='data-view'>
