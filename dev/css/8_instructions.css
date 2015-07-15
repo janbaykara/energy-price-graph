@@ -1,19 +1,43 @@
+#navguide,
 #instructions {
-    position: absolute;
-    top: 15%;
-    left: 0;
     width: 100%;
-    text-align: center;
-    color: white;
-    position: absolute !important;
     transition: 0.5 all ease;
     z-index: 999;
     background: radial-gradient(at center, rgba(9, 44, 56,1), rgba(9, 44, 56,1), rgba(9, 44, 56,0));
 }
 
+/* ------- */
+
+#navguide {
+    position: fixed;
+    padding: 30px;
+    margin-top: 50px;
+    text-align: center;
+    display: none;
+}
+
+#navguide.visible {
+    display: block;
+}
+
+/* ------ */
+
+#instructions {
+    top: 15%;
+    left: 0;
+    text-align: center;
+    color: white;
+    position: absolute !important;
+}
+
 #instructions p {
     margin: 10px 0;
     background: none;
+}
+
+#instructions a {
+    color: white;
+    text-decoration: underline !important;
 }
 
 .scrollimg {

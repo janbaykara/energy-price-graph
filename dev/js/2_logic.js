@@ -1,5 +1,6 @@
 angular.module('main', ['ngRetina'])
-    .controller('main', function($scope,$timeout) {
+    .controller('main', function($scope,$interval) {
+        $scope.showNavGuide = $scope.hideNavGuide = false
 
         $scope.go = false
 
@@ -93,28 +94,56 @@ angular.module('main', ['ngRetina'])
 
         // Scroll ranges
         $scope.init = function() {
+            $scope.ticks = $scope.data.energy.electricity.length
+            $scope.lastColumn = $scope.data.energy.electricity[$scope.ticks-1]
+
             $scope.dates = {
-                min: QYtoDate($scope.data.energy,$scope.data.energy.electricity[0]),
-                max: QYtoDate($scope.data.energy,$scope.data.energy.electricity[$scope.data.energy.electricity.length-1])
+                min: QYtoDate( $scope.data.energy, $scope.data.energy.electricity[0] ),
+                max: QYtoDate( $scope.data.energy, $scope.data.energy.electricity[$scope.ticks-1] )
             }
 
-            $scope.ticks = $scope.data.energy.electricity.length
-
-            yars = _.uniq(_.map($scope.data.energy.electricity,'year'));
-            $scope.useableStories = _.filter($scope.data.stories, function(y) {
-                return _.any(yars,function(x) { return x === y.year })
+            $scope.useableStories = _.filter($scope.data.stories, function(story) {
+                return story.year <= $scope.lastColumn.year
+                    && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
 
-            // if($(window).width() < 680) {
-            //     $scope.setIndex($scope.data.energy.electricity[43])
-            // }
-            // $timeout(function() {
-                $scope.setIndex($scope.data.energy.electricity[0])
-                // $timeout(function() {
-                    $('body').removeClass('loading')
-                // },50)
-            // },10)
+            $scope.setIndex($scope.data.energy.electricity[0])
+            $('body').removeClass('loading')
         }
+
+        $scope.anim = function() {
+            var storyMaxN = $scope.useableStories.length - 1;
+            var anim = 0
+            var duration = initialDuration = 350
+            var extendedDuration = 1500
+
+            function animateProgress() {
+                $interval.cancel(animInterval)
+                ///
+                var nowTick = $scope.data.energy.electricity[anim]
+                if(anim < $scope.ticks) {
+                    $scope.setIndex(nowTick)
+
+                    var hasStory = _.any($scope.useableStories,function(someStory) {
+                        return "Q"+nowTick.quarter+"Y"+nowTick.year === "Q"+someStory.quarter+"Y"+someStory.year
+                    })
+
+                    if(hasStory) duration = extendedDuration
+                            else duration = initialDuration
+
+                    anim++
+                    animInterval = $interval(animateProgress, duration)
+                } else {
+                    $scope.setIndex($scope.lastColumn)
+                    $scope.showNavGuide = true
+                    $interval.cancel(animInterval)
+                }
+            }
+
+            var animInterval = $interval(animateProgress, duration)
+        }
+
+        //////
 
         $scope.getStories = function() {
             if(!$scope.go) return false;

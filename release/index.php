@@ -41,6 +41,7 @@
 <body scroll=2000 class='loading'>
 
     <main>
+
         <section id='instructions' class='aln-h-m'>
             <div class='inner'>
                 <header>
@@ -75,10 +76,20 @@
 
                 <p>Simply scroll to begin.</p>
 
-                <p class='instructions-minor'>This interactive graph uses data from the Department of Energy and Climate change. We’ve combined this with news stories from the past decade to help illustrate the effect that global conflict, natural disasters and politics can have on fuel prices.</p>
+                <p class='instructions-minor'>This interactive graph uses <a href='https://www.gov.uk/government/statistical-data-sets/gas-and-electricity-prices-in-the-non-domestic-sector'>data from the Department of Energy and Climate Change</a>. We’ve combined this with news stories from the past decade to help illustrate the effect that global conflict, natural disasters and politics can have on fuel prices.</p>
 
+                <button class='btn clickable big-button block center' ng-click='anim()'>Take a look at the history</button>
             </line>
         </section>
+
+        <section id='navguide' ng-class='{visible: showNavGuide && !hideNavGuide}'>
+            <h1>Browse the stories</h1>
+            <p>
+                Navigate through the stories that influenced energy prices, by clicking the coloured event bars.
+            </p>
+            <button ng-click='hideNavGuide = true'>Got it</button>
+        </section>
+
         <section id='data-view'>
         <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
             <section id='graph' graph-chart='loadedData()' index='atIndex()' go='go'></section>

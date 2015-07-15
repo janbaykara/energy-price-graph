@@ -143,12 +143,11 @@ p {
 
 .big-button {
     /*background: #CAD601;*/
-
-    background: #C3CE00;
+    background: #49C8FF;
     color: white !important;
     border: none;
     border-radius: 6px;
-    padding: 20px;
+    padding: 15px 25px;
     font-size: 20px;
     text-decoration: none !important;
     font-weight: bold;
