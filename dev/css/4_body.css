@@ -34,16 +34,15 @@ abbr {
   position: fixed;
   height: 100%;
   width: 100%;
+  padding: 2.5% 2.5% 17.25%;
 }
-
-
 #graph {
-  height: 65%;
-  padding: 0 10px;
-  /*position: absolute;*/
-  width: 95%;
-  margin: 45px auto 20px;
+  height: 100%;
+  width: 100%%;
   background: rgb(9, 44, 56);
+}
+.detail-phase #data-view {
+    padding: 2.5% 2.5% 27.25%;
 }
 #stories {
     position: relative;
@@ -53,8 +52,9 @@ abbr {
     height: 300px;
     transition: all 0.5s ease;
     background: #092c38;
+    margin-left: -2.5%;
+    margin-right: -2.5%;
 }
-
 
 @media screen and (max-width: 680px) {
     #graph {

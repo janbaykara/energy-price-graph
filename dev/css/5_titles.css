@@ -4,8 +4,8 @@
     color: #49C8FF;
     line-height: 0.95em;
     text-align: center;
-    margin: 20px 0 0;
-    font-size: 2.5em;
+    /*margin: 20px 0 0;*/
+    font-size: 1.75em;
 }
 .graph-title .energy-selector img {
     opacity: 0.2;
@@ -19,7 +19,10 @@
     display: inline-block;
 }
 .graph-title .energy-selector img {
-    vertical-align: top;
+    /*vertical-align: top;*/
+}
+.graph-super-title {
+    font-size: 2.75em;
 }
 
 /*
@@ -53,4 +56,8 @@
 .graph-key em {
     text-transform: uppercase;
     font-style: normal;
+}
+
+.small-title {
+    opacity: 0 !important;
 }

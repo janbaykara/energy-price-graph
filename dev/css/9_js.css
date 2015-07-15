@@ -44,3 +44,12 @@
         max-height: 250px !important;
     }
 }
+
+.loud {
+    opacity: 1 !important;
+}
+
+.intro-phase .pointer-element,
+.intro-phase .energy * {
+    visibility: hidden !important;
+}

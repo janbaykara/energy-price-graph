@@ -6,10 +6,16 @@ var spatialRange = {
 
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$interval) {
-        $scope.showNavGuide = $scope.hideNavGuide = false
         $scope.go = false
-        $scope.expandValue = false
         $scope.index = 0
+
+        $scope.UI = {
+            introPhase: true,
+            summaryPhase: true,
+            detailPhase: false,
+            dataLoaded: false,
+            graphFilled: false
+        }
 
         $scope.sources = {
             stories:      "https://docs.google.com/spreadsheets/d/140T4PZE5K7Hrnn2gV6ZOJojcX3dRFENr16m5LFJQ74s/edit#gid=1108467446",
@@ -110,14 +116,14 @@ angular.module('main', ['ngRetina'])
             });
 
             $scope.goToTick($scope.data.energy.electricity[0])
-            $('body').removeClass('loading')
+            $scope.UI.dataLoaded = true
         }
 
         $scope.anim = function() {
             var storyMaxN = $scope.useableStories.length - 1;
             var anim = 0
-            var duration = initialDuration = 350
-            var extendedDuration = 1500
+            var duration = initialDuration = 100
+            var extendedDuration = initialDuration
 
             function animateProgress() {
                 $interval.cancel(animInterval)
@@ -137,7 +143,10 @@ angular.module('main', ['ngRetina'])
                     animInterval = $interval(animateProgress, duration)
                 } else {
                     $scope.goToTick($scope.lastColumn)
-                    $scope.showNavGuide = true
+                    $scope.UI.introPhase = false
+                    $scope.UI.graphFilled = true
+                    $scope.UI.summaryPhase = false
+                    $scope.UI.detailPhase = true
                     $interval.cancel(animInterval)
                 }
             }
@@ -147,20 +156,18 @@ angular.module('main', ['ngRetina'])
 
         //////
 
+        $scope.onGo = function() {
+            return $scope.go
+        }
+
         $scope.getStories = function() {
             if(!$scope.go) return false;
-
             return $scope.useableStories;
         }
 
         $scope.getRange = function() {
             if(!$scope.go) return false;
-
             return $scope.data.energy.electricity;
-        }
-
-        $scope.onGo = function() {
-            return $scope.go
         }
 
         $scope.loadedData = function() {
@@ -177,14 +184,6 @@ angular.module('main', ['ngRetina'])
         $scope.goToTick = function(story) {
             if(!$scope.go) return 0;
             $scope.index = goToTick($scope.data.energy.electricity, story)
-        }
-        $scope.toggleExpand = function() {
-            $scope.expandValue = !$scope.expandValue
-        }
-
-        $scope.getExpand = function() {
-            console.log("Getting .expandValue",$scope.expandValue)
-            return $scope.expandValue
         }
     })
 

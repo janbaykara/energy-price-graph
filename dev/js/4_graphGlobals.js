@@ -239,7 +239,7 @@ angular.module('main').
                             }))
                             .enter()
                             .append("svg")
-                            .attr("class", "label")
+                            .attr("class", "label pointer-element")
 
                         energyLabel
                             .selectAll(".label")
@@ -305,7 +305,7 @@ angular.module('main').
                     }))
                     .enter()
                     .append("text")
-                    .attr("class","currentDate")
+                    .attr("class","currentDate pointer-element")
                     .call(function(){ $compile(this[0].parentNode)(scope); })
 
                 currentAnnotation
@@ -329,7 +329,7 @@ angular.module('main').
                     }))
                     .enter()
                     .append("line")
-                    .attr("class","currentTick")
+                    .attr("class","currentTick pointer-element")
                     .call(function(){ $compile(this[0].parentNode)(scope); })
 
                 currentAnnotation

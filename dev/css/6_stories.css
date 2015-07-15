@@ -1,3 +1,12 @@
+.story-list__info {
+    display: none;
+}
+.detail-phase .story-list__info {
+    display: block;
+}
+
+/* -- */
+
 .story-list {
     list-style: none;
     white-space: nowrap;
