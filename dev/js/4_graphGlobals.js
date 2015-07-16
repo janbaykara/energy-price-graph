@@ -529,7 +529,7 @@ directive('graphChart', function($compile) {
                                 .attr("r", function(d, i) {
                                     return (QYtoDate(d).valueOf() == indexDate.valueOf() ? pointSize * 1.5 : pointSize)
                                 })
-                                .attr("style", function(d, i) { return visibility(i, scope.index) })
+                                .attr("style", function(d, i) { return visibility(i-1, scope.index, false) })
                                 .attr("class", function(d, i) {
                                     return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : null)
                                 })
