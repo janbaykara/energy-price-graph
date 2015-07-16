@@ -73,7 +73,6 @@
 }
 
 @media screen and (max-width: 850px) {
-
     #instructions .inner {
         padding: 0 20px;
         width: 90%;
@@ -83,39 +82,20 @@
     #instructions {
         top: 0% !important;
         background: #092C38;
-        /*height: 100%;*/
-        /*overflow-y: scroll;*/
-    }
-    .graph-key {
-        display: none;
     }
     #instructions {
         background: rgba(9, 44, 56,0.9);
     }
-
     #instructions .inner {
         padding: 10px;
         font-size: 16px;
         line-height: 1.1em;
     }
-
-    .graph-title {
-        font-size: 30px;
-        margin-top: 7px;
-        margin-bottom: 10px;
-    }
-
-    .graph-super-title {
-        font-size: 34px;
-    }
 }
-
 
 @media screen and (max-height: 650px) {
     #instructions {
         top: 0% !important;
         background: #092C38;
-        /*height: 100%;*/
-        /*overflow-y: scroll;*/
     }
 }

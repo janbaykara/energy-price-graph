@@ -310,7 +310,7 @@ angular.module('main').
 
                 currentAnnotation
                     .selectAll(".currentDate")
-                    .transition().duration(transitionDuration)
+                    .transition().duration(transitionDuration).ease("linear")
                     .attr("text-anchor","middle")
                     .attr("y", margin.top+5+"%")
                     .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
@@ -334,7 +334,7 @@ angular.module('main').
 
                 currentAnnotation
                     .selectAll(".currentTick")
-                    .transition().duration(transitionDuration)
+                    .transition().duration(transitionDuration).ease("linear")
                     .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
                     .attr("y1", function(d, i) { return margin.top+6+"%" })
@@ -447,7 +447,7 @@ angular.module('main').
                             energyPath
                                 .selectAll(".linePath")
                                 // .attr("d", lineFunction[thisLine.path](beforeData) )
-                                .transition().duration(transitionDuration)
+                                .transition().duration(transitionDuration).ease("linear")
                                 .attr("d", lineFunction[thisLine.path](afterData) )
                         }
 
@@ -465,7 +465,7 @@ angular.module('main').
 
                         energyLabel
                             .selectAll(".label")
-                            .transition().duration(transitionDuration)
+                            .transition().duration(transitionDuration).ease("linear")
                             .attr("x", function(d, i) {
                                 return scale.x(QYtoDate(d)) + lineOffset + "%"
                             })

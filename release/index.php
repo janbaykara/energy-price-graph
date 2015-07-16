@@ -38,8 +38,12 @@
     <meta itemprop='description' content="<?=$description?>" />
 </head>
 
-<body scroll=1500 ng-class='{loading: !UI.dataLoaded, "intro-phase": UI.introPhase && scrollDistance < 500, "detail-phase": UI.detailPhase, "summary-phase": UI.summaryPhase}'>
-
+<body scroll=1500 ng-class='{
+        loading: !UI.dataLoaded,
+        "intro-phase": UI.introPhase && scrollDistance < 500,
+        "detail-phase": UI.detailPhase,
+        "summary-phase": UI.summaryPhase
+    }'>
     <main>
 
         <section id='instructions' class='aln-h-m'>
@@ -76,46 +80,52 @@
             <button class='clickable center block btn big-button' ng-click='hideNavGuide = true'>Got it</button>
         </section>
 
-        <section id='data-view'>
+        <section id='data-view' class='table'>
         <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
-            <h2 class='graph-title small-title' ng-class='{loud: scrollDistance > 1500}'>
-                kiloWattHour prices for
-                <span class='energies'>
-                    <span class='active energy-selector {{name}}'
-                        ng-repeat-start='(name, value) in data.energy'
-                    ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
-                </span>
-                in
-                <span class='businesses'>
-                    <span class='business-selector'><img ng-src='build/img/business-large.png' />Large</span>
-                    <span class='business-selector'><img ng-src='build/img/business-small.png' />Small</span>
-                </span>
-                businesses
-            </h2>
-            <section id='graph' graph-chart='loadedData()' index='getIndex()' go='go'></section>
-            <section id='stories' date-list-iterator='getStories()' range='getRange()' index='getIndex()' go='go'
-                ng-click='toggleExpand()'
-            >
-                <ul class='story-list' date-list-iteration-group>
-                    <li date-list-iteration-item
-                        ng-repeat='story in getStories() track by $index'
-                        ng-click='goToTick(story)'
-                    >
-                        <article class='story-list__article'>
-                            <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
-                            <div class='story-list__info'>
-                                <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>
-                                <h4 class='story-list__headline'>
-                                    {{story.headline}}
-                                    <a ng-href='{{story.sources}}' target="_blank">
-                                        <img ng-src='build/img/external-link.png' class='extlink' />
-                                    </a>
-                                </h4>
-                                <p class='story-list__description'>{{story.description}}</p>
-                            </div>
-                        </article>
-                    </li>
-                </ul>
+            <div class='tr' id='title'>
+                <div class='td'>
+                    <h2 class='graph-title small-title'>
+                        kiloWattHour prices for
+                        <span class='energies'>
+                            <span class='active energy-selector {{name}}'
+                                ng-repeat-start='(name, value) in data.energy'
+                            ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
+                        </span>
+                        in
+                        <span class='businesses'>
+                            <span class='business-selector'><img ng-src='build/img/business-large.png' />Large</span>
+                            <span class='business-selector'><img ng-src='build/img/business-small.png' />Small</span>
+                        </span>
+                        businesses
+                    </h2>
+                </div>
+            </div>
+            <section class='tr' id='graph'>
+                <div class='td' graph-chart='loadedData()' index='getIndex()' go='go'></div>
+            </section>
+            <section class='tr' id='stories' date-list-iterator='getStories()' range='getRange()' index='getIndex()' go='go' ng-click='toggleExpand()'>
+                <div class='td'>
+                    <ul class='story-list' date-list-iteration-group>
+                        <li date-list-iteration-item
+                            ng-repeat='story in getStories() track by $index'
+                            ng-click='goToTick(story)'
+                        >
+                            <article class='story-list__article'>
+                                <img class='story-list__icon' ng-src='build/img/event-{{story.type}}.png' />
+                                <div class='story-list__info'>
+                                    <time class='story-list__timestamp'>{{story.year}} Q{{story.quarter}}</time>
+                                    <h4 class='story-list__headline'>
+                                        {{story.headline}}
+                                        <a ng-href='{{story.sources}}' target="_blank">
+                                            <img ng-src='build/img/external-link.png' class='extlink' />
+                                        </a>
+                                    </h4>
+                                    <p class='story-list__description'>{{story.description}}</p>
+                                </div>
+                            </article>
+                        </li>
+                    </ul>
+                </div>
             </section>
         </section>
     </main>

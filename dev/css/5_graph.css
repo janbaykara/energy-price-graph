@@ -2,6 +2,10 @@ svg:not(:root) {
     overflow: visible;
 }
 
+#graph .td {
+  background: rgb(9, 44, 56);
+}
+
 /* ----
     GRIDS
 */

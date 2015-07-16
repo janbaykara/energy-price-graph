@@ -34,39 +34,49 @@ abbr {
   position: fixed;
   height: 100%;
   width: 100%;
-  padding: 2.5% 2.5% 17.25%;
-}
-#graph {
-  height: 100%;
-  width: 100%%;
-  background: rgb(9, 44, 56);
-}
-.detail-phase #data-view {
-    padding: 2.5% 2.5% 27.25%;
-}
-#stories {
-    position: relative;
-    margin-top: 25px;
-    overflow: hidden;
-    overflow-y: auto;
-    height: 300px;
-    transition: all 0.5s ease;
-    background: #092c38;
-    margin-left: -2.5%;
-    margin-right: -2.5%;
+  /*padding: 2.5% 2.5% 17.25%;*/
 }
 
-@media screen and (max-width: 680px) {
-    #graph {
-      margin: 5% auto;
-      height: 75%;
+/* Table rows */
+#title .td {
+    padding: 20px;
+    height: 20px;
+    padding-bottom: 0;
+}
+#graph .td {
+  padding: 20px 5% 40px;
+}
+#stories .td {
+    padding-top: 0;
+    padding: 20px;
+    height: 250px;
+}
+#stories {
+    display: none !important;
+}
+.has-scrolled #graph .td {
+    padding-bottom: 15px;
+}
+.has-scrolled #stories {
+    display: table-row !important;
+}
+@media screen and (max-width: 1140px) {
+    #title .td { }
+    #graph .td {
+      padding: 20px;
     }
-    #stories {
-      overflow-y: auto;
-      bottom: 0;
-      position: fixed;
-      width: 100%;
-      height: 80px !important;
-      margin-top: 10px;
-  }
+    #stories .td {
+        height: 280px;
+    }
+}
+@media screen and (max-width: 680px) {
+    #title .td {
+        padding: 5px;
+    }
+    #graph .td {
+        padding: 10px;
+    }
+    #stories .td {
+        height: 150px;
+    }
 }

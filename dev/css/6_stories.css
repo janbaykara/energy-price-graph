@@ -1,3 +1,14 @@
+#stories .td {
+    position: relative;
+    /*margin-top: 25px;*/
+    overflow: hidden;
+    overflow-y: auto;
+    transition: all 0.5s ease;
+    background: #092c38;
+    /*margin-left: -2.5%;
+    margin-right: -2.5%;*/
+}
+
 .story-list__info {
     display: none;
 }
@@ -81,6 +92,14 @@
     100% {-webkit-transform: scale(1.1, 1.1); opacity: 1;}
 }
 
+.extlink {
+    width: 18px;
+    vertical-align: top;
+}
+.story-list__headline a:hover {
+    color: #49C8FF;
+}
+
 @media screen and (min-width: 681px) {
     .story-list {
         opacity: 0;
@@ -127,12 +146,4 @@
     .story-list__description {
           margin-left: 60px;
     }
-}
-
-.extlink {
-    width: 18px;
-    vertical-align: top;
-}
-.story-list__headline a:hover {
-    color: #49C8FF;
 }

@@ -4,8 +4,8 @@
     color: #49C8FF;
     line-height: 0.95em;
     text-align: center;
-    /*margin: 20px 0 0;*/
     font-size: 1.75em;
+    transition: 0.2s all ease;
 }
 .graph-title .energy-selector img {
     opacity: 0.2;
@@ -17,9 +17,6 @@
 }
 .graph-title .energy-selector {
     display: inline-block;
-}
-.graph-title .energy-selector img {
-    /*vertical-align: top;*/
 }
 .graph-super-title {
     font-size: 2.75em;
@@ -42,22 +39,10 @@
 .graph-key__item {
     letter-spacing: normal;
 }
-@media screen and (min-width: 680px) {
-    .graph-key {
-        margin: 15px 10px;
-    }
-    .graph-key__item span:before {
-        content: "Cost to ";
-    }
-    .graph-title {
-
-    }
-}
 .graph-key em {
     text-transform: uppercase;
     font-style: normal;
 }
-
 .small-title {
     opacity: 0 !important;
 }

@@ -1,23 +1,13 @@
-.graph-title {
-    transition: 0.2s all ease;
+.intro-phase .pointer-element,
+.intro-phase .energy * {
+    visibility: hidden !important;
+}
+
+.has-scrolled .graph-title {
+    opacity: 1 !important;
 }
 
 @media screen and (max-height: 680px) {
-/*    .has-scrolled .graph-title {
-        font-size: 1.1em;
-        margin: 10px auto 5px;
-    }
-    .has-scrolled .graph-title img {
-        width: 0.5em !important;
-    }
-    .has-scrolled .graph-key {
-        margin: 5px auto 10px;
-        font-size: 12px;
-    }
-    .has-scrolled .graph-key svg {
-        display: inline-block;
-        vertical-align: middle;
-    }*/
     #stories {
         display: none;
         overflow: hidden;
@@ -31,25 +21,5 @@
         overflow: hidden;
     }
     .story-list__headline a { display: none;}
-
     .expanded .story-list__headline a { display: inline;}
-    .expanded #graph {
-        opacity: 0.8;
-    }
-    .expanded #stories {
-        height: 170px !important;
-        overflow-y: auto;
-    }
-    .expanded .story-list__description {
-        max-height: 250px !important;
-    }
-}
-
-.loud {
-    opacity: 1 !important;
-}
-
-.intro-phase .pointer-element,
-.intro-phase .energy * {
-    visibility: hidden !important;
 }

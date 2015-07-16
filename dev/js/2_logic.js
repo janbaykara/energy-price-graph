@@ -10,9 +10,9 @@ angular.module('main', ['ngRetina'])
         $scope.index = 0
 
         $scope.UI = {
-            introPhase: true,
-            summaryPhase: true,
-            detailPhase: false,
+            introPhase: false,
+            summaryPhase: false,
+            detailPhase: true,
             dataLoaded: false,
             graphFilled: false
         }
