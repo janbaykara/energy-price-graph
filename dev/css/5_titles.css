@@ -8,7 +8,7 @@
     transition: 0.2s all ease;
 }
 .graph-title .energy-selector img {
-    opacity: 0.2;
+    /*opacity: 0.2;*/
     margin-right: 3px;
     width: 21px;
 }
@@ -47,9 +47,25 @@
     opacity: 0 !important;
 }
 
+.kwh:before {
+    content: "kiloWattHour"
+}
+
 @media screen and (max-width: 680px) {
+    .kwh:before {
+        content: "kWh"
+    }
     #title td {
-        padding: 15px 15px 0;
+        padding: 15px 15px 10px;;
         height: 15px;
+    }
+}
+@media screen and (max-width: 520px) {
+    .graph-title img {
+        display: none !important;
+    }
+    .graph-title [ng-repeat-end] + [ng-repeat-start]:before {
+        content: "and ";
+        color: #49C8FF;
     }
 }

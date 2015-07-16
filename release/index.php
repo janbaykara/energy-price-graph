@@ -50,7 +50,7 @@
             <div class='inner'>
                 <header>
                     <h2 class='graph-title graph-super-title'>
-                        Historical kiloWattHour
+                        Historical <span class='kwh'></span>
                         <span class='energies'>
                             <span class='active energy-selector {{name}}'
                                 ng-repeat-start='(name, value) in data.energy'
@@ -70,18 +70,12 @@
             </line>
         </section>
 
-        <section id='navguide' ng-class='{visible: showNavGuide && !hideNavGuide}'>
-            <h1>Browse the stories</h1>
-            <p>Navigate through the stories that influenced energy prices, by clicking the coloured event bars.</p>
-            <button class='clickable center block btn big-button' ng-click='hideNavGuide = true'>Got it</button>
-        </section>
-
         <table id='data-view'>
         <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
             <tr id='title'>
                 <td>
                     <h2 class='graph-title small-title'>
-                        Historical kiloWattHour
+                        Historical <span class='kwh'></span>
                         <span class='energies'>
                             <span class='active energy-selector {{name}}'
                                 ng-repeat-start='(name, value) in data.energy'

@@ -1,3 +1,9 @@
+#instructions {
+    display: none !important;
+}
+.intro-phase #instructions {
+    display: block !important;
+}
 .has-not-scrolled .pointer-element,
 .has-not-scrolled .pointer-element *,
 .has-not-scrolled .energy * {
@@ -10,4 +16,9 @@
 }
 .has-scrolled .graph-title {
     opacity: 1 !important;
+}
+@media screen and (max-width: 680px) {
+    .graph-title {
+            opacity: 1 !important;
+    }
 }

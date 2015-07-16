@@ -1,23 +1,8 @@
-#navguide,
 #instructions {
     width: 100%;
     transition: 0.5 all ease;
     z-index: 999;
     background: radial-gradient(at center, rgba(9, 44, 56,1), rgba(9, 44, 56,1), rgba(9, 44, 56,0));
-}
-
-/* ------- */
-
-#navguide {
-    position: fixed;
-    padding: 30px;
-    margin-top: 50px;
-    text-align: center;
-    display: none;
-}
-
-#navguide.visible {
-    display: block;
 }
 
 /* ------ */
@@ -68,15 +53,8 @@
 
 /* -- */
 
-@media screen and (min-width: 680px) {
-    .has-scrolled #instructions {
-        display: none;
-    }
-}
-
 @media screen and (max-width: 850px) {
     #instructions .inner {
-        padding: 0 20px;
         width: 90%;
     }
 }
@@ -84,20 +62,21 @@
     #instructions {
         top: 0% !important;
         background: #092C38;
+        padding: 15px 8px;
+        position: fixed;
+        height: 100%;
+        width: 100%;
     }
-    #instructions {
-        background: rgba(9, 44, 56,0.9);
+    #instructions .graph-title {
+        font-size: 30px;
     }
-    #instructions .inner {
-        padding: 10px;
+    #instructions img {
+        display: none;
+    }
+    #instructions p {
         font-size: 16px;
-        line-height: 1.1em;
     }
-}
-
-@media screen and (max-height: 650px) {
-    #instructions {
-        top: 0% !important;
-        background: #092C38;
+    .instructions-minor {
+        display: none;
     }
 }
