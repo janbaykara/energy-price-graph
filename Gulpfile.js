@@ -28,11 +28,13 @@ var dirs = {
 
   gulp.task('css', function () {
     gulp.src(dirs.dev.css)
-    .pipe(plugins.concat('app.css'))
-    .pipe(plugins.autoprefixer({browsers: ['> 0.1%']}))
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(plugins.minifyCss())
-    .pipe(plugins.rename({suffix: '.min'}))
+    .pipe(plugins.size({title: "css files"}))
+    .pipe(sourcemaps.init())
+        .pipe(plugins.concat('app.css'))
+        .pipe(plugins.autoprefixer({browsers: ['> 0.1%']}))
+        .pipe(plugins.minifyCss())
+        .pipe(plugins.rename({suffix: '.min'}))
+    .pipe(sourcemaps.write('../maps'))
     .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(dirs.prod.styles))
   });
