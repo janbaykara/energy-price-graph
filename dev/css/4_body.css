@@ -25,25 +25,24 @@ td {
     padding-bottom: 0;
 }
 #graph td {
-  padding: 3px 5% 40px;
+  padding: 3px 5% 15px;
   height: 100%;
   max-height: 100%;
-}
-.intro-phase #graph,
-.summary-phase #graph * {
-    pointer-events: none;
 }
 #stories td {
     padding-top: 0;
     padding: 20px;
     height: 250px;
+    opacity: 1;
+    transtion: 0.3s all ease;
 }
-.intro-phase #stories,
-.summary-phase #stories {
-    display: none !important;
+.intro-phase #graph td {
+    padding-bottom: 40px;
 }
-.detail-phase #graph td {
-    padding-bottom: 15px;
+.intro-phase #stories td {
+    /*display: none !important;*/
+    height: 0px !important;
+    opacity: 0;
 }
 @media screen and (max-width: 1140px) {
     #title td { }
