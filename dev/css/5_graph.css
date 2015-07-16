@@ -2,8 +2,18 @@ svg:not(:root) {
     overflow: visible;
 }
 
-#graph .td {
+#graph td {
   background: rgb(9, 44, 56);
+}
+#graph-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#graph svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 /* ----
@@ -127,13 +137,6 @@ svg .scatter {
 .axes *,
 .grids * {
   shape-rendering: crispEdges;
-}
-
-svg #axes,
-svg #grids,
-svg #currentAnnotation,
-svg .energy {
-    pointer-events: none;
 }
 
 @media screen and (max-width: 680px) {

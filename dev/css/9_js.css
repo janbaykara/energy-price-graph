@@ -12,6 +12,10 @@
     opacity: 1 !important;
 }
 
+/*.summary-phase .plots circle {
+    visibility: hidden !important;
+}*/
+
 @media screen and (max-height: 680px) {
     #stories {
         display: none;

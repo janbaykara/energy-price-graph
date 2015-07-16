@@ -76,10 +76,10 @@
             <button class='clickable center block btn big-button' ng-click='hideNavGuide = true'>Got it</button>
         </section>
 
-        <section id='data-view' class='table'>
+        <table id='data-view'>
         <!-- <section id='data-view' class='ng-class: {expanded: getExpand() };'> -->
-            <div class='tr' id='title'>
-                <div class='td'>
+            <tr id='title'>
+                <td>
                     <h2 class='graph-title small-title'>
                         Historical kiloWattHour
                         <span class='energies'>
@@ -89,13 +89,15 @@
                         </span>
                         prices
                     </h2>
-                </div>
-            </div>
-            <section class='tr' id='graph'>
-                <div class='td' graph-chart='loadedData()' index='getIndex()' go='go'></div>
-            </section>
-            <section class='tr' id='stories' date-list-iterator='getStories()' range='getRange()' index='getIndex()' go='go' ng-click='toggleExpand()'>
-                <div class='td'>
+                </td>
+            </tr>
+            <tr id='graph'>
+                <td>
+                    <div id='graph-container' graph-chart='loadedData()' index='getIndex()' go='go'></div>
+                </td>
+            </tr>
+            <tr id='stories' date-list-iterator='getStories()' range='getRange()' index='getIndex()' go='go' ng-click='toggleExpand()'>
+                <td>
                     <ul class='story-list' date-list-iteration-group>
                         <li date-list-iteration-item
                             ng-repeat='story in getStories() track by $index'
@@ -116,9 +118,9 @@
                             </article>
                         </li>
                     </ul>
-                </div>
-            </section>
-        </section>
+                </td>
+            </tr>
+        </table>
     </main>
 
     <!-- DEPENDENCIES -->

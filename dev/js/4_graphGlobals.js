@@ -141,7 +141,7 @@ directive('graphChart', function($compile) {
             }, true);
 
             function onPoint(element,mouse) {
-                var elementWidth = element.width.baseVal.value
+                var elementWidth = element.width.baseVal.value < 200 ? $(element).width() : element.width.baseVal.value
                 var mouseXPerc = mouse[0] / elementWidth * 100
                 var pointerDate = Date.parse(scale.x.invert(mouseXPerc))
                 var pointerIndex = getTickIndex(pointerDate)
@@ -377,7 +377,7 @@ directive('graphChart', function($compile) {
                             .selectAll(".label")
                             .append("text")
                             .attr("class", "img-size label-explain")
-                            .attr("transform", "translate(33,6)")
+                            .attr("transform", "translate(33,5)")
                             .text(thisLine.display)
                     })
                 })
