@@ -1,7 +1,8 @@
 var leewayTop = 0
+var SCROLL_DISTANCE = 25000
 var spatialRange = {
     min: 0 + leewayTop,
-    max: $(document).height() - $(window).height() - leewayTop
+    max: SCROLL_DISTANCE - $(window).height() - leewayTop
 }
 
 angular.module('main', ['ngRetina'])
@@ -15,6 +16,10 @@ angular.module('main', ['ngRetina'])
             detailPhase: false,
             dataLoaded: false,
             graphFilled: false
+        }
+
+        $scope.documentHeight = function() {
+            return "height: "+($scope.UI.introPhase ? $(window).height() : SCROLL_DISTANCE) +'px !important'
         }
 
         $scope.sources = {
@@ -56,7 +61,6 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G",
             callback: function loadedStoryData(err, opts, res) {
                 $scope.data.stories = sanitise(res);
-                // $scope.$apply()
                 $scope.onLoaded('stories')
             }
         });
@@ -67,7 +71,6 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G,H,I,J,K,L",
             callback: function loadedElectricityData(err, opts, res) {
                 $scope.data.energy.electricity = sanitise(res)
-                // $scope.$apply()
                 $scope.onLoaded('elec')
             }
         });
@@ -78,7 +81,6 @@ angular.module('main', ['ngRetina'])
             query: "select A,B,C,D,E,F,G,H,I,J",
             callback: function loadedGasData(err, opts, res) {
                 $scope.data.energy.gas = sanitise(res)
-                // $scope.$apply()
                 $scope.onLoaded('gas')
             }
         });
@@ -101,8 +103,6 @@ angular.module('main', ['ngRetina'])
 
         // Scroll ranges
         $scope.init = function() {
-            console.log($scope.data)
-
             $scope.dataRange = $scope.data.energy.electricity
             $scope.ticks = $scope.dataRange.length
             $scope.lastColumn = $scope.dataRange[$scope.ticks-1]
@@ -116,9 +116,8 @@ angular.module('main', ['ngRetina'])
                 return story.year <= $scope.lastColumn.year
                     && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
-
-            $scope.goToTick($scope.dataRange[0])
             $scope.UI.dataLoaded = true
+            $scope.$apply()
         }
 
         $scope.anim = function() {
@@ -126,6 +125,9 @@ angular.module('main', ['ngRetina'])
             var anim = 0
             var duration = initialDuration = 100
             var extendedDuration = initialDuration
+
+            $scope.UI.summaryPhase = true
+            $scope.goToTick($scope.dataRange[0])
 
             function animateProgress() {
                 $interval.cancel(animInterval)

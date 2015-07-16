@@ -43,7 +43,7 @@
         "intro-phase": UI.introPhase && scrollDistance < 500,
         "detail-phase": UI.detailPhase,
         "summary-phase": UI.summaryPhase
-    }'>
+    }' style='{{ documentHeight() }}'>
     <main>
 
         <section id='instructions' class='aln-h-m'>
