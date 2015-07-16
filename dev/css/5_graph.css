@@ -124,6 +124,13 @@ svg .scatter {
   shape-rendering: crispEdges;
 }
 
+svg #axes,
+svg #grids,
+svg #currentAnnotation,
+svg .energy {
+    pointer-events: none;
+}
+
 @media screen and (max-width: 680px) {
     .axis text {
         font-size: 10px;

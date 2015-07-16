@@ -97,7 +97,7 @@ directive('graphChart', function($compile) {
         scope: {
             data: '=graphChart',
             go: '=',
-            index: '='
+            index: '=?'
         },
         link: function(scope, element, attrs) {
             var scale, axis, axes, grids, stories, svg, lineOffset, years, quarterWidth
@@ -111,6 +111,7 @@ directive('graphChart', function($compile) {
             var h = "100%"
             var pointSize = 2
             var canvasW = 100 - margin.left - margin.right
+            var dataRange
 
             var lineFunction = {}
 
@@ -122,9 +123,20 @@ directive('graphChart', function($compile) {
                 }
             }, true);
 
+            function onPoint(element,mouse) {
+                var elementWidth = element.width.baseVal.value
+                var mouseXPerc = mouse[0] / elementWidth * 100
+                var pointerDate = scale.x.invert(mouseXPerc)
+                var pointerIndex = Math.max(_.findLastIndex(dataRange, function(d,i) { return QYtoDate(d) < pointerDate }), 0)
+                var pointerTick = dataRange[pointerIndex]
+                goToTick(dataRange, pointerTick)
+                scope.$apply()
+            }
+
             function buildChart() {
-                rowsN = scope.data.energy.electricity.length
-                yars = _.uniq(_.map(scope.data.energy.electricity, 'year'));
+                dataRange = scope.data.energy.electricity
+                rowsN = dataRange.length
+                yars = _.uniq(_.map(dataRange, 'year'));
                 quarters = (yars.length * 4) - 1
                 quarterWidth = (canvasW / quarters)
                 lineOffset = quarterWidth / 2
@@ -138,6 +150,9 @@ directive('graphChart', function($compile) {
                     .attr("height", h)
                     .attr("width", w)
                     .attr("height", h)
+                    .on("mousemove", function() {
+                        onPoint(this,d3.mouse(this))
+                    })
 
                 // ------------
                 // Scale/domain calculators
@@ -146,7 +161,7 @@ directive('graphChart', function($compile) {
                     y: d3.scale.linear()
                         .domain([
                             0,
-                            d3.max(scope.data.energy.electricity, function(d) {
+                            d3.max(dataRange, function(d) {
                                 return d['verysmall']
                             })
                         ])
@@ -157,10 +172,10 @@ directive('graphChart', function($compile) {
                     ,
                     x: d3.time.scale()
                         .domain([
-                            d3.min(scope.data.energy.electricity, function(d) {
+                            d3.min(dataRange, function(d) {
                                 return QYtoDate(d)
                             }),
-                            d3.max(scope.data.energy.electricity, function(d) {
+                            d3.max(dataRange, function(d) {
                                 return QYtoDate(d)
                             })
                         ])
@@ -360,7 +375,7 @@ directive('graphChart', function($compile) {
             }
 
             function drawData() {
-                var indexObj = scope.data.energy.electricity[scope.index];
+                var indexObj = dataRange[scope.index];
                 var indexDate = QYtoDate(indexObj);
 
                 //////////
@@ -368,7 +383,7 @@ directive('graphChart', function($compile) {
                 //////////
                 currentAnnotation
                     .selectAll(".currentDate")
-                    .data(scope.data.energy.electricity.filter(function(d) {
+                    .data(dataRange.filter(function(d) {
                         return typeof indexObj !== 'undefined' && typeof d !== 'undefined' && d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
                     .enter()
@@ -395,7 +410,7 @@ directive('graphChart', function($compile) {
                 //////////
                 currentAnnotation
                     .selectAll(".currentTick")
-                    .data(scope.data.energy.electricity.filter(function(d) {
+                    .data(dataRange.filter(function(d) {
                         return d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
                     .enter()
@@ -434,9 +449,6 @@ directive('graphChart', function($compile) {
                             .data(scope.data.stories)
                             .enter()
                             .append("line")
-                            .on("click", function(d, i) {
-                                goToTick(scope.data.energy.electricity, d)
-                            })
                             .call(function() {
                                 $compile(this[0].parentNode)(scope);
                             })
