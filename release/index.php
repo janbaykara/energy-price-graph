@@ -61,7 +61,7 @@
                 </header>
                 <p>Gas and electricity prices fluctuate on a daily, and sometimes even hourly, basis. It’s a volatile market influenced by everything from global conflict to natural disasters. The size of your business could even be affecting the price paid per kilowatt-hour.</p>
                 <p>This interactive graph tracks the average cost of gas and electricity; highlighting the disparity between the price paid by large corporations and small businesses and the effect of world events.</p>
-                <button class='btn clickable big-button block center' ng-click='anim(); UI.summaryPhase = true'>
+                <button class='btn clickable big-button block center' ng-click='(UI.dataLoaded && !UI.summaryPhase) ? anim() : null; UI.summaryPhase = true'>
                     <span ng-show='UI.dataLoaded' ng-click='UI.introPhase = false'>Take a look at the history</span>
                     <i  ng-show='!UI.dataLoaded' class='spinner glyphicon glyphicon-repeat'></i>
                 </button>

@@ -4,6 +4,7 @@ svg:not(:root) {
 
 #graph td {
   background: rgb(9, 44, 56);
+  cursor: crosshair
 }
 #graph-container {
     position: relative;
@@ -48,7 +49,7 @@ svg:not(:root) {
     PLOTS
 */
 .line .linePath {
-    stroke-width: 2;
+    stroke-width: 3;
     fill: none;
 }
 
@@ -94,9 +95,7 @@ svg .scatter {
 }
 
 .event-bar {
-    /*stroke-width: 2.5%;*/
     opacity: 0.2;
-    cursor: pointer;
 }
 .event-bar.conflict { stroke: #D94141; }
 .event-bar.nature { stroke: #5FC86E; }
