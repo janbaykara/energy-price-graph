@@ -46,12 +46,12 @@ var lines = [
     {
         path: 'average_small',
         class: 'average_small',
-        display: "Avg. small firm"
+        display: "Small firms"
     },
     {
         path: 'average_large',
         class: 'average_large',
-        display: "Avg. large firm"
+        display: "Large firms"
     }
 ]
 
@@ -358,7 +358,7 @@ directive('graphChart', function($compile) {
                             .attr("transform", "translate(0,5)")
                             .attr("text-anchor", "middle")
 
-                        var iconSize = 25
+                        var iconSize = 30
                         var energyW = iconSize
                         var energyH = energyW
                         var sizeH = iconSize
@@ -373,14 +373,20 @@ directive('graphChart', function($compile) {
                             .attr("width", energyW)
                             .attr("xlink:href", "build/img/energy-" + energyType + ".png")
 
+                        // energyLabel
+                        //     .selectAll(".label")
+                        //     .append("text")
+                        //     .attr("class", "img-energy label-explain")
+                        //     .attr("transform", "translate("+(-25-energyW)+",6)")
+                        //     .attr("text-anchor","end")
+                        //     .text(energyType.charAt(0).toUpperCase() + energyType.slice(1))
+
                         energyLabel
                             .selectAll(".label")
-                            .append("image")
-                            .attr("class", "img-size")
-                            .attr("transform", "translate(" + (-(sizeW / 1.4) + (sizeW)) + "," + (-(sizeH / 2)) + ")")
-                            .attr("height", sizeH)
-                            .attr("width", sizeW)
-                            .attr("xlink:href", "build/img/business-" + thisLine.class + ".png")
+                            .append("text")
+                            .attr("class", "img-size label-explain")
+                            .attr("transform", "translate(33,6)")
+                            .text(thisLine.display)
                     })
                 })
 

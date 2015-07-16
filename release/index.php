@@ -85,18 +85,13 @@
             <div class='tr' id='title'>
                 <div class='td'>
                     <h2 class='graph-title small-title'>
-                        kiloWattHour prices for
+                        Historical kiloWattHour
                         <span class='energies'>
                             <span class='active energy-selector {{name}}'
                                 ng-repeat-start='(name, value) in data.energy'
                             ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
                         </span>
-                        in
-                        <span class='businesses'>
-                            <span class='business-selector'><img ng-src='build/img/business-large.png' />Large</span>
-                            <span class='business-selector'><img ng-src='build/img/business-small.png' />Small</span>
-                        </span>
-                        businesses
+                        prices
                     </h2>
                 </div>
             </div>

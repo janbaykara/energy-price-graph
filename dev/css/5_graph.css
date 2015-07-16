@@ -44,28 +44,33 @@ svg:not(:root) {
 
 .gas { color: #E9168C; }
 
-.gas .average_small circle { fill: #B55AFF; }
-.gas .average_small rect { fill: #B55AFF; }
+.gas .average_small circle,
+.gas .average_small rect,
+.gas .average_small .label-explain,
 .gas .average_small .annotation { fill: #B55AFF; }
 .gas .average_small .linePath { stroke: #B55AFF; }
 
-.gas .average_large circle { fill: #E9168C; }
-.gas .average_large rect { fill: #E9168C; }
+.gas .average_large circle,
+.gas .average_large rect,
+.gas .average_large .label-explain,
 .gas .average_large .annotation { fill: #E9168C; }
 .gas .average_large .linePath { stroke: #E9168C; }
 
 .electricity { color: #C1D540; }
 
-.electricity .average_small circle { fill: #00FA87; }
-.electricity .average_small rect { fill: #00FA87; }
+.electricity .average_small circle,
+.electricity .average_small rect,
+.electricity .average_small .label-explain,
 .electricity .average_small .annotation { fill: #00FA87; }
 .electricity .average_small .linePath { stroke: #00FA87; }
 
-.electricity .average_large circle { fill: #C1D540; }
-.electricity .average_large rect { fill: #C1D540; }
+.electricity .average_large circle,
+.electricity .average_large rect,
+.electricity .average_large .label-explain,
 .electricity .average_large .annotation { fill: #C1D540; }
 .electricity .average_large .linePath { stroke: #C1D540; }
 
+.label-explain { fill: #00FDF0 !important; }
 
 svg .scatter {
     opacity: 0.5;
