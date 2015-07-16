@@ -103,6 +103,8 @@ angular.module('main', ['ngRetina'])
 
         // Scroll ranges
         $scope.init = function() {
+            console.log($scope.data)
+            
             $scope.dataRange = $scope.data.energy.electricity
             $scope.ticks = $scope.dataRange.length
             $scope.lastColumn = $scope.dataRange[$scope.ticks-1]

@@ -46,12 +46,12 @@ var lines = [
     {
         path: 'average_small',
         class: 'average_small',
-        display: "Smaller firms"
+        display: "SMALL FIRMS"
     },
     {
         path: 'average_large',
         class: 'average_large',
-        display: "Larger firms"
+        display: "BIG FIRMS"
     }
 ]
 
