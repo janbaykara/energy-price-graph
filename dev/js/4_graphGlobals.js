@@ -3,69 +3,110 @@ var reached = 1
 var transitionDuration = 0150
 
 var scatters = [
-    { path: 'verysmall',       class: 'average_small', display:"V. small" },
-    { path: 'small',           class: 'average_small', display:"Small" },
-    { path: 'smallmedium',     class: 'average_small', display:"Small/med" },
+    {
+        path: 'verysmall',
+        class: 'average_small',
+        display: "V. small"
+    },
+    {
+        path: 'small',
+        class: 'average_small',
+        display: "Small"
+    },
+    {
+        path: 'smallmedium',
+        class: 'average_small',
+        display: "Small/med"
+    },
     //
-    { path: 'medium',          class: 'average_large', display:"Medium" },
-    { path: 'large',           class: 'average_large', display:"Large" },
-    { path: 'verylarge',       class: 'average_large', display:"V. large" },
-    { path: 'extralarge',      class: 'average_large', display:"Extra large" }
+    {
+        path: 'medium',
+        class: 'average_large',
+        display: "Medium"
+    },
+    {
+        path: 'large',
+        class: 'average_large',
+        display: "Large"
+    },
+    {
+        path: 'verylarge',
+        class: 'average_large',
+        display: "V. large"
+    },
+    {
+        path: 'extralarge',
+        class: 'average_large',
+        display: "Extra large"
+    }
 ]
 var lines = [
-    { path: 'average_small',   class: 'average_small', display:"Avg. small firm" },
-    { path: 'average_large',   class: 'average_large', display:"Avg. large firm" }
+    {
+        path: 'average_small',
+        class: 'average_small',
+        display: "Avg. small firm"
+    },
+    {
+        path: 'average_large',
+        class: 'average_large',
+        display: "Avg. large firm"
+    }
 ]
 
 function QYtoDate(d) {
-    return typeof d !== 'undefined' ? new Date(d.year,(d.quarter*3)-3) : new Date()
+    return typeof d !== 'undefined' ? new Date(d.year, (d.quarter * 3) - 3) : new Date()
 }
 
 function dateToQY(d) {
-    var quarter = Math.ceil((d.getMonth()+1)/3)
+    var quarter = Math.ceil((d.getMonth() + 1) / 3)
     var year = d.getFullYear()
-    return (quarter == 1 ? year+" " : "") + "Q"+quarter
+    return (quarter == 1 ? year + " " : "") + "Q" + quarter
 }
 
 function dateToY(d) {
-    var year = d.getFullYear()+""
-    return "'"+year.substring(2,4)
+    var year = d.getFullYear() + ""
+    return "'" + year.substring(2, 4)
 }
 
-function dPrev(data,i) {
-    return data[i-1 === -1 ? 0 : i-1]
+function dPrev(data, i) {
+    return data[i - 1 === -1 ? 0 : i - 1]
 }
 
-function visibility(i,index) {
+function visibility(i, index) {
     hidden = index < i
     return hidden ? 'hidden' : 'visible'
 }
 
 function reach(index) {
-    reached = reached < index+1 ? index+1 : reached
+    reached = reached < index + 1 ? index + 1 : reached
 }
 
 function redraw() {
     var totalrowsN = rowsN + ((scatters.length + lines.length) * 3)
-    var check = reached-1 < totalrowsN
-    if(reached >= rowsN && reached <= totalrowsN) {
+    var check = reached - 1 < totalrowsN
+    if (reached >= rowsN && reached <= totalrowsN) {
         reached++
     }
     return check
 }
 
 angular.module('main').
-   directive('graphChart', function ($compile) {
-     return {
+directive('graphChart', function($compile) {
+    return {
         replace: false,
         scope: {
             data: '=graphChart',
             go: '=',
             index: '='
         },
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var scale, axis, axes, grids, stories, svg, lineOffset, years, quarterWidth
-            var margin = { top: 2.5, right: 2.5, bottom: 5, left: 5 }
+            var margin = {
+                top: 2.5,
+                right: 2.5,
+                bottom: 5,
+                left: 5
+            }
             var w = "100%"
             var h = "100%"
             var pointSize = 2
@@ -76,16 +117,16 @@ angular.module('main').
             // Set up data
 
             scope.$watch("go", function() {
-                if(scope.go) {
+                if (scope.go) {
                     buildChart();
                 }
             }, true);
 
             function buildChart() {
                 rowsN = scope.data.energy.electricity.length
-                yars = _.uniq(_.map(scope.data.energy.electricity,'year'));
-                quarters = ( yars.length * 4 ) - 1
-                quarterWidth = ( canvasW / quarters )
+                yars = _.uniq(_.map(scope.data.energy.electricity, 'year'));
+                quarters = (yars.length * 4) - 1
+                quarterWidth = (canvasW / quarters)
                 lineOffset = quarterWidth / 2
 
                 // Make chart
@@ -105,98 +146,128 @@ angular.module('main').
                     y: d3.scale.linear()
                         .domain([
                             0,
-                            d3.max(scope.data.energy.electricity, function(d) { return d['verysmall'] })
+                            d3.max(scope.data.energy.electricity, function(d) {
+                                return d['verysmall']
+                            })
                         ])
-                        .range([100-margin.bottom, margin.top])
+                        .range([100 - margin.bottom, margin.top])
                         .nice()
 
                     // Q1-4,year
-                  , x: d3.time.scale()
+                    ,
+                    x: d3.time.scale()
                         .domain([
-                            d3.min(scope.data.energy.electricity, function(d) { return QYtoDate(d) }),
-                            d3.max(scope.data.energy.electricity, function(d) { return QYtoDate(d) })
+                            d3.min(scope.data.energy.electricity, function(d) {
+                                return QYtoDate(d)
+                            }),
+                            d3.max(scope.data.energy.electricity, function(d) {
+                                return QYtoDate(d)
+                            })
                         ])
-                        .range([margin.left, 100-margin.right])
+                        .range([margin.left, 100 - margin.right])
                         .nice(d3.time.year)
-                        // .nice(2)
                 }
 
 
                 // ------------
                 // Axes
                 axes = svg.append("g")
-                    .attr('id','axes')
+                    .attr('id', 'axes')
 
                 axes.append("g")
-                    .attr('class','axis')
+                    .attr('class', 'axis')
                     // axis points
                     .selectAll("text")
                     .data(scale.y.ticks())
                     .enter()
                     //
                     .append("text")
-                    .text(function(d) { return '£' + (d*0.01).toFixed(2) })
-                    .attr("y", function(d, i) { return scale.y(d) + "%" })
+                    .text(function(d) {
+                        return '£' + (d * 0.01).toFixed(2)
+                    })
+                    .attr("y", function(d, i) {
+                        return scale.y(d) + "%"
+                    })
 
 
                 axes.append("svg")
-                    .attr('class','axis')
+                    .attr('class', 'axis')
                     .attr("y", "100%")
                     // axis points
                     .selectAll("text")
-                    .data(scale.x.ticks()) //dateToQY - 30
+                    .data(scale.x.ticks())
                     .enter()
                     //
                     .append("text")
-                    .text(function(d) { return dateToY(d) })
-                    .attr("x", function(d, i) {  return scale.x(d) + "%" })
+                    .text(function(d) {
+                        return dateToY(d)
+                    })
+                    .attr("x", function(d, i) {
+                        return scale.x(d) + "%"
+                    })
 
                 // ------------
                 // Grids
                 grids = svg.append("g")
-                    .attr('id','grids')
+                    .attr('id', 'grids')
 
                 grids.append("g")
                     .selectAll("line")
-                    .data(scale.y.ticks()) //dateToQY - 30
+                    .data(scale.y.ticks())
                     .enter()
                     //
                     .append("line")
-                    .attr("y1", function(d, i) { return scale.y(d) + "%" })
-                    .attr("y2", function(d, i) { return scale.y(d) + "%" })
-                    .attr("x1", function(d, i) { return margin.left + "%" })
-                    .attr("x2", function(d, i) { return 100-margin.right + "%" })
+                    .attr("y1", function(d, i) {
+                        return scale.y(d) + "%"
+                    })
+                    .attr("y2", function(d, i) {
+                        return scale.y(d) + "%"
+                    })
+                    .attr("x1", function(d, i) {
+                        return margin.left + "%"
+                    })
+                    .attr("x2", function(d, i) {
+                        return 100 - margin.right + "%"
+                    })
 
                 grids.append("g")
                     .selectAll("line")
-                    .data(scale.x.ticks()) //dateToQY - 30
+                    .data(scale.x.ticks())
                     .enter()
                     //
                     .append("line")
-                    .attr("x1", function(d, i) { return scale.x(d) + "%" })
-                    .attr("x2", function(d, i) { return scale.x(d) + "%" })
-                    .attr("y1", function(d, i) { return margin.top + "%" })
-                    .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+                    .attr("x1", function(d, i) {
+                        return scale.x(d) + "%"
+                    })
+                    .attr("x2", function(d, i) {
+                        return scale.x(d) + "%"
+                    })
+                    .attr("y1", function(d, i) {
+                        return margin.top + "%"
+                    })
+                    .attr("y2", function(d, i) {
+                        return 100 - margin.bottom + "%"
+                    })
 
                 // Story groups
                 stories = svg
-                        .append("g")
-                        .attr("class","stories")
+                    .append("g")
+                    .attr("class", "stories")
 
                 currentAnnotation = svg.append("g")
-                    .attr('id','currentAnnotation')
+                    .attr('id', 'currentAnnotation')
 
                 // Group structure for data points
-                _.each(scope.data.energy, function(dataset,energyType) {
+                _.each(scope.data.energy, function(dataset, energyType) {
                     var energy = svg
                         .append("g")
-                        .attr("class","energy "+energyType)
+                        .attr("class", "energy " + energyType)
 
                     _.each(scatters, function(thisScatter) {
                         energy
-                            // Circle
+                        // Circle
                             .append("g")
-                            .attr("class","plots "+thisScatter.class+" "+thisScatter.path)
+                            .attr("class", "plots " + thisScatter.class + " " + thisScatter.path)
                     })
 
                     _.each(lines, function(thisLine) {
@@ -204,29 +275,29 @@ angular.module('main').
                         // Lines
                         /////////
                         lineFunction[thisLine.path] = d3.svg.line()
-                                .x(function(d,i) {
-                                    return scale.x(QYtoDate(d,i)) + lineOffset;
-                                })
-                                .y(function(d,i) {
-                                    return scale.y(d[thisLine.path]);
-                                })
-                                .interpolate("linear")
+                            .x(function(d, i) {
+                                return scale.x(QYtoDate(d, i)) + lineOffset;
+                            })
+                            .y(function(d, i) {
+                                return scale.y(d[thisLine.path]);
+                            })
+                            .interpolate("linear")
 
                         energy
                             .append("g")
-                                .attr("class","line "+thisLine.class+" "+thisLine.path)
+                            .attr("class", "line " + thisLine.class + " " + thisLine.path)
                             .append("svg")
-                                .attr("class","pathContainer")
-                                .attr("width", "100%")
-                                .attr("height", "100%")
-                                .attr("viewBox", "0 0 100 100")
-                                .attr("preserveAspectRatio", "none")
+                            .attr("class", "pathContainer")
+                            .attr("width", "100%")
+                            .attr("height", "100%")
+                            .attr("viewBox", "0 0 100 100")
+                            .attr("preserveAspectRatio", "none")
                             .append("path")
-                                .attr("class", "linePath")
-                                .attr('vector-effect',"non-scaling-stroke")
+                            .attr("class", "linePath")
+                            .attr('vector-effect', "non-scaling-stroke")
 
-                        var energyLineGroup = svg.select("."+energyType)
-                        var energyLabel = energyLineGroup.select(".line."+thisLine.class+'.'+thisLine.path)
+                        var energyLineGroup = svg.select("." + energyType)
+                        var energyLabel = energyLineGroup.select(".line." + thisLine.class + '.' + thisLine.path)
                         var indexObj = scope.data.energy[energyType][scope.index]
 
                         /////////
@@ -244,18 +315,18 @@ angular.module('main').
                         energyLabel
                             .selectAll(".label")
                             .append("rect")
-                            .attr("class","box")
-                            .attr("transform","translate(-27,-9)")
+                            .attr("class", "box")
+                            .attr("transform", "translate(-27,-9)")
                             .attr("width", "55")
                             .attr("height", "19")
-                            .attr("rx","3")
-                            .attr("ry","3")
+                            .attr("rx", "3")
+                            .attr("ry", "3")
 
                         energyLabel
                             .selectAll(".label")
                             .append("text")
-                            .attr("class","price")
-                            .attr("transform","translate(0,5)")
+                            .attr("class", "price")
+                            .attr("transform", "translate(0,5)")
                             .attr("text-anchor", "middle")
 
                         var iconSize = 25
@@ -267,20 +338,20 @@ angular.module('main').
                         energyLabel
                             .selectAll(".label")
                             .append("image")
-                            .attr("class","img-energy")
-                            .attr("transform", "translate("+( -(energyW/2) + (-energyW * 1.5) )+","+( -(energyH/2) )+")")
+                            .attr("class", "img-energy")
+                            .attr("transform", "translate(" + (-(energyW / 2) + (-energyW * 1.5)) + "," + (-(energyH / 2)) + ")")
                             .attr("height", energyH)
                             .attr("width", energyW)
-                            .attr("xlink:href", "build/img/energy-"+energyType+".png")
+                            .attr("xlink:href", "build/img/energy-" + energyType + ".png")
 
                         energyLabel
                             .selectAll(".label")
                             .append("image")
-                            .attr("class","img-size")
-                            .attr("transform", "translate("+( -(sizeW/1.4) + (sizeW) )+","+( -(sizeH/2) )+")")
+                            .attr("class", "img-size")
+                            .attr("transform", "translate(" + (-(sizeW / 1.4) + (sizeW)) + "," + (-(sizeH / 2)) + ")")
                             .attr("height", sizeH)
                             .attr("width", sizeW)
-                            .attr("xlink:href", "build/img/business-"+thisLine.class+".png")
+                            .attr("xlink:href", "build/img/business-" + thisLine.class + ".png")
                     })
                 })
 
@@ -298,22 +369,23 @@ angular.module('main').
                 currentAnnotation
                     .selectAll(".currentDate")
                     .data(scope.data.energy.electricity.filter(function(d) {
-                        return typeof indexObj !== 'undefined'
-                            && typeof d !== 'undefined'
-                            && d.year === indexObj.year
-                            && d.quarter === indexObj.quarter;
+                        return typeof indexObj !== 'undefined' && typeof d !== 'undefined' && d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
                     .enter()
                     .append("text")
-                    .attr("class","currentDate pointer-element")
-                    .call(function(){ $compile(this[0].parentNode)(scope); })
+                    .attr("class", "currentDate pointer-element")
+                    .call(function() {
+                        $compile(this[0].parentNode)(scope);
+                    })
 
                 currentAnnotation
                     .selectAll(".currentDate")
                     .transition().duration(transitionDuration).ease("linear")
-                    .attr("text-anchor","middle")
-                    .attr("y", margin.top+5+"%")
-                    .attr("x", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
+                    .attr("text-anchor", "middle")
+                    .attr("y", margin.top + 5 + "%")
+                    .attr("x", function(d, i) {
+                        return scale.x(QYtoDate(d)) + lineOffset + "%"
+                    })
                     .text(function(d) {
                         return d.year + " Q" + d.quarter
                     })
@@ -324,89 +396,120 @@ angular.module('main').
                 currentAnnotation
                     .selectAll(".currentTick")
                     .data(scope.data.energy.electricity.filter(function(d) {
-                        return d.year === indexObj.year
-                            && d.quarter === indexObj.quarter;
+                        return d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
                     .enter()
                     .append("line")
-                    .attr("class","currentTick pointer-element")
-                    .call(function(){ $compile(this[0].parentNode)(scope); })
+                    .attr("class", "currentTick pointer-element")
+                    .call(function() {
+                        $compile(this[0].parentNode)(scope);
+                    })
 
                 currentAnnotation
                     .selectAll(".currentTick")
                     .transition().duration(transitionDuration).ease("linear")
-                    .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                    .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                    .attr("y1", function(d, i) { return margin.top+6+"%" })
-                    .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
+                    .attr("x1", function(d, i) {
+                        return scale.x(QYtoDate(d)) + lineOffset + "%"
+                    })
+                    .attr("x2", function(d, i) {
+                        return scale.x(QYtoDate(d)) + lineOffset + "%"
+                    })
+                    .attr("y1", function(d, i) {
+                        return margin.top + 6 + "%"
+                    })
+                    .attr("y2", function(d, i) {
+                        return 100 - margin.bottom + "%"
+                    })
 
 
                 /// DATA
-                _.each(scope.data.energy, function(dataset,energyType) {
+                _.each(scope.data.energy, function(dataset, energyType) {
                     //////////
                     // Stories
                     //////////
 
-                    if(redraw()) {
+                    if (redraw()) {
                         stories
                             .selectAll("line")
                             .data(scope.data.stories)
                             .enter()
                             .append("line")
-                            .on("click", function(d,i){ goToTick(scope.data.energy.electricity,d) })
-                            .call(function(){ $compile(this[0].parentNode)(scope); })
+                            .on("click", function(d, i) {
+                                goToTick(scope.data.energy.electricity, d)
+                            })
+                            .call(function() {
+                                $compile(this[0].parentNode)(scope);
+                            })
 
                         stories
                             .selectAll("line")
-                            .attr("x1", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                            .attr("x2", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                            .attr("y1", function(d, i) { return margin.top + "%" })
-                            .attr("y2", function(d, i) { return 100-margin.bottom + "%" })
-                            .attr("stroke-width", quarterWidth+"%")
+                            .attr("x1", function(d, i) {
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
+                            })
+                            .attr("x2", function(d, i) {
+                                return scale.x(QYtoDate(d)) + lineOffset + "%"
+                            })
+                            .attr("y1", function(d, i) {
+                                return margin.top + "%"
+                            })
+                            .attr("y2", function(d, i) {
+                                return 100 - margin.bottom + "%"
+                            })
+                            .attr("stroke-width", quarterWidth + "%")
                             .attr("visibility", function(d, i) {
-                                var isValidYear = _.any(yars,function(x) { return x === d.year })
+                                var isValidYear = _.any(yars, function(x) {
+                                    return x === d.year
+                                })
                                 return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
                             })
                     }
 
                     stories
                         .selectAll("line")
-                        .attr("class", function(d, i) { return "event-bar "+d.type })
-                        .transition()
-                        .duration(transitionDuration/2)
                         .attr("class", function(d, i) {
-                            return "event-bar "+d.type+" "+(QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
+                            return "event-bar " + d.type
                         })
-                        .delay(transitionDuration/2)
+                        .transition()
+                        .duration(transitionDuration / 2)
+                        .attr("class", function(d, i) {
+                            return "event-bar " + d.type + " " + (QYtoDate(d).valueOf() == indexDate.valueOf() ? ' highlighted' : null)
+                        })
+                        .delay(transitionDuration / 2)
 
                     //////////
                     // Plots
                     //////////
 
                     var energyPlotGroup = svg
-                        .select("."+energyType)
+                        .select("." + energyType)
 
                     _.each(scatters, function(thisScatter) {
                         reach(scope.index)
-                        var energyPlot = energyPlotGroup.select(".plots."+thisScatter.class+'.'+thisScatter.path)
+                        var energyPlot = energyPlotGroup.select(".plots." + thisScatter.class + '.' + thisScatter.path)
 
-                        if(redraw()) {
+                        if (redraw()) {
                             energyPlot
                                 .selectAll("circle")
                                 .data(dataset)
                                 .enter()
                                 .append("circle")
-                                .call(function(){ $compile(this[0].parentNode)(scope); });
+                                .call(function() {
+                                    $compile(this[0].parentNode)(scope);
+                                });
 
                             energyPlot
                                 .selectAll("circle")
-                                .attr("cx", function(d, i) { return scale.x(QYtoDate(d)) + lineOffset + "%" })
-                                .attr("cy", function(d, i) { return ( scale.y(d[thisScatter.path]) || 0 ) + "%" })
+                                .attr("cx", function(d, i) {
+                                    return scale.x(QYtoDate(d)) + lineOffset + "%"
+                                })
+                                .attr("cy", function(d, i) {
+                                    return (scale.y(d[thisScatter.path]) || 0) + "%"
+                                })
                                 .attr("r", function(d, i) {
                                     return (QYtoDate(d).valueOf() == indexDate.valueOf() ? pointSize * 1.5 : pointSize)
                                 })
                                 .attr("visibility", function(d, i) {
-                                    return visibility(i,scope.index)
+                                    return visibility(i, scope.index)
                                 })
                                 .attr("class", function(d, i) {
                                     return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : null)
@@ -421,21 +524,21 @@ angular.module('main').
                     })
 
                     var energyLineGroup = svg
-                        .select("."+energyType)
+                        .select("." + energyType)
 
                     var labelElements = svg.select(".labels")
-                            .append("rect")
-                            .attr("class","box")
+                        .append("rect")
+                        .attr("class", "box")
 
                     _.each(lines, function(thisLine) {
                         reach(scope.index)
-                        var energyLabel = energyLineGroup.select(".line."+thisLine.class+'.'+thisLine.path)
-                        var energyPath = energyLineGroup.select(".line."+thisLine.class+'.'+thisLine.path+" .pathContainer")
+                        var energyLabel = energyLineGroup.select(".line." + thisLine.class + '.' + thisLine.path)
+                        var energyPath = energyLineGroup.select(".line." + thisLine.class + '.' + thisLine.path + " .pathContainer")
 
                         //////////
                         // Lines
                         //////////
-                        if(redraw()) {
+                        if (redraw()) {
                             var beforeData = dataset.filter(function(d) {
                                 return QYtoDate(d) < QYtoDate(indexObj)
                             })
@@ -446,9 +549,8 @@ angular.module('main').
 
                             energyPath
                                 .selectAll(".linePath")
-                                // .attr("d", lineFunction[thisLine.path](beforeData) )
                                 .transition().duration(transitionDuration).ease("linear")
-                                .attr("d", lineFunction[thisLine.path](afterData) )
+                                .attr("d", lineFunction[thisLine.path](afterData))
                         }
 
                         //////////
@@ -458,10 +560,11 @@ angular.module('main').
                         energyLabel
                             .selectAll(".label")
                             .data(dataset.filter(function(d) {
-                                return d.year === indexObj.year
-                                    && d.quarter === indexObj.quarter;
+                                return d.year === indexObj.year && d.quarter === indexObj.quarter;
                             }))
-                            .call(function(){ $compile(this[0].parentNode)(scope); })
+                            .call(function() {
+                                $compile(this[0].parentNode)(scope);
+                            })
 
                         energyLabel
                             .selectAll(".label")
@@ -477,19 +580,20 @@ angular.module('main').
                         energyLabel
                             .selectAll(".label .price")
                             .data(dataset.filter(function(d) {
-                                return d.year === indexObj.year
-                                    && d.quarter === indexObj.quarter;
+                                return d.year === indexObj.year && d.quarter === indexObj.quarter;
                             }))
-                            .call(function(){ $compile(this[0].parentNode)(scope); })
+                            .call(function() {
+                                $compile(this[0].parentNode)(scope);
+                            })
 
                         energyLabel
                             .selectAll(".label .price")
                             .text(function(d) {
-                                return ( d[thisLine.path] ).toFixed(3) + "p"
+                                return (d[thisLine.path]).toFixed(3) + "p"
                             })
                     })
                 })
             }
-         }
-      };
-   });
+        }
+    };
+});
