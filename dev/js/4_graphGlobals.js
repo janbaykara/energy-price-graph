@@ -373,14 +373,6 @@ directive('graphChart', function($compile) {
                             .attr("width", energyW)
                             .attr("xlink:href", "build/img/energy-" + energyType + ".png")
 
-                        // energyLabel
-                        //     .selectAll(".label")
-                        //     .append("text")
-                        //     .attr("class", "img-energy label-explain")
-                        //     .attr("transform", "translate("+(-25-energyW)+",6)")
-                        //     .attr("text-anchor","end")
-                        //     .text(energyType.charAt(0).toUpperCase() + energyType.slice(1))
-
                         energyLabel
                             .selectAll(".label")
                             .append("text")

@@ -49,20 +49,18 @@
         <section id='instructions' class='aln-h-m'>
             <div class='inner'>
                 <header>
-                    <h1 class='graph-title graph-super-title'>Enterprise Energy Price History</h1>
-                    <h2 class='graph-title'>
-                        <abbr title='A measure of electrical energy equivalent to a power consumption of one thousand watts for one hour.'>kiloWattHour</abbr> prices for
+                    <h2 class='graph-title graph-super-title'>
+                        Historical kiloWattHour
                         <span class='energies'>
                             <span class='active energy-selector {{name}}'
                                 ng-repeat-start='(name, value) in data.energy'
                             ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
                         </span>
+                        prices
                     </h2>
                 </header>
                 <p>Gas and electricity prices fluctuate on a daily, and sometimes even hourly, basis. It’s a volatile market influenced by everything from global conflict to natural disasters. The size of your business could even be affecting the price paid per kilowatt-hour.</p>
-
                 <p>This interactive graph tracks the average cost of gas and electricity; highlighting the disparity between the price paid by large corporations and small businesses and the effect of world events.</p>
-
                 <button class='btn clickable big-button block center' ng-click='anim(); UI.summaryPhase = true'>
                     <span ng-show='UI.dataLoaded' ng-click='UI.introPhase = false'>Take a look at the history</span>
                     <i  ng-show='!UI.dataLoaded' class='spinner glyphicon glyphicon-repeat'></i>
@@ -74,9 +72,7 @@
 
         <section id='navguide' ng-class='{visible: showNavGuide && !hideNavGuide}'>
             <h1>Browse the stories</h1>
-            <p>
-                Navigate through the stories that influenced energy prices, by clicking the coloured event bars.
-            </p>
+            <p>Navigate through the stories that influenced energy prices, by clicking the coloured event bars.</p>
             <button class='clickable center block btn big-button' ng-click='hideNavGuide = true'>Got it</button>
         </section>
 
