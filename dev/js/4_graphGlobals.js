@@ -613,7 +613,7 @@ directive('graphChart', function($compile) {
                     })
                 })
 
-                if(!redraw()) {
+                if(!checkRedraw()) {
                     svg.on("mousemove", function() {
                         onPoint(this,d3.mouse(this))
                     })
