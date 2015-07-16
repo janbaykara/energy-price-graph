@@ -1,6 +1,8 @@
 var rowsN
 var reached = 1
 var transitionDuration = 0150
+var yars
+var dataRange
 
 var scatters = [
     {
@@ -72,9 +74,19 @@ function dPrev(data, i) {
     return data[i - 1 === -1 ? 0 : i - 1]
 }
 
+function getTickIndex(datum) {
+    if(typeof datum === 'object') var datumDate = QYtoDate(datum)
+    else var datumDate = datum
+    var index = Math.max(_.findLastIndex(dataRange, function(d,i) { return QYtoDate(d) < datumDate }), 0)
+    return index
+}
+
 function visibility(i, index) {
-    hidden = index < i
-    return hidden ? 'hidden' : 'visible'
+    var isValidYear = _.any(yars, function(x) {
+        return x === dataRange[index].year
+    })
+    hidden = (index <= i || !checkRedraw()) && isValidYear
+    return "visibility: "+(hidden ? 'hidden !important' : 'visible')
 }
 
 function reach(index) {
@@ -82,10 +94,16 @@ function reach(index) {
 }
 
 function redraw() {
-    var totalrowsN = rowsN + ((scatters.length + lines.length) * 3)
+    return checkRedraw(function() {
+        reached++
+    })
+}
+
+function checkRedraw(func) {
+    var totalrowsN = rowsN + ((scatters.length + lines.length) * 2)
     var check = reached - 1 < totalrowsN
     if (reached >= rowsN && reached <= totalrowsN) {
-        reached++
+        if(typeof func === 'function') func()
     }
     return check
 }
@@ -111,7 +129,6 @@ directive('graphChart', function($compile) {
             var h = "100%"
             var pointSize = 2
             var canvasW = 100 - margin.left - margin.right
-            var dataRange
 
             var lineFunction = {}
 
@@ -126,8 +143,8 @@ directive('graphChart', function($compile) {
             function onPoint(element,mouse) {
                 var elementWidth = element.width.baseVal.value
                 var mouseXPerc = mouse[0] / elementWidth * 100
-                var pointerDate = scale.x.invert(mouseXPerc)
-                var pointerIndex = Math.max(_.findLastIndex(dataRange, function(d,i) { return QYtoDate(d) < pointerDate }), 0)
+                var pointerDate = Date.parse(scale.x.invert(mouseXPerc))
+                var pointerIndex = getTickIndex(pointerDate)
                 var pointerTick = dataRange[pointerIndex]
                 goToTick(dataRange, pointerTick)
                 scope.$apply()
@@ -150,9 +167,6 @@ directive('graphChart', function($compile) {
                     .attr("height", h)
                     .attr("width", w)
                     .attr("height", h)
-                    .on("mousemove", function() {
-                        onPoint(this,d3.mouse(this))
-                    })
 
                 // ------------
                 // Scale/domain calculators
@@ -468,12 +482,7 @@ directive('graphChart', function($compile) {
                                 return 100 - margin.bottom + "%"
                             })
                             .attr("stroke-width", quarterWidth + "%")
-                            .attr("visibility", function(d, i) {
-                                var isValidYear = _.any(yars, function(x) {
-                                    return x === d.year
-                                })
-                                return (QYtoDate(d) <= indexDate || !redraw()) && isValidYear ? 'visible' : 'hidden'
-                            })
+                            .attr("style", function(d, i) { return visibility(getTickIndex(d), scope.index) })
                     }
 
                     stories
@@ -520,9 +529,7 @@ directive('graphChart', function($compile) {
                                 .attr("r", function(d, i) {
                                     return (QYtoDate(d).valueOf() == indexDate.valueOf() ? pointSize * 1.5 : pointSize)
                                 })
-                                .attr("visibility", function(d, i) {
-                                    return visibility(i, scope.index)
-                                })
+                                .attr("style", function(d, i) { return visibility(i, scope.index) })
                                 .attr("class", function(d, i) {
                                     return (d[thisScatter.path] < 0.005 || typeof d[thisScatter.path] === 'undefined' ? 'baddata' : null)
                                 })
@@ -605,6 +612,12 @@ directive('graphChart', function($compile) {
                             })
                     })
                 })
+
+                if(!redraw()) {
+                    svg.on("mousemove", function() {
+                        onPoint(this,d3.mouse(this))
+                    })
+                }
             }
         }
     };

@@ -63,7 +63,7 @@
 
                 <p>This interactive graph tracks the average cost of gas and electricity; highlighting the disparity between the price paid by large corporations and small businesses and the effect of world events.</p>
 
-                <button class='btn clickable big-button block center' ng-click='anim()'>
+                <button class='btn clickable big-button block center' ng-click='anim(); UI.summaryPhase = true'>
                     <span ng-show='UI.dataLoaded' ng-click='UI.introPhase = false'>Take a look at the history</span>
                     <i  ng-show='!UI.dataLoaded' class='spinner glyphicon glyphicon-repeat'></i>
                 </button>

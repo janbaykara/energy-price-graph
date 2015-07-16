@@ -1,8 +1,9 @@
 angular.module('main')
     .directive("scroll", function ($window) {
         return function(scope, element, attrs) {
-            element.addClass('scrolled-true')
             scope.hasScrolled = false
+            element.addClass('has-not-scrolled')
+            // element.addClass('scrolled-true')
 
             var calcScrolled = function() {
                 var pageYOffset = $window.pageYOffset
@@ -13,6 +14,7 @@ angular.module('main')
                      scope.scrolled = true
                      element.addClass('has-scrolled')
                      element.addClass('scrolled-true')
+                     element.removeClass('has-not-scrolled')
                      element.removeClass('scrolled-false')
                  } else {
                      scope.scrolled = false

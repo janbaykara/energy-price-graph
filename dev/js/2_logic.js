@@ -10,9 +10,9 @@ angular.module('main', ['ngRetina'])
         $scope.index = 0
 
         $scope.UI = {
-            introPhase: false,
+            introPhase: true,
             summaryPhase: false,
-            detailPhase: true,
+            detailPhase: false,
             dataLoaded: false,
             graphFilled: false
         }
@@ -22,7 +22,6 @@ angular.module('main', ['ngRetina'])
             electricity:  "https://docs.google.com/spreadsheets/d/16IfQH23bpHdzvY6-IhJ8FAd6rx_nLh-2tnOFkZlwAKA/edit#gid=0",
             gas:          "https://docs.google.com/spreadsheets/d/1FCS8w-_YndjmmB8xT-sI4j7KPaALGKZiuAv5VWbvZ2k/edit#gid=0"
         }
-        console.log($scope.sources)
 
         $scope.data = {
             stories: null,
@@ -102,6 +101,8 @@ angular.module('main', ['ngRetina'])
 
         // Scroll ranges
         $scope.init = function() {
+            console.log($scope.data)
+
             $scope.ticks = $scope.data.energy.electricity.length
             $scope.lastColumn = $scope.data.energy.electricity[$scope.ticks-1]
 

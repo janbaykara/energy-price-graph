@@ -1,8 +1,13 @@
-.intro-phase .pointer-element,
-.intro-phase .energy * {
+.has-not-scrolled .pointer-element,
+.has-not-scrolled .pointer-element *,
+.has-not-scrolled .energy * {
     visibility: hidden !important;
 }
-
+.has-scrolled .pointer-element,
+.has-scrolled .pointer-element *,
+.has-scrolled .energy * {
+    visibility: visible;
+}
 .has-scrolled .graph-title {
     opacity: 1 !important;
 }

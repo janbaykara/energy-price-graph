@@ -1,19 +1,9 @@
 #stories .td {
     position: relative;
-    /*margin-top: 25px;*/
     overflow: hidden;
     overflow-y: auto;
     transition: all 0.5s ease;
     background: #092c38;
-    /*margin-left: -2.5%;
-    margin-right: -2.5%;*/
-}
-
-.story-list__info {
-    display: none;
-}
-.detail-phase .story-list__info {
-    display: block;
 }
 
 /* -- */
@@ -22,11 +12,9 @@
     list-style: none;
     white-space: nowrap;
     padding: 0 0 20px;
-    /*padding-left: 20%;*/
-    /*position: absolute;*/
     transition: 0.3s all ease;
-  left: 33%;
-  position: absolute;
+    left: 33%;
+    position: absolute;
 }
 .story-list li:before {
     content: "";
