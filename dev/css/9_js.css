@@ -11,24 +11,3 @@
 .has-scrolled .graph-title {
     opacity: 1 !important;
 }
-
-/*.summary-phase .plots circle {
-    visibility: hidden !important;
-}*/
-
-@media screen and (max-height: 680px) {
-    #stories {
-        display: none;
-        overflow: hidden;
-    }
-    .has-scrolled #stories {
-        display: block;
-    }
-    .story-list__description {
-        max-height: 1px !important;
-        transition: all 0.3s ease;
-        overflow: hidden;
-    }
-    .story-list__headline a { display: none;}
-    .expanded .story-list__headline a { display: inline;}
-}

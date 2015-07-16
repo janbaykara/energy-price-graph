@@ -29,6 +29,10 @@ td {
   height: 100%;
   max-height: 100%;
 }
+.intro-phase #graph,
+.summary-phase #graph * {
+    pointer-events: none;
+}
 #stories td {
     padding-top: 0;
     padding: 20px;

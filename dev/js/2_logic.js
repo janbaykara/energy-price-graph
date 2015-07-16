@@ -103,12 +103,13 @@ angular.module('main', ['ngRetina'])
         $scope.init = function() {
             console.log($scope.data)
 
-            $scope.ticks = $scope.data.energy.electricity.length
-            $scope.lastColumn = $scope.data.energy.electricity[$scope.ticks-1]
+            $scope.dataRange = $scope.data.energy.electricity
+            $scope.ticks = $scope.dataRange.length
+            $scope.lastColumn = $scope.dataRange[$scope.ticks-1]
 
             $scope.dates = {
-                min: QYtoDate( $scope.data.energy, $scope.data.energy.electricity[0] ),
-                max: QYtoDate( $scope.data.energy, $scope.data.energy.electricity[$scope.ticks-1] )
+                min: QYtoDate( $scope.data.energy, $scope.dataRange[0] ),
+                max: QYtoDate( $scope.data.energy, $scope.dataRange[$scope.ticks-1] )
             }
 
             $scope.useableStories = _.filter($scope.data.stories, function(story) {
@@ -116,7 +117,7 @@ angular.module('main', ['ngRetina'])
                     && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
 
-            $scope.goToTick($scope.data.energy.electricity[0])
+            $scope.goToTick($scope.dataRange[0])
             $scope.UI.dataLoaded = true
         }
 
@@ -129,7 +130,7 @@ angular.module('main', ['ngRetina'])
             function animateProgress() {
                 $interval.cancel(animInterval)
                 ///
-                var nowTick = $scope.data.energy.electricity[anim]
+                var nowTick = $scope.dataRange[anim]
                 if(anim < $scope.ticks) {
                     $scope.goToTick(nowTick)
 
@@ -143,12 +144,12 @@ angular.module('main', ['ngRetina'])
                     anim++
                     animInterval = $interval(animateProgress, duration)
                 } else {
-                    $scope.goToTick($scope.lastColumn)
                     $scope.UI.introPhase = false
                     $scope.UI.graphFilled = true
                     $scope.UI.summaryPhase = false
                     $scope.UI.detailPhase = true
                     $interval.cancel(animInterval)
+                    $scope.goToTick($scope.useableStories[$scope.useableStories.length-1])
                 }
             }
 
@@ -168,7 +169,7 @@ angular.module('main', ['ngRetina'])
 
         $scope.getRange = function() {
             if(!$scope.go) return false;
-            return $scope.data.energy.electricity;
+            return $scope.dataRange;
         }
 
         $scope.loadedData = function() {
@@ -184,7 +185,7 @@ angular.module('main', ['ngRetina'])
 
         $scope.goToTick = function(story) {
             if(!$scope.go) return 0;
-            $scope.index = goToTick($scope.data.energy.electricity, story)
+            $scope.index = goToTick($scope.dataRange, story)
         }
     })
 

@@ -1,9 +1,9 @@
-#stories .td {
+#stories td {
     position: relative;
     overflow: hidden;
     overflow-y: auto;
     transition: all 0.5s ease;
-    background: #092c38;
+    /*background: #092c38;*/
 }
 
 /* -- */
@@ -116,7 +116,7 @@
     .story-list__article {
         text-align: left;
         overflow: visible;
-        padding-top: 0;
+        padding-top: 10px;
     }
     .story-list__icon {
         float: left;
@@ -133,6 +133,12 @@
         top: 0px;
     }
     .story-list__description {
-          margin-left: 60px;
+        margin-left: 60px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        display: none;
+    }
+    #stories td {
+        height: 95px
     }
 }

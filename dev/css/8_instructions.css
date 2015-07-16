@@ -28,6 +28,8 @@
     text-align: center;
     color: white;
     position: absolute !important;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 #instructions p {

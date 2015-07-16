@@ -46,3 +46,10 @@
 .small-title {
     opacity: 0 !important;
 }
+
+@media screen and (max-width: 680px) {
+    #title td {
+        padding: 15px 15px 0;
+        height: 15px;
+    }
+}

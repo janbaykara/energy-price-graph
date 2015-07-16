@@ -145,8 +145,6 @@ svg .scatter {
         fill: #B0B0B0;
     }
     circle {
-          transform: scale(0.5);
-          transform-origin: center;
-          opacity: 0.5;
+          visibility: hidden !important;
     }
 }
