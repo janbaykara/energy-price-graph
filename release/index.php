@@ -38,12 +38,13 @@
     <meta itemprop='description' content="<?=$description?>" />
 </head>
 
-<body scroll=1500 ng-class='{
+<body scroll=1500
+    ng-class='{
         loading: !UI.dataLoaded,
         "intro-phase": UI.introPhase && scrollDistance < 500,
         "detail-phase": UI.detailPhase,
         "summary-phase": UI.summaryPhase
-    }' style='{{ documentHeight() }}'>
+    }'>
     <main>
 
         <section id='instructions' class='aln-h-m'>

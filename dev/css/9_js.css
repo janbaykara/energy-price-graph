@@ -1,6 +1,10 @@
 #instructions {
     display: none !important;
 }
+body.intro-phase {
+    height: 100% !important;
+    max-height: 100% !important;
+}
 .intro-phase #instructions {
     display: block !important;
 }

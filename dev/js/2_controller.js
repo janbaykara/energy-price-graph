@@ -4,7 +4,9 @@ var spatialRange = {
     min: 0 + leewayTop,
     max: SCROLL_DISTANCE - $(window).height() - leewayTop
 }
-$(window).scrollTop(0)
+$(window).on('beforeunload', function() {
+    $(window).scrollTop(0);
+});
 
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$interval) {
@@ -17,10 +19,6 @@ angular.module('main', ['ngRetina'])
             detailPhase: false,
             dataLoaded: false,
             graphFilled: false
-        }
-
-        $scope.documentHeight = function() {
-            return "height: "+($scope.UI.introPhase ? $(window).height() : SCROLL_DISTANCE) +'px !important'
         }
 
         $scope.sources = {
@@ -125,6 +123,7 @@ angular.module('main', ['ngRetina'])
                 return story.year <= $scope.lastColumn.year
                     && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
+
             $scope.UI.dataLoaded = true
             // $scope.$apply()
         }
