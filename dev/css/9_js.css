@@ -4,21 +4,17 @@
 .intro-phase #instructions {
     display: block !important;
 }
-.has-not-scrolled .pointer-element,
-.has-not-scrolled .pointer-element *,
-.has-not-scrolled .energy * {
+.intro-phase .pointer-element,
+.intro-phase .pointer-element *,
+.intro-phase .energy * {
     visibility: hidden !important;
 }
-.has-scrolled .pointer-element,
-.has-scrolled .pointer-element *,
-.has-scrolled .energy * {
-    visibility: visible;
-}
-.has-scrolled .graph-title {
+.detail-phase .small-title,
+.summary-phase .small-title {
     opacity: 1 !important;
 }
 @media screen and (max-width: 680px) {
-    .graph-title {
+    html .graph-title {
             opacity: 1 !important;
     }
 }
