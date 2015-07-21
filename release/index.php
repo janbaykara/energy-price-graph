@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel='stylesheet' href='<?=$asseturl?>css/app.min.css' />
+    <link rel='stylesheet' href='<?=$asseturl?>css/app.css' />
     <link rel="canonical" href="<?=$url?>" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -121,8 +121,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="<?=$asseturl?>js/lib.min.js"></script>
-    <script src="<?=$asseturl?>js/app.min.js"></script>
+    <script src="<?=$asseturl?>js/lib.js"></script>
+    <script src="<?=$asseturl?>js/app.js"></script>
 </body>
 
 </html>
