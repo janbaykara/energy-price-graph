@@ -138,6 +138,10 @@ svg .scatter {
   shape-rendering: crispEdges;
 }
 
+.average_small .label-explain {
+    fill: #A7FFF1 !important;
+}
+
 @media screen and (max-width: 680px) {
     .axis text {
         font-size: 10px;

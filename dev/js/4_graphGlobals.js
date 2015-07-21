@@ -286,6 +286,22 @@ directive('graphChart', function($compile) {
                 currentAnnotation = svg.append("g")
                     .attr('id', 'currentAnnotation')
 
+                currentAnnotation
+                    .append("text")
+                    .attr("class", "currentDate pointer-element")
+                    .attr("text-anchor", "middle")
+                    .attr("y", margin.top + 5 + "%")
+
+                currentAnnotation
+                    .append("line")
+                    .attr("class", "currentTick pointer-element")
+                    .attr("y1", function(d, i) {
+                        return margin.top + 6 + "%"
+                    })
+                    .attr("y2", function(d, i) {
+                        return 100 - margin.bottom + "%"
+                    })
+
                 // Group structure for data points
                 _.each(scope.data.energy, function(dataset, energyType) {
                     var energy = svg
@@ -368,7 +384,7 @@ directive('graphChart', function($compile) {
                             .selectAll(".label")
                             .append("image")
                             .attr("class", "img-energy")
-                            .attr("transform", "translate(" + (-(energyW / 2) + (-energyW * 1.5)) + "," + (-(energyH / 2)) + ")")
+                            .attr("transform", "translate(" + (-(energyW / 2) + (energyW * 1.5)) + "," + (-(energyH / 2)) + ")")
                             .attr("height", energyH)
                             .attr("width", energyW)
                             .attr("xlink:href", "build/img/energy-" + energyType + ".png")
@@ -376,8 +392,9 @@ directive('graphChart', function($compile) {
                         energyLabel
                             .selectAll(".label")
                             .append("text")
+                            .attr("text-anchor","end")
                             .attr("class", "img-size label-explain")
-                            .attr("transform", "translate(33,5)")
+                            .attr("transform", "translate(-33,5)")
                             .text(thisLine.display)
                     })
                 })
@@ -398,9 +415,6 @@ directive('graphChart', function($compile) {
                     .data(dataRange.filter(function(d) {
                         return typeof indexObj !== 'undefined' && typeof d !== 'undefined' && d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
-                    .enter()
-                    .append("text")
-                    .attr("class", "currentDate pointer-element")
                     .call(function() {
                         $compile(this[0].parentNode)(scope);
                     })
@@ -408,8 +422,6 @@ directive('graphChart', function($compile) {
                 currentAnnotation
                     .selectAll(".currentDate")
                     .transition().duration(transitionDuration).ease("linear")
-                    .attr("text-anchor", "middle")
-                    .attr("y", margin.top + 5 + "%")
                     .attr("x", function(d, i) {
                         return scale.x(QYtoDate(d)) + lineOffset + "%"
                     })
@@ -425,9 +437,6 @@ directive('graphChart', function($compile) {
                     .data(dataRange.filter(function(d) {
                         return d.year === indexObj.year && d.quarter === indexObj.quarter;
                     }))
-                    .enter()
-                    .append("line")
-                    .attr("class", "currentTick pointer-element")
                     .call(function() {
                         $compile(this[0].parentNode)(scope);
                     })
@@ -440,12 +449,6 @@ directive('graphChart', function($compile) {
                     })
                     .attr("x2", function(d, i) {
                         return scale.x(QYtoDate(d)) + lineOffset + "%"
-                    })
-                    .attr("y1", function(d, i) {
-                        return margin.top + 6 + "%"
-                    })
-                    .attr("y2", function(d, i) {
-                        return 100 - margin.bottom + "%"
                     })
 
 
