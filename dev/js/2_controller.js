@@ -4,6 +4,7 @@ var spatialRange = {
     min: 0 + leewayTop,
     max: SCROLL_DISTANCE - $(window).height() - leewayTop
 }
+$(window).scrollTop(0)
 
 angular.module('main', ['ngRetina'])
     .controller('main', function($scope,$interval) {
@@ -60,8 +61,10 @@ angular.module('main', ['ngRetina'])
             url: $scope.sources.stories, // Published
             query: "select A,B,C,D,E,F,G",
             callback: function loadedStoryData(err, opts, res) {
-                $scope.data.stories = sanitise(res);
-                $scope.onLoaded('stories')
+                $scope.$apply(function() {
+                    $scope.data.stories = sanitise(res);
+                    $scope.onLoaded('stories')
+                })
             }
         });
 
@@ -70,8 +73,10 @@ angular.module('main', ['ngRetina'])
             url: $scope.sources.electricity, // Published
             query: "select A,B,C,D,E,F,G,H,I,J,K,L",
             callback: function loadedElectricityData(err, opts, res) {
-                $scope.data.energy.electricity = sanitise(res)
-                $scope.onLoaded('elec')
+                $scope.$apply(function() {
+                    $scope.data.energy.electricity = sanitise(res)
+                    $scope.onLoaded('elec')
+                })
             }
         });
 
@@ -80,8 +85,10 @@ angular.module('main', ['ngRetina'])
             url: $scope.sources.gas, // Published
             query: "select A,B,C,D,E,F,G,H,I,J",
             callback: function loadedGasData(err, opts, res) {
-                $scope.data.energy.gas = sanitise(res)
-                $scope.onLoaded('gas')
+                $scope.$apply(function() {
+                    $scope.data.energy.gas = sanitise(res)
+                    $scope.onLoaded('gas')
+                })
             }
         });
 
@@ -119,45 +126,34 @@ angular.module('main', ['ngRetina'])
                     && (story.year === $scope.lastColumn.year ? story.quarter <= $scope.lastColumn.quarter : true)
             });
             $scope.UI.dataLoaded = true
-            $scope.$apply()
+            // $scope.$apply()
         }
 
         $scope.anim = function() {
-            var storyMaxN = $scope.useableStories.length - 1;
-            var anim = 0
-            var duration = initialDuration = 100
-            var extendedDuration = initialDuration
-
+            $scope.animCount = 0
+            $scope.animTickDuration = 100
+            $scope.UI.introPhase = false
             $scope.UI.summaryPhase = true
+            //
             $scope.goToTick($scope.dataRange[0])
+            $scope.animInterval = $interval($scope.animateProgress, $scope.animTickDuration)
+        }
 
-            function animateProgress() {
-                $interval.cancel(animInterval)
-                ///
-                var nowTick = $scope.dataRange[anim]
-                if(anim < $scope.ticks) {
-                    $scope.goToTick(nowTick)
-
-                    var hasStory = _.any($scope.useableStories,function(someStory) {
-                        return "Q"+nowTick.quarter+"Y"+nowTick.year === "Q"+someStory.quarter+"Y"+someStory.year
-                    })
-
-                    if(hasStory) duration = extendedDuration
-                            else duration = initialDuration
-
-                    anim++
-                    animInterval = $interval(animateProgress, duration)
-                } else {
-                    $scope.UI.introPhase = false
-                    $scope.UI.graphFilled = true
-                    $scope.UI.summaryPhase = false
-                    $scope.UI.detailPhase = true
-                    $interval.cancel(animInterval)
-                    $scope.goToTick($scope.useableStories[$scope.useableStories.length-1])
-                }
+        $scope.animateProgress = function () {
+            $interval.cancel($scope.animInterval)
+            ///
+            var nowTick = $scope.dataRange[$scope.animCount]
+            if($scope.animCount < $scope.ticks) {
+                $scope.goToTick(nowTick)
+                $scope.animCount++
+                $scope.animInterval = $interval($scope.animateProgress, $scope.animTickDuration)
+            } else {
+                $scope.UI.graphFilled = true
+                $scope.UI.summaryPhase = false
+                $scope.UI.detailPhase = true
+                $interval.cancel($scope.animInterval)
+                $scope.goToTick($scope.useableStories[$scope.useableStories.length-1])
             }
-
-            var animInterval = $interval(animateProgress, duration)
         }
 
         //////
@@ -189,7 +185,7 @@ angular.module('main', ['ngRetina'])
 
         $scope.goToTick = function(story) {
             if(!$scope.go) return 0;
-            $scope.index = goToTick($scope.dataRange, story)
+            goToTick($scope.dataRange, story)
         }
     })
 
@@ -197,9 +193,7 @@ function goToTick(indexRange, story) {
     var i = _.findIndex(indexRange, function(evt) {
         return evt.quarter === story.quarter && evt.year === story.year
     })
-    var scrollYPosn = ConvertIndexToScroll(indexRange.length, spatialRange, i)
-    $(window).scrollTop(scrollYPosn)
-    return scrollYPosn
+    $(window).scrollTop( ConvertIndexToScroll(indexRange.length, spatialRange, i) )
 }
 
 function ConvertIndexToScroll(indexLength, spatialRange, index) {
