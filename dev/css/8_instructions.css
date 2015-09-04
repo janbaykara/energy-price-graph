@@ -51,6 +51,10 @@
     margin-top: 15px !important;
 }
 
+#instructions img {
+    max-width: 100%;
+}
+
 /* -- */
 
 @media screen and (max-width: 850px) {
@@ -70,7 +74,7 @@
     #instructions .graph-title {
         font-size: 30px;
     }
-    #instructions img {
+    #instructions .energy-selector img {
         display: none;
     }
     #instructions p {

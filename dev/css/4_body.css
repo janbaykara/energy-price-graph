@@ -20,7 +20,7 @@ td {
     position: relative;
 }
 #title td {
-    padding: 20px;
+    padding: 10px;
     height: 20px;
     padding-bottom: 0;
 }
@@ -47,7 +47,7 @@ td {
 @media screen and (max-width: 1140px) {
     #title td { }
     #graph td {
-      padding: 20px;
+      padding: 10px 25px 10px 20px;
     }
     #stories td {
         height: 280px;

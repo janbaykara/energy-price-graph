@@ -51,6 +51,38 @@
     content: "kiloWattHour"
 }
 
+.logo,
+.addthis_sharing_toolbox {
+    position: absolute;
+    top: 27px;
+}
+.logo {
+    left: 15px;
+    top: 10px;
+}
+.addthis_sharing_toolbox {
+    right: 15px;
+}
+.graph-title {
+    padding-top: 8px;
+    padding-bottom: 5px;
+}
+
+@media screen and (max-width: 1340px) {
+    .graph-title {
+        padding: 0;
+    }
+    .logo {
+        position: relative;
+        top: auto;
+        left: auto;
+    }
+    .logo img {
+        max-width: 350px;
+        width: 100%;
+    }
+}
+
 @media screen and (max-width: 680px) {
     .kwh:before {
         content: "kWh"
@@ -60,12 +92,40 @@
         height: 15px;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .graph-title {
+        font-size: 22px;
+        margin-top: -5px;
+    }
+    .energy-selector img {
+        width: 13px !important;
+    }
+    .logo img {
+        max-width: 250px;
+        width: 100%;
+    }
+    .logo {
+        margin-bottom: 5px;
+    }
+    .addthis_sharing_toolbox {
+        margin-top: 10px;
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: -10px
+    }
+}
+
 @media screen and (max-width: 520px) {
-    .graph-title img {
+    .graph-title .energy-selector img {
         display: none !important;
     }
     .graph-title [ng-repeat-end] + [ng-repeat-start]:before {
-        content: "and ";
+        content: "/ ";
         color: #49C8FF;
+    }
+    .hideMob {
+        display: none;
     }
 }

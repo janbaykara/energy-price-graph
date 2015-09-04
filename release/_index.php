@@ -45,11 +45,18 @@
         "detail-phase": UI.detailPhase,
         "summary-phase": UI.summaryPhase
     }'>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54af9d6678f1771e" async="async"></script>
+
     <main>
 
         <section id='instructions' class='aln-h-m'>
             <div class='inner'>
                 <header>
+                    <center style='color: #5C696E;padding: 1px;'>
+                        <a href='http://switchmybusiness.com'><img ng-src='build/img/logo.png' /></a>
+                        <br/>presents<br/>
+                    </center>
                     <h2 class='graph-title graph-super-title'>
                         Historical <span class='kwh'></span>
                         <span class='energies'>
@@ -76,13 +83,18 @@
             <tr id='title'>
                 <td>
                     <h2 class='graph-title small-title'>
-                        Historical <span class='kwh'></span>
+                        <div class='logo'>
+                            <a href='http://switchmybusiness.com'><img ng-src='build/img/logo.png' /></a>
+                        </div>
+                        <span class='hideMob'>Historical </span><span class='kwh'></span>
                         <span class='energies'>
                             <span class='active energy-selector {{name}}'
                                 ng-repeat-start='(name, value) in data.energy'
                             ><img ng-src='build/img/energy-{{name}}.png' />{{name}}</span> <span ng-repeat-end></span>
                         </span>
                         prices
+                        <div style='social'><!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_sharing_toolbox"></div></div>
                     </h2>
                 </td>
             </tr>
